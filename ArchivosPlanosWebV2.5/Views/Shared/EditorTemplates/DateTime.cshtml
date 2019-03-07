@@ -1,0 +1,13 @@
+﻿@model DateTime?
+
+@if (!Model.HasValue)
+{
+    <input type="date" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" class="form-control" />
+}
+else
+{
+
+
+    <input type="date" value="@Model.Value.ToString("dd/MM/yyyy")" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" class="form-control" />
+    @*<input type="date" value= "@System.DateTime.Today"  id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" class="form-control" />*@
+}

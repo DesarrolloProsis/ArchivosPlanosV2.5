@@ -1,0 +1,126 @@
+﻿@model ArchivosPlanosWebV2._5.Models.ModeloVirtual
+@if (Model.Carriles.Any() && !Model.Operadores.Any())
+{
+    <div class="container">
+        <div class="card shadow-lg" style="margin-top:1rem !important">
+            <div class="card-body">
+                <h2>Carriles de @Model.Plazas.FirstOrDefault().Nom_Plaza</h2>
+                <p>
+                    @Html.ActionLink("Regresar a Plazas", "VerPlaza", new { Id_Del = Model.Delegaciones.FirstOrDefault().Id_Delegacion }, new { type = "button", @class = "btn btn-info" })
+                    @Html.ActionLink("Agregar Carril", "CreateCarril", new { Id_Pla = Model.Carriles.FirstOrDefault().Plaza_Id }, new { type = "button", @class = "btn btn-warning" })
+                </p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carriles.FirstOrDefault().Num_Gea)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carriles.FirstOrDefault().Num_Capufe)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Carriles.FirstOrDefault().Num_Tramo)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model.Carriles)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Gea)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Capufe)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Tramo)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Editar", "EditCarril", new { id = item.Id_Carril, Id_Pla = item.Plaza_Id }, new { type = "button", @class = "btn btn-success" }) |
+                                    @Html.ActionLink("Detalles", "DetailsCarril", new { id = item.Id_Carril, Id_Pla = item.Plaza_Id }, new { type = "button", @class = "btn btn-info" }) |
+                                    @Html.ActionLink("Eliminar", "DeleteCarril", new { id = item.Id_Carril, Id_Pla = item.Plaza_Id }, new { type = "button", @class = "btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+                }
+                @if (Model.Operadores.Any() && !Model.Carriles.Any())
+                {
+                    <div class="container">
+        <div class="card shadow-lg" style="margin-top:1rem !important">
+            <div class="card-body">
+                    <h2>Operadores de @Model.Plazas.FirstOrDefault().Nom_Plaza</h2>
+                    
+                    <p>
+                        @Html.ActionLink("Regresar a Plazas", "VerPlaza", new { Id_Del = Model.Delegaciones.FirstOrDefault().Id_Delegacion }, new { type = "button", @class = "btn btn-info" })
+                        @Html.ActionLink("Agregar Operador", "CreateOperador", new { Id_Ope = Model.Operadores.FirstOrDefault().Plaza_Id }, new { type = "button", @class = "btn btn-warning" })
+                    </p>
+                    <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Operadores.FirstOrDefault().Num_Capufe)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Operadores.FirstOrDefault().Num_Gea)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Operadores.FirstOrDefault().Nom_Operador)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model.Operadores)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Capufe)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Gea)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nom_Operador)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Editar", "EditOperador", new { id = item.Id_Operador, Id_Ope = item.Id_Operador }, new { type = "button", @class = "btn btn-success" })
+                                    @Html.ActionLink("Detalles", "DetailsOperador", new { id = item.Id_Operador, Id_Ope = item.Id_Operador }, new { type = "button", @class = "btn btn-info" })
+                                    @Html.ActionLink("Eliminar", "DeleteOperador", new { id = item.Id_Operador, Id_Ope = item.Id_Operador }, new { type = "button", @class = "btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                    </div>
+                </div>
+            </div>
+                     </div>
+
+                }
+                <h4>
+                    @ViewBag.SinOperador
+                </h4>
+                <h4>
+                    @ViewBag.SinCarril
+                </h4>
+                @if (ViewBag.SinCarril != null && !Model.Carriles.Any())
+                {
+                    @Html.ActionLink("Regresar a Plazas", "VerPlaza", new { Id_Del = Model.Delegaciones.FirstOrDefault().Id_Delegacion }, new { type = "button", @class = "btn btn-info" })
+                    @Html.ActionLink("Agregar Carril", "CreateCarril", new { Id_Pla = Model.Plazas.FirstOrDefault().Id_Plaza }, new { type = "button", @class = "btn btn-warning" })
+                }
+                @if (ViewBag.SinOperador != null && !Model.Operadores.Any())
+                {
+                    @Html.ActionLink("Regresar a Plazas", "VerPlaza", new { Id_Del = Model.Delegaciones.FirstOrDefault().Id_Delegacion }, new { type = "button", @class = "btn btn-info" })
+                    @Html.ActionLink("Agregar Operador", "CreateOperador", new { Id_Ope = Model.Plazas.FirstOrDefault().Id_Plaza }, new { type = "button", @class = "btn btn-warning" })
+                }
+
+

@@ -1,0 +1,58 @@
+﻿@model ArchivosPlanosWebV2._5.Models.Type_Operadores
+<div class="container">
+    <div class="card shadow-lg" style="margin-top:1rem !important">
+        <div class="card-body">
+            <h2>Eliminar Operador</h2>
+            <h3>¿Está seguro de eliminar este operador?</h3>
+            <div>
+                <h4>Type_Operadores</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Type_Plaza.Num_Plaza)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Type_Plaza.Num_Plaza)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Num_Capufe)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Num_Capufe)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Num_Gea)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Num_Gea)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nom_Operador)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Nom_Operador)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-danger" style="margin-bottom:5px !important;" />
+
+                    </div>
+                    @Html.ActionLink("Regresar a Delegaciones", "Index")
+                }
+            </div>
+            </div>
+        </div>
+    </div>
