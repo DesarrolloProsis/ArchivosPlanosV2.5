@@ -530,7 +530,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         else
                         {
                             
-                            Str_detalle = Str_detalle = ",,";
+                            Str_detalle = Str_detalle + ",,";
                         }
 
 
@@ -858,7 +858,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         else
                         {
                             Errores = "No se encontró tramo y carril de " + Str_detalle + "\n";
-                            Str_detalle = Str_detalle = ",,";
+                            Str_detalle = Str_detalle + ",,";
                         }
 
 
@@ -1060,7 +1060,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 else
                                 {
                                     Errores = "No se encontró tramo y carril de " + Str_detalle + "\n";
-                                    Str_detalle = Str_detalle = ",,";
+                                    Str_detalle = Str_detalle + ",,";
                                 }
 
 

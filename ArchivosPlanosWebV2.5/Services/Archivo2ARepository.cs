@@ -1374,8 +1374,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                         else
                         {
-                            Str_detalle = Str_detalle + ",";
-                            Str_detalle = Str_detalle + ",";
+                            Str_detalle = Str_detalle + ",,";
                         }
 
                         //cuerpo
@@ -1685,8 +1684,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                         else
                         {
-                            Str_detalle = Str_detalle + ",";
-                            Str_detalle = Str_detalle + ",";
+                            Str_detalle = Str_detalle + ",,";
                         }
 
                         //Cuerpo 	Caracter 	X(1)	Valores posibles: Tabla 13 - Ejemplo del Catálogo de Carriles y Tramos por Plaza de Cobro.
@@ -1804,8 +1802,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
                                 else
                                 {
-                                    Str_detalle = Str_detalle + ",";
-                                    Str_detalle = Str_detalle + ",";
+                                    Str_detalle = Str_detalle + ",,";
                                 }
                                 //Cuerpo Caracter    X(1)    Valores posibles: Tabla 13 - Ejemplo del Catálogo de Carriles y Tramos por Plaza de Cobro.
                                 Str_detalle = Str_detalle + item4["VOIE"].ToString().Substring(0, 1) + ",";

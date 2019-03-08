@@ -251,7 +251,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
                                 else
                                 {
-                                    Str_detalle = Str_detalle = ",,";
+                                    Str_detalle = Str_detalle + ",,";
                                 }
 
                                 //Cuerpo Caracter    X(1)
@@ -610,7 +610,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     }
                                     else
                                     {
-                                        Str_detalle = Str_detalle = ",,";
+                                        Str_detalle = Str_detalle + ",,";
                                     }
 
                                     //Cuerpo Caracter    X(1)
