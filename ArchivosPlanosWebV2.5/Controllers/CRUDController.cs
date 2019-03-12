@@ -595,7 +595,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Num_Plaza", type_Operadores.Plaza_Id);
+            ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Nom_Plaza", type_Operadores.Plaza_Id);
             return View(type_Operadores);
         }
         [HttpPost]
