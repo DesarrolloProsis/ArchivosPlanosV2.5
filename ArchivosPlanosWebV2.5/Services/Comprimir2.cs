@@ -93,17 +93,6 @@ namespace ArchivosPlanosWebV2._5.Services
                     zip.AddFile(Ruta + Arch5, "");
 
                     if (IdPlazaCobro.Length == 3)
-                        Nombre_archivo = "0" + IdPlazaCobro;
-
-                    if (IdPlazaCobro.Length == 3)
-                    {
-                        if (IdPlazaCobro != "108")
-                            Nombre_archivo = "0" + IdPlazaCobro;
-                        else
-                            Nombre_archivo = "0001";
-                    }
-
-                    if (IdPlazaCobro.Length == 3)
                     {
                         if (IdPlazaCobro == "108")
                             Nombre_archivo = "0001";
@@ -111,6 +100,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             Nombre_archivo = "001B";
                         else if (IdPlazaCobro == "107")
                             Nombre_archivo = "0107";
+                        else if (IdPlazaCobro == "061")
+                            Nombre_archivo = "061B";
                         else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
                             Nombre_archivo = "01" + IdPlazaCobro.Substring(1, 2);
                         else
@@ -158,6 +149,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             NoPlaza = "001B";
                         else if (IdPlazaCobro == "107")
                             NoPlaza = "0107";
+                        else if (IdPlazaCobro == "061")
+                            NoPlaza = "061B";
                         else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
                             NoPlaza = NoPlaza + "01" + IdPlazaCobro.Substring(1, 2);
                         else NoPlaza = "0" + IdPlazaCobro;

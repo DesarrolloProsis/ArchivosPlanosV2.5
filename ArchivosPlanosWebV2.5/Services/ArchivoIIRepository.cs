@@ -89,6 +89,8 @@ namespace ArchivosPlanosWebV2._5.Services
                         Nombre_archivo = "001B";
                     else if (IdPlazaCobro == "107")
                         Nombre_archivo = "0107";
+                    else if (IdPlazaCobro == "061")
+                        Nombre_archivo = "061B";
                     else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
                         Nombre_archivo = "01" + IdPlazaCobro.Substring(1, 2);
                     else Nombre_archivo = "0" + IdPlazaCobro;
