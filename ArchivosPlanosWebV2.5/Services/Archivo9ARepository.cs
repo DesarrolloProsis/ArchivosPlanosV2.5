@@ -431,11 +431,11 @@ namespace ArchivosPlanosWebV2._5.Services
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
                                     strCodigoVhPagoMarcado = "RPI" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 72)
-                                    strCodigoVhPagoMarcado = "RPI" + ",";
+                                    strCodigoVhPagoMarcado = "RP2" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 73)
-                                    strCodigoVhPagoMarcado = "RPI" + ",";
+                                    strCodigoVhPagoMarcado = "RP3" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
-                                    strCodigoVhPagoMarcado = "RPI" + ",";
+                                    strCodigoVhPagoMarcado = "RP4" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
                                     strCodigoVhPagoMarcado = "RPA" + ",";
                                 else
@@ -793,11 +793,11 @@ namespace ArchivosPlanosWebV2._5.Services
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
                                         strCodigoVhPagoMarcado = "RPI" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 72)
-                                        strCodigoVhPagoMarcado = "RPI" + ",";
+                                        strCodigoVhPagoMarcado = "RP2" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 73)
-                                        strCodigoVhPagoMarcado = "RPI" + ",";
+                                        strCodigoVhPagoMarcado = "RP3" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
-                                        strCodigoVhPagoMarcado = "RPI" + ",";
+                                        strCodigoVhPagoMarcado = "RP4" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
                                         strCodigoVhPagoMarcado = "RPA" + ",";
                                     else
