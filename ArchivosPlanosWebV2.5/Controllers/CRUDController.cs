@@ -219,11 +219,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Type_Plaza.Add(type_Plaza);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerPlaza", new { Id_Del = type_Plaza.Delegacion_Id });
             }
 
             ViewBag.Delegacion_Id = new SelectList(db.Type_Delegacion, "Id_Delegacion", "Nom_Delegacion", type_Plaza.Delegacion_Id);
-            return View(type_Plaza);
+            return RedirectToAction("VerPlaza", new { Id_Del = type_Plaza.Delegacion_Id });
         }
         public ActionResult EditPlaza(int? id, int Id_Del)
         {
@@ -248,10 +248,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Entry(type_Plaza).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerPlaza", new { Id_Del = type_Plaza.Delegacion_Id });
             }
             ViewBag.Delegacion_Id = new SelectList(db.Type_Delegacion, "Id_Delegacion", "Nom_Delegacion", type_Plaza.Delegacion_Id);
-            return View(type_Plaza);
+            return RedirectToAction("VerPlaza", new { Id_Del = type_Plaza.Delegacion_Id });
         }
         public ActionResult DeletePlaza(int? id, int Id_Del)
         {
@@ -290,7 +290,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             db.Type_Plaza.Remove(type_Plaza);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("VerPlaza", new { Id_Del = type_Plaza.Delegacion_Id });
         }
         public ActionResult VerCarril(int IdPlaza)
         {
@@ -406,11 +406,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Type_Carril.Add(type_Carril);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerCarril", new { IdPlaza = type_Carril.Plaza_Id });
             }
 
             ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Num_Plaza", type_Carril.Plaza_Id);
-            return View(type_Carril);
+            return RedirectToAction("VerCarril", new { IdPlaza = type_Carril.Plaza_Id });
         }
         public ActionResult EditCarril(int? id, int Id_Pla)
         {
@@ -436,10 +436,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Entry(type_Carril).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerCarril", new { IdPlaza = type_Carril.Plaza_Id });
             }
             ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Num_Plaza", type_Carril.Plaza_Id);
-            return View(type_Carril);
+            return RedirectToAction("VerCarril", new { IdPlaza = type_Carril.Plaza_Id });
         }
         public ActionResult DeleteCarril(int? id, int Id_Pla)
         {
@@ -462,7 +462,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             Type_Carril type_Carril = db.Type_Carril.Find(id);
             db.Type_Carril.Remove(type_Carril);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("VerCarril", new { IdPlaza = type_Carril.Plaza_Id });
         }
         public ActionResult VerOperador(int IdPlaza)
         {
@@ -577,11 +577,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Type_Operadores.Add(type_Operadores);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerOperador", new { IdPlaza = type_Operadores.Plaza_Id });
             }
-
+              
             ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Num_Plaza", type_Operadores.Plaza_Id);
-            return View(type_Operadores);
+            return RedirectToAction("VerOperador", new { IdPlaza = type_Operadores.Plaza_Id });
         }
         public ActionResult EditOperador(int? id, int Id_Ope)
         {
@@ -606,10 +606,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 db.Entry(type_Operadores).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VerOperador", new { IdPlaza = type_Operadores.Plaza_Id });
             }
             ViewBag.Plaza_Id = new SelectList(db.Type_Plaza, "Id_Plaza", "Num_Plaza", type_Operadores.Plaza_Id);
-            return View(type_Operadores);
+            return RedirectToAction("VerOperador", new { IdPlaza = type_Operadores.Plaza_Id });
         }
         public ActionResult DeleteOperador(int? id, int Id_Ope)
         {
@@ -632,7 +632,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             Type_Operadores type_Operadores = db.Type_Operadores.Find(id);
             db.Type_Operadores.Remove(type_Operadores);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("VerOperador", new { IdPlaza = type_Operadores.Plaza_Id });
         }
     }
 }
