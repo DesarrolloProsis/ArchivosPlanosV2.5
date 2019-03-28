@@ -143,7 +143,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 encripta.EncriptarFile(Ruta + Arch3);
                 encripta.EncriptarFile(Ruta + Arch4);
                 encripta.EncriptarFile(Ruta + Arch5);
-                Message = "TODO BIEN";
+                Message = "Todo bien";
 
                 /////////////////////////////////////////////////////////////////////////////////////////////
                 //using (ZipFile zipOriginales2 = new ZipFile())

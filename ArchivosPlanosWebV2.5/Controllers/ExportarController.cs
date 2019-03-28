@@ -191,18 +191,18 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //}
                 else if (validaciones.ValidarCarrilesCerrados(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
-                    ViewBag.Titulo = "Error";
-                    ViewBag.Mensaje = "Existen carriles cerrados<br />" + validaciones.Message;
+                    ViewBag.Titulo = "Existen carriles cerrados:";
+                    ViewBag.Mensaje = validaciones.Message;
                 }
                 else if (validaciones.ValidarBolsas(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
-                    ViewBag.Titulo = "Error";
-                    ViewBag.Mensaje = "Existen bolsas sin declarar:<br />" + validaciones.Message;
+                    ViewBag.Titulo = "Existen bolsas sin declarar:";
+                    ViewBag.Mensaje = validaciones.Message;
                 }
                 else if (validaciones.ValidarComentarios(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
-                    ViewBag.Titulo = "Error";
-                    ViewBag.Mensaje = "Falta ingresar comentarios:<br />" + validaciones.Message;
+                    ViewBag.Titulo = "Falta ingresar comentarios:";
+                    ViewBag.Mensaje = validaciones.Message;
                 }
 
                 else
@@ -221,10 +221,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
-                    Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
+                    //Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
 
                     ViewBag.Titulo = "Resumen de creación de archivos";
-                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />" + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: "+ comprimir.Message;
+                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: "+ comprimir.Message;
 
                 }
 
