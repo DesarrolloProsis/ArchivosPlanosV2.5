@@ -10,7 +10,7 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="vendors/easypiechart/jquery.easy-pie-chart.js"></script>
     <script src="assets/scripts.js"></script>
-
+    <script src="~/Scripts/bootstrap.min.js"></script>
 
 
 
@@ -21,10 +21,11 @@
             $(".cargar").hide();
 
             $("#top2").click(function () {
-                $(".cargar").show();
-                //$("#top3").css("visibility", "visible");
+                $("#top3").css("visibility", "visible");
             });
 
+
+            $('#mensaje').modal('show')
             LoadDelegaciones();
             LoadPlazas();
             LoadTurnos();
@@ -186,17 +187,6 @@
                 </div>
          }*@
 
-    @using (Html.BeginForm("Descargar", "Exportar", FormMethod.Post))
-    {
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="submit" class="btn btn-primary crear" value="Descargar archivo" id="top3" />
-
-                </div>
-            </div>
-        </div>
-    }
 
 
     @if (ViewBag.List != null)
@@ -246,7 +236,28 @@
             </div>
         </div>
     </div>
-
+    
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="modal" tabindex="-1" role="dialog" id="mensaje">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ViewBag.Titulo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@Html.Raw(ViewBag.Mensaje)</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
 
 }

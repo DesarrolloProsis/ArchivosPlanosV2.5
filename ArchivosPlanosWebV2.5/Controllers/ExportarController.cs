@@ -34,7 +34,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public string ConexionDB = string.Empty;
 
-       
+
 
         // GET: Exportar
         [HttpGet]
@@ -91,42 +91,52 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
             var Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
             var Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
-            if (Plaza.Value.Length == 2)
+            if (Plaza == null)
+            {
+                ViewBag.Error = "Falta Delegaciones";
+            }
+            else if (Plaza.Value.Length == 2)
             {
                 Plaza.Value = "0" + Plaza.Value;
-            }
+                if (Plaza.Value == "004") //Tepotzotlan
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            DateTime FechaInicio = model.FechaInicio;
-            if (Plaza.Value == "004") //Tepotzotlan
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "005") //Palmillas
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.23.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "005") //Palmillas
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.23.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "027") //Chichimequillas
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.24.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "027") //Chichimequillas
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.24.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "006") //Querétaro
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.25.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "006") //Querétaro
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.25.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "061") //Libramiento
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.27.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "061") //Libramiento
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.27.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "083") //Villagrán
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.28.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "083") //Villagrán
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.28.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "086") //Cerro Gordo
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.29.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            else if (Plaza.Value == "086") //Cerro Gordo
-                ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.29.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "041") //Salamanca
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.30.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
+<<<<<<< HEAD
             else if (Plaza.Value == "069") //Jorobas
                 ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.21                                           .221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
             else if (Plaza.Value == "041") //Salamanca
                 ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.30.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+=======
+                else
+                    Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
+>>>>>>> 7ee64267efa0e9e7932a9fcbd9d7b9794cdc4451
 
-            else
-                Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
 
+            }
+
+            DateTime FechaInicio = model.FechaInicio;
 
 
             try
@@ -143,19 +153,36 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //}
 
                 if (Delegacion == null)
-                    Response.Write("<script>alert('" + "Falta Delegaciones" + "');</script>");
+                {
+                    ViewBag.Titulo = "Formulario incompleto";
+                    ViewBag.Mensaje = "Falta Delegación<br />";
+                }
                 else if (Plaza == null)
-                    Response.Write("<script>alert('" + "Falta Plaza" + "');</script>");
+                {
+                    ViewBag.Titulo = "Formulario incompleto";
+                    ViewBag.Mensaje = "Falta Plaza <br />";
+                }
                 else if (Turno == null)
-                    Response.Write("<script>alert('" + "Falta Turno" + "');</script>");
+                {
+                    ViewBag.Titulo = "Formulario incompleto";
+                    ViewBag.Mensaje = "Falta Turno<br />";
+                }
                 else if (FechaInicio.ToString() == "01/01/0001 12:00:00 a. m.")
-                    Response.Write("<script>alert('" + "Falta Fecha" + "');</script>");
+                {
+                    ViewBag.Titulo = "Formulario incompleto";
+                    ViewBag.Mensaje = "Falta Fecha<br />";
+                }
                 else if (FechaInicio > fecha_Actual)
-                    Response.Write("<script>alert('" + "La fecha debe ser menor al dia actual" + "');</script>");
+                {
+                    ViewBag.Titulo = "Formulario llenado incorrectamente";
+                    ViewBag.Mensaje = "La fecha debe ser menor a la actual<br />";
+                }
                 else if (validaciones.Valida_Turno(Convert.ToInt32(Turno.Value), FechaInicio) == "STOP")
 
-                    Response.Write("<script>alert('" + "No puedes generar este archivo" + "');</script>");
-
+                {
+                    ViewBag.Titulo = "Formulario llenado incorrectamente";
+                    ViewBag.Mensaje = "Aún puedes generar este archivo<br />";
+                }
 
                 //else
                 //listaaa = validaciones.ValidarComentarios(FechaInicio.AddDays(-1), FechaInicio, Turno.Text);
@@ -171,11 +198,20 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
                 //}
                 else if (validaciones.ValidarCarrilesCerrados(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                    Response.Write("<script>alert('" + validaciones.Message + "');</script>");
+                {
+                    ViewBag.Titulo = "Existen carriles cerrados:";
+                    ViewBag.Mensaje = validaciones.Message;
+                }
                 else if (validaciones.ValidarBolsas(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                    Response.Write("<script>alert('" + validaciones.Message + "');</script>");
+                {
+                    ViewBag.Titulo = "Existen bolsas sin declarar:";
+                    ViewBag.Mensaje = validaciones.Message;
+                }
                 else if (validaciones.ValidarComentarios(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                    Response.Write("<script>alert('" + validaciones.Message + "');</script>");
+                {
+                    ViewBag.Titulo = "Falta ingresar comentarios:";
+                    ViewBag.Mensaje = validaciones.Message;
+                }
 
                 else
 
@@ -193,7 +229,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
-                    Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
+                    //Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
+
+                    ViewBag.Titulo = "Resumen de creación de archivos";
+                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: "+ comprimir.Message;
 
                 }
 
@@ -201,6 +240,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
             catch (Exception ex)
             {
                 Message = ex.Message + " " + ex.StackTrace;
+                ViewBag.Titulo = "Error";
+                ViewBag.Mensaje = Message;
             }
             return View();
         }
