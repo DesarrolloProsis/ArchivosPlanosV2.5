@@ -122,16 +122,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else if (Plaza.Value == "041") //Salamanca
                     ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.30.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-<<<<<<< HEAD
             else if (Plaza.Value == "069") //Jorobas
                 ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.21                                           .221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
             else if (Plaza.Value == "041") //Salamanca
                 ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.30.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
-=======
                 else
                     Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
->>>>>>> 7ee64267efa0e9e7932a9fcbd9d7b9794cdc4451
 
 
             }
