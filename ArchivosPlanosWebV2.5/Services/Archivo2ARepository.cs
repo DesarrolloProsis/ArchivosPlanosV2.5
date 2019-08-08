@@ -55,6 +55,8 @@ namespace ArchivosPlanosWebV2._5.Services
             string StrEncargadoTurno = string.Empty;
             int Cont_cerrado_todo_turno = 0;
 
+            List<EventoCarril> ErroresHorario = new List<EventoCarril>();
+            List<EventoCarril> ErroresCorregidos = new List<EventoCarril>();
             DataTable dt = new DataTable("Tabla_Carriles");
             DataSet dataSet = new DataSet();
             //DataTable dataTableCa = new DataTable();
@@ -1592,7 +1594,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         if (NumPlaza == "84")
                         {
                             Str_detalle_tc = Str_detalle_tc + VAR_17_tc + "," + VAR_19_tc + "," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0," + "0,";
-                             
+
                             if (VAR_08.Substring(0, 1) == "A")
                             {
                                 Osw.WriteLine(Str_detalle_tc);
@@ -1628,6 +1630,37 @@ namespace ArchivosPlanosWebV2._5.Services
 
 
                 //cerrados inicio
+
+                StrQuerys = "SELECT LANE, BEGIN_DHM, END_DHM FROM CLOSED_LANE_REPORT " +
+                            "WHERE BEGIN_DHM IN( " +
+                                "SELECT BEGIN_DHM " +
+                                "FROM CLOSED_LANE_REPORT, SITE_GARE " +
+                                "WHERE " +
+                                "CLOSED_LANE_REPORT.ID_PLAZA = SITE_GARE.id_Gare " +
+                                "GROUP BY BEGIN_DHM, LANE " +
+                                "HAVING " +
+                                "COUNT(BEGIN_DHM) > 1 AND COUNT(LANE) > 1)" +
+                            "AND((BEGIN_DHM >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "', 'YYYYMMDDHH24MISS')) " +
+                            "AND(BEGIN_DHM <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "', 'YYYYMMDDHH24MISS'))) " +
+                            "ORDER BY LANE, BEGIN_DHM, END_DHM";
+
+
+                if (MtGlb.QueryDataSet(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim))
+                {
+                    foreach (DataRow item in MtGlb.Ds.Tables["CLOSED_LANE_REPORT"].Rows)
+                    {
+                        ErroresHorario.Add(new EventoCarril
+                        {
+                            Carril = Convert.ToString(item["LANE"]),
+                            Hora_Inicio = Convert.ToDateTime(item["BEGIN_DHM"]),
+                            Hora_Fin = Convert.ToDateTime(item["END_DHM"])
+                        });
+                    }
+                }
+
+                ErroresCorregidos = BarridoCarriles(ErroresHorario, _H_inicio_turno, _H_fin_turno, ConexionDim);
+
+
                 StrQuerys = "SELECT ID_NETWORK, ID_PLAZA,ID_LANE, LANE, BEGIN_DHM, END_DHM, BAG_NUMBER, REPORT_FLAG, GENERATION_DHM " +
                             "FROM CLOSED_LANE_REPORT, SITE_GARE " +
                             "where " +
@@ -1641,6 +1674,27 @@ namespace ArchivosPlanosWebV2._5.Services
                 {
                     foreach (DataRow item in MtGlb.Ds.Tables["CLOSED_LANE_REPORT"].Rows)
                     {
+                        if (ErroresHorario.Count != 0)
+                        {
+                            DateTime Hora_Inicio_Evento;
+
+                            Hora_Inicio_Evento = Convert.ToDateTime(item["BEGIN_DHM"]);
+
+                            foreach (var Error in ErroresHorario)
+                            {
+                                if (Error.Hora_Inicio == Hora_Inicio_Evento && Error.Carril == item["LANE"].ToString())
+                                {
+                                    foreach (var Correcion in ErroresCorregidos)
+                                    {
+                                        if (Correcion.Hora_Fin == Convert.ToDateTime(item["END_DHM"]))
+                                        {
+                                            item["BEGIN_DHM"] = Correcion.Hora_Inicio;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         Str_detalle = string.Empty;
 
                         //Fecha base de operación 	Fecha 	dd/mm/aaaa
@@ -1717,10 +1771,10 @@ namespace ArchivosPlanosWebV2._5.Services
                             else
                                 Str_detalle = Str_detalle + "0,";
                         }
-                        
+
 
                         Str_detalle = Str_detalle + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
-              
+
 
                         Osw.WriteLine(Str_detalle);
                         Osw2.WriteLine(Str_detalle);
@@ -1866,6 +1920,145 @@ namespace ArchivosPlanosWebV2._5.Services
                 Message = Message.Replace(System.Environment.NewLine, "  ");
             }
 
+        }
+        public List<EventoCarril> BarridoCarriles(List<EventoCarril> Errores, DateTime _H_inicio_turno, DateTime _H_fin_turno, OracleConnection ConexionDim)
+        {
+            List<EventoCarril> ErroresCorregidos = new List<EventoCarril>();
+
+            string StrQuerys = "SELECT COUNT(BEGIN_DHM), BEGIN_DHM, LANE " +
+                               "FROM CLOSED_LANE_REPORT, SITE_GARE " +
+                               "where " +
+                               "CLOSED_LANE_REPORT.ID_PLAZA = SITE_GARE.id_Gare " +
+                               "AND((BEGIN_DHM >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "', 'YYYYMMDDHH24MISS')) " +
+                               "AND(BEGIN_DHM <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "', 'YYYYMMDDHH24MISS'))) " +
+                               "GROUP by BEGIN_DHM, LANE " +
+                               "HAVING COUNT(BEGIN_DHM) > 1 AND COUNT(LANE) > 1 ";
+
+            MtGlb.QueryDataSet4(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim);
+
+            foreach (DataRow CasosRepetidos in MtGlb.Ds4.Tables["CLOSED_LANE_REPORT"].Rows)
+            {
+                StrQuerys = "SELECT	FIN_POSTE.Id_Gare, " +
+                              "Voie, " +
+                              "TO_CHAR(Date_Fin_Poste,'MM/DD/YY'), " +
+                              "TO_CHAR(Date_Fin_Poste,'HH24:MI'), " +
+                              "Matricule, " +
+                              "FIN_POSTE.Id_Voie, " +
+                              "DATE_DEBUT_POSTE,Date_Fin_Poste, " +
+                              "TO_CHAR(Date_Debut_Poste,'YYYYMMDDHH24MISS'), " +
+                              "TO_CHAR(Date_Fin_Poste,'YYYYMMDDHH24MISS') " +
+                              "FROM 	TYPE_VOIE, " +
+                              "FIN_POSTE, " +
+                              "SITE_GARE " +
+                              "WHERE	FIN_POSTE.Id_Voie	=	TYPE_VOIE.Id_Voie " +
+                              "AND Voie	= '" + CasosRepetidos["LANE"] + "' " +
+                              "AND FIN_POSTE.id_reseau	= 	SITE_GARE.id_Reseau " +
+                              "AND	FIN_POSTE.id_Gare	=	SITE_GARE.id_Gare " +
+                              "AND	SITE_GARE.id_reseau		= 	'01' " +
+                              "AND (Id_Mode_Voie IN (1,7,9)) " +
+                              "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                              "AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
+                              "AND (FIN_POSTE.Id_Voie = '1' " +
+                              "OR FIN_POSTE.Id_Voie = '2' " +
+                              "OR FIN_POSTE.Id_Voie = '3' " +
+                              "OR FIN_POSTE.Id_Voie = '4' " +
+                              "OR FIN_POSTE.Id_Voie = 'X' " +
+                              ") " +
+                              "ORDER BY Id_Gare, " +
+                              "Id_Voie, " +
+                              "Voie, " +
+                              "Date_Debut_Poste," +
+                              "Date_Fin_Poste, " +
+                              "Numero_Poste, " +
+                              "Matricule " +
+                              ",Sac";
+
+                MtGlb.QueryDataSet(StrQuerys, "FIN_POSTE", ConexionDim);
+
+                List<EventoCarril> EventosDeCarril = new List<EventoCarril>();
+
+                //Carriles Abiertos del Carril
+                foreach (DataRow CarrilesAbiertos in MtGlb.Ds.Tables["FIN_POSTE"].Rows)
+                {
+                    EventosDeCarril.Add(new EventoCarril
+                    {
+                        Hora_Inicio = Convert.ToDateTime(CarrilesAbiertos["DATE_DEBUT_POSTE"]),
+                        Hora_Fin = Convert.ToDateTime(CarrilesAbiertos["Date_Fin_Poste"]),
+                        Carril = CarrilesAbiertos["Voie"].ToString().Substring(1, 2)
+                    });
+                }
+
+                StrQuerys = "SELECT ID_NETWORK, ID_PLAZA,ID_LANE, LANE, BEGIN_DHM, END_DHM " +
+                            "FROM CLOSED_LANE_REPORT, SITE_GARE " +
+                            "where " +
+                            "CLOSED_LANE_REPORT.ID_PLAZA	=	SITE_GARE.id_Gare " +
+                            "AND ((BEGIN_DHM >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                            "AND (BEGIN_DHM <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
+                            "AND LANE = '" + CasosRepetidos["LANE"] + "'" +
+                            "order by BEGIN_DHM";
+
+
+                MtGlb.QueryDataSet(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim);
+
+                foreach (DataRow CarrilesCerrados in MtGlb.Ds.Tables["CLOSED_LANE_REPORT"].Rows)
+                {
+                    EventosDeCarril.Add(new EventoCarril
+                    {
+                        Hora_Inicio = Convert.ToDateTime(CarrilesCerrados["BEGIN_DHM"]),
+                        Hora_Fin = Convert.ToDateTime(CarrilesCerrados["END_DHM"]) > _H_fin_turno ? _H_fin_turno : Convert.ToDateTime(CarrilesCerrados["END_DHM"]),
+                        Carril = CarrilesCerrados["LANE"].ToString().Substring(1, 2)
+                    });
+                }
+
+                foreach (var Error in Errores)
+                {
+                    ErroresCorregidos.Add(BarridoEventos(EventosDeCarril, Error, _H_fin_turno, Error.Hora_Fin));
+                    if (ErroresCorregidos.LastOrDefault().Carril == "N/A")
+                    {
+                        ErroresCorregidos.Remove(ErroresCorregidos.LastOrDefault());
+                    }
+                }
+            }
+            return ErroresCorregidos;
+        }
+        public EventoCarril BarridoEventos(List<EventoCarril> EventosDeCarril, EventoCarril Error, DateTime _H_fin_turno, DateTime Hora_Fin)
+        {
+            DateTime NuevaHoraInicio = DateTime.MinValue;
+            foreach (var item in EventosDeCarril)
+            {
+                if (Convert.ToDateTime(Hora_Fin) >= _H_fin_turno)
+                {
+                    Error.Carril = "N/A";
+                    return Error;
+                }
+                else if (item.Hora_Inicio == Hora_Fin)
+                {
+                    return BarridoEventos(EventosDeCarril, Error, _H_fin_turno, item.Hora_Fin);
+                }
+            }
+
+            var ListadeErrores = EventosDeCarril.Where(x => x.Hora_Inicio == Error.Hora_Inicio).ToList();
+
+            int diferencia = 0;
+
+            foreach (var item in ListadeErrores)
+            {
+                if (item.Hora_Fin > Hora_Fin && item.Hora_Fin <= _H_fin_turno)
+                {
+                    if (diferencia == 0)
+                    {
+                        diferencia = Convert.ToInt32(item.Hora_Fin.ToString("HHmmss")) - Convert.ToInt32(Hora_Fin.ToString("HHmmss"));
+                        item.Hora_Inicio = Hora_Fin;
+                    }
+                    else if (diferencia > Convert.ToInt32(item.Hora_Fin.ToString("HHmmss")) - Convert.ToInt32(Hora_Fin.ToString("HHmmss")))
+                    {
+                        diferencia = Convert.ToInt32(item.Hora_Fin) - Convert.ToInt32(Convert.ToDateTime(Hora_Fin).ToString("HHmmss"));
+                        item.Hora_Inicio = Hora_Fin;
+                    }
+                    Error = item;
+                }
+            }
+            return Error;
         }
     }
 }

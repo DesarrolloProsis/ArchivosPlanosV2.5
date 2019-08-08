@@ -232,6 +232,7 @@
     <Compile Include="Models\Type_Delegacion.cs" />
     <Compile Include="Models\Type_Operadores.cs" />
     <Compile Include="Models\Type_Plaza.cs" />
+    <Compile Include="Models\ValidacionEventos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Archivo1ARepository.cs" />
     <Compile Include="Services\Archivo2ARepository.cs" />
