@@ -194,17 +194,17 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //    return View(ViewBag.List, model);
 
                 //}
-                else if (validaciones.ValidarCarrilesCerrados(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarCarrilesCerrados( FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
-                    ViewBag.Titulo = "Existen carriles cerrados:";
+                    ViewBag.Titulo = "Existen carriles sin cerrar:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                else if (validaciones.ValidarBolsas(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarBolsas(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Existen bolsas sin declarar:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                else if (validaciones.ValidarComentarios(FechaInicio.AddDays(-1), FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;

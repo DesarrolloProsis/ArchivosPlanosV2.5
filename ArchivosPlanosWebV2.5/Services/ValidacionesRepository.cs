@@ -25,7 +25,7 @@ namespace ArchivosPlanosWebV2._5.Services
         /// <param name="FechaSelect"></param>
         /// <param name="TempTurno"></param>
         /// <returns></returns>
-        public string ValidarCarrilesCerrados(DateTime FechaInicioD, DateTime FechaSelect, string TempTurno, string Conexion)
+        public string ValidarCarrilesCerrados(DateTime FechaSelect, string TempTurno, string Conexion)
         {
             Carril Carril = new Carril();
             OracleCommand Cmd = new OracleCommand();
@@ -43,17 +43,17 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 case "22:00 - 06:00":
                     TurnoP = "1";
-                    FechaInicio = FechaInicioD.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
+                    FechaInicio = FechaSelect.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 05:59:59";
                     break;
                 case "06:00 - 14:00":
                     TurnoP = "2";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 06:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 06:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 13:59:59";
                     break;
                 case "14:00 - 22:00":
                     TurnoP = "3";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 14:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 14:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 21:59:59";
                     break;
             }
@@ -126,7 +126,7 @@ namespace ArchivosPlanosWebV2._5.Services
         /// <param name="FechaSelect"></param>
         /// <param name="TempTurno"></param>
         /// <returns></returns>
-        public string ValidarBolsas(DateTime FechaInicioD, DateTime FechaSelect, string TempTurno, string Conexion)
+        public string ValidarBolsas(DateTime FechaSelect, string TempTurno, string Conexion)
         {
             OracleCommand Cmd = new OracleCommand();
             OracleConnection Connection = new OracleConnection(Conexion);
@@ -141,17 +141,17 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 case "22:00 - 06:00":
                     TurnoP = "1";
-                    FechaInicio = FechaInicioD.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
+                    FechaInicio = FechaSelect.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 05:59:59";
                     break;
                 case "06:00 - 14:00":
                     TurnoP = "2";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 06:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 06:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 13:59:59";
                     break;
                 case "14:00 - 22:00":
                     TurnoP = "3";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 14:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 14:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 21:59:59";
                     break;
             }
@@ -194,7 +194,7 @@ namespace ArchivosPlanosWebV2._5.Services
         /// <param name="TempTurno"></param>
         /// <returns></returns>
         //public List<filas> ValidarComentarios(DateTime FechaInicioD, DateTime FechaSelect, string TempTurno)
-        public string ValidarComentarios(DateTime FechaInicioD, DateTime FechaSelect, string TempTurno, string Conexion)
+        public string ValidarComentarios(DateTime FechaSelect, string TempTurno, string Conexion)
         {
             OracleCommand Cmd = new OracleCommand();
             OracleConnection Connection = new OracleConnection(Conexion);
@@ -213,17 +213,17 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 case "22:00 - 06:00":
                     TurnoP = "1";
-                    FechaInicio = FechaInicioD.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
+                    FechaInicio = FechaSelect.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 05:59:59";
                     break;
                 case "06:00 - 14:00":
                     TurnoP = "2";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 06:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 06:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 13:59:59";
                     break;
                 case "14:00 - 22:00":
                     TurnoP = "3";
-                    FechaInicio = FechaInicioD.ToString("MM/dd/yyyy") + " 14:00:00";
+                    FechaInicio = FechaSelect.ToString("MM/dd/yyyy") + " 14:00:00";
                     FechaFinal = FechaSelect.ToString("MM/dd/yyyy") + " 21:59:59";
                     break;
             }
