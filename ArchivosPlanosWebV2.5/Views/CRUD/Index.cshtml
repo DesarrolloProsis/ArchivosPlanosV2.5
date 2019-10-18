@@ -1,0 +1,57 @@
+﻿@model ArchivosPlanosWebV2._5.Models.ModeloVirtual
+@using (Ajax.BeginForm("Index", "CRUD", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divResultado" }))
+{
+
+    ViewBag.Title = "Delegaciones";
+
+<div class="container">
+    
+        <div class="card shadow-lg" style="margin-top:1rem !important;margin-bottom:5rem;">
+            <div class="card-body">
+                <h2>Delegaciones</h2>
+
+                <p>
+                    @Html.ActionLink("Agregar Delegación", "CreateDelegacion", null, new { type = "button", @class = "btn btn-warning" })
+                </p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Delegaciones.FirstOrDefault().Num_Delegacion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Delegaciones.FirstOrDefault().Nom_Delegacion)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model.Delegaciones)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Num_Delegacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nom_Delegacion)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Editar", "EditDelegacion", new { id = item.Id_Delegacion }, new { type = "button", @class = "btn btn-success" })
+                                    @Html.ActionLink("Detalles", "DetailsDelegacion", new { id = item.Id_Delegacion }, new { type = "button", @class = "btn btn-info" })
+                                    @Html.ActionLink("Eliminar", "DeleteDelegacion", new { id = item.Id_Delegacion }, new { type = "button", @class = "btn btn-danger" })
+                                    @Html.ActionLink("Ver Plaza", "VerPlaza", new { Id_Del = item.Id_Delegacion }, new { type = "button", @class = "btn btn-light" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                   </div>
+
+
+                    <div id="divResultado">
+                        @Html.Partial("VerPlaza", Model)
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+            }

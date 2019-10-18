@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link href="~/Scripts/estilos/estilos.css" rel="stylesheet" />
+    <link href="~/Scripts/estilos/importar.css" rel="stylesheet" />
+    <link href="~/Scripts/estilos/main.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-xl navbar-dark" aria-label="Toggle navigation">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="@Url.Content("~/Scripts/img/logos.png")"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item ">
+                        @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item ">
+                        @Html.ActionLink("Reportes", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "Exportar" ? "active" : "")">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                            Archivos Planos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a>@Html.ActionLink("Exportar", "Index", "Exportar", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })</a>
+                            <a>@Html.ActionLink("Encriptar", "Encriptar", "Exportar", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })</a>
+                        </div>
+                    </li>
+                    <!--<li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Exportar" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                        @Html.ActionLink("Encriptar", "Encriptar", "Exportar", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>-->
+                    <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "active" : "")">
+                        @Html.ActionLink("Configuración", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "CRUD" ? "active" : "")">
+                        @Html.ActionLink("CRUD", "Index", "CRUD", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Contact" ? "active" : "")">
+                        @Html.ActionLink("Salida", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    <li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="allbody">
+        @RenderBody()
+
+
+    </div>
+    <footer>
+        <div class="aviso">
+            &copy; @DateTime.Now.Year Proyectos y Sistemas Informáticos S.A. de C.V. Todos los Derechos Reservados.
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+
+    @*<script src="vendors/jquery-1.9.1.min.js"></script>*@
+    @*<script src="bootstrap/js/bootstrap.min.js"></script>
+         <script src="vendors/easypiechart/jquery.easy-pie-chart.js"></script>
+        <script src="assets/scripts.js"></script>*@
+
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/ajax")*@
+    @Scripts.Render("~/bundles/ajax")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
