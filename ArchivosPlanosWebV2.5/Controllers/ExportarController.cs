@@ -97,37 +97,42 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             else if (Plaza.Value.Length == 2)
             {
-                Plaza.Value = "0" + Plaza.Value;
-                if (Plaza.Value == "008") //Tlalpan
+                Plaza.Value = "1" + Plaza.Value;
+                if (Plaza.Value == "108") //Tlalpan
+                {
                     ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.168.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                    Plaza.Value = "008";
+                }
 
-            //    else if (Plaza.Value == "005") //Palmillas
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.23.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "007") //Emiliano Zapata
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.167.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //    else if (Plaza.Value == "027") //Chichimequillas
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.24.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "004") //La Venta
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.164.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //    else if (Plaza.Value == "006") //Querétaro
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.25.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "009") //Tres Marías
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.169.227)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //    else if (Plaza.Value == "061") //Libramiento
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.27.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "006") //Aeropuerto
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.166.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //    else if (Plaza.Value == "083") //Villagrán
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.28.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "005") //Xochitepec
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.165.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //    else if (Plaza.Value == "086") //Cerro Gordo
-            //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.29.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "001") //Alpuyeca
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.161.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //else if (Plaza.Value == "069") //Jorobas
-            //    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.21                                           .221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "084") //Francisco Velasco
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.184.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-            //else if (Plaza.Value == "041") //Salamanca
-            //    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.30.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                else if (Plaza.Value == "002") //Paso Morelos
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.162.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+
+                else if (Plaza.Value == "003") //Palo Blanco
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.163.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+
                 else
                     Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
-
-
             }
 
             DateTime FechaInicio = model.FechaInicio;
@@ -250,17 +255,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
 
-            //string query = string.Empty;
-            //query = @"SELECT idTramo,nomTramo FROM TYPE_TRAMO";
-            //query = @"SELECT ID_Delegacion, Nom_Delegacion FROM TYPE_TRAMO";
             List<SelectListItem> Items = new List<SelectListItem>();
-            //SqlCommand cmd = new SqlCommand(query, Connection);
-            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            //DataTable dataTable = new DataTable();
-            //sqlDataAdapter.Fill(dataTable);
-            //SelectListItem listItem = new SelectListItem();
-            //DataSet dataSet = new DataSet();
-            //dataSet.Tables.Add(dataTable);
 
             var propsdelega = typeof(Type_Delegacion).GetProperties();
             DataTable dataTable = new DataTable("Tabla_Deolegaciones");
@@ -281,7 +276,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     Items.Add(new SelectListItem
                     {
                         Text = "Coordinación Regional No. 6 Cuernavaca",
-                        Value = "01"
+                        Value = "06"
                     });
                     //items.add(new selectlistitem
                     //{
@@ -305,9 +300,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
-            //string query = string.Empty;
-            //query = @"SELECT idPlaza,nomPlaza FROM TYPE_PLAZA";
-            //query = @"SELECT ID_Plaza, Nom_Plaza FROM TYPE_PLAZA";
+
             List<SelectListItem> Items = new List<SelectListItem>();
             var propsplaza = typeof(Type_Plaza).GetProperties();
             DataTable dataTable = new DataTable("Tabla_Plazas");
@@ -318,13 +311,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             plazas.ToList().ForEach(
                 i => dataTable.Rows.Add(propsplaza.Select(p => p.GetValue(i, null)).ToArray())
                 );
-            //SqlCommand cmd = new SqlCommand(query, Connection);
-            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            //DataTable dataTable = new DataTable();
-            //sqlDataAdapter.Fill(dataTable);
-            //SelectListItem listItem = new SelectListItem();
-            //DataSet dataSet = new DataSet();
-            //dataSet.Tables.Add(dataTable);
+
 
             foreach (DataRow indi in dataTable.Rows)
             {
