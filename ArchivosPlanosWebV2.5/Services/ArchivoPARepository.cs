@@ -172,7 +172,7 @@ namespace ArchivosPlanosWebV2._5.Services
                             //"OR TRANSACTION.Id_Voie = '2' " +
                             "OR TRANSACTION.Id_Voie = '3' " +
                             "OR TRANSACTION.Id_Voie = '4' " +
-                            "OR TRANSACTION.Id_Voie = 'X') AND ID_VOIE <> 2" +
+                            "OR TRANSACTION.Id_Voie = 'X') AND ID_VOIE <> 2 " +
                             "ORDER BY DATE_TRANSACTION";
 
 
