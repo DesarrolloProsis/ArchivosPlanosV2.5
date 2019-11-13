@@ -270,25 +270,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             foreach (DataRow indi in dataTable.Rows)
             {
-                if (indi["Nom_Delegacion"].ToString() == "Coordinación Regional No. 6 Cuernavaca")
+                Items.Add(new SelectListItem
                 {
-
-                    Items.Add(new SelectListItem
-                    {
-                        Text = "Coordinación Regional No. 6 Cuernavaca",
-                        Value = "06"
-                    });
-                    //items.add(new selectlistitem
-                    //{
-                    //    text = "delegación iii queretaro",
-                    //    value = "03"
-                    //});
-
-                }
-
-
+                    Text = indi["Nom_Delegacion"].ToString(),
+                    Value = indi["Num_Delegacion"].ToString()
+                });
             }
-
             return Json(Items, JsonRequestBehavior.AllowGet);
 
         }
