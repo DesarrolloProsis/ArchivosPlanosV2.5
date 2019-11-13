@@ -94,7 +94,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     if (IdPlazaCobro.Length == 3)
                     {
-                        if (IdPlazaCobro == "108")
+                        if (IdPlazaCobro == "008")
                             Nombre_archivo = "0001";
                         else if (IdPlazaCobro == "109")
                             Nombre_archivo = "001B";
@@ -143,7 +143,7 @@ namespace ArchivosPlanosWebV2._5.Services
                     var NoPlaza = string.Empty;
                     if (IdPlazaCobro.Length == 3)
                     {
-                        if (IdPlazaCobro == "108")
+                        if (IdPlazaCobro == "008")
                             NoPlaza = "0001";
                         else if (IdPlazaCobro == "109")
                             NoPlaza = "001B";
