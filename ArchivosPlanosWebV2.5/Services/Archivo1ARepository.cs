@@ -742,10 +742,11 @@ namespace ArchivosPlanosWebV2._5.Services
                                     break;
                                 }
                             }
+
                             if (EncargadoPlaza != string.Empty)
-                            {
                                 break;
-                            }
+                            else
+                                EncargadoPlaza = indi[0].ToString();
                         }
                         //Str_detalle = Str_detalle + EncargadoPlaza + ",";
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
@@ -984,9 +985,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
                             }
                             if (EncargadoPlaza != string.Empty)
-                            {
                                 break;
-                            }
+                            else
+                                EncargadoPlaza = indi[0].ToString();
                         }
 
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
@@ -1137,9 +1138,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                         }
                                     }
                                     if (EncargadoPlaza != string.Empty)
-                                    {
                                         break;
-                                    }
+                                    else
+                                        EncargadoPlaza = indi[0].ToString();
                                 }
                                 //No. empleado C-R 	Entero 	>>>>>9	
                                 Str_detalle = Str_detalle + EncargadoTurno + ",";
