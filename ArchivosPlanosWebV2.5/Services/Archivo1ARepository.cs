@@ -738,7 +738,7 @@ namespace ArchivosPlanosWebV2._5.Services
                             {
                                 if (SQLEncargado.Num_Gea == indi[0].ToString())
                                 {
-                                    EncargadoPlaza = indi[0].ToString();
+                                    EncargadoPlaza = SQLEncargado.Num_Capufe;
                                     break;
                                 }
                             }
@@ -979,7 +979,7 @@ namespace ArchivosPlanosWebV2._5.Services
                             {
                                 if (SQLEncargado.Num_Gea == indi[0].ToString())
                                 {
-                                    EncargadoPlaza = indi[0].ToString();
+                                    EncargadoPlaza = SQLEncargado.Num_Capufe;
                                     break;
                                 }
                             }
@@ -1132,7 +1132,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     {
                                         if (SQLEncargado.Num_Gea == indi[0].ToString())
                                         {
-                                            EncargadoPlaza = indi[0].ToString();
+                                            EncargadoPlaza = SQLEncargado.Num_Capufe;
                                             break;
                                         }
                                     }
