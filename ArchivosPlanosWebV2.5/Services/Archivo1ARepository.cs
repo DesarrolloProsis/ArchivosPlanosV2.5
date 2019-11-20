@@ -725,52 +725,26 @@ namespace ArchivosPlanosWebV2._5.Services
                             Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoPlaza + ",";
                         }
 
-                        //AÑADIR EL ENCARGADO DE PLAZA Y LA BOLSA
-                        //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea LIKE '1%'";
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea LIKE '1%'";
-
-                        using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                        {
-                            //Cmd.Parameters.Add(new SqlParameter("numGea", "encargado_plaza"));
-                            try
-                            {
-                                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
-                                sqlDataAdapter.Fill(dataSet, "ENCARGADO_PLAZA");
-                                if (dataSet.Tables["ENCARGADO_PLAZA"].Rows.Count != 0)
-                                {
-                                    foreach (DataRow item1 in dataSet.Tables["ENCARGADO_PLAZA"].Rows)
-                                    {
-                                        EncargadoPlaza = item1[0].ToString();
-                                    }
-                                }
-                                else
-                                {
-                                    EncargadoPlaza = string.Empty;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Message = ex.Message + " " + ex.StackTrace;
-                            }
-                            finally
-                            {
-                                dataSet.Clear();
-                                Cmd.Dispose();
-                            }
-                        }
-
-                        //Modificacion para los encargados de plaza se traen de la base de oracle 
                         Query = "Select MAT_ADMIN From PTM_LASS ";
 
                         MtGlb.QueryDataSet2(Query, "PRUEBA", ConexionDim);
                         foreach (DataRow indi in MtGlb.Ds2.Tables["PRUEBA"].Rows)
                         {
-                            EncargadoPlaza = indi[0].ToString();
-                            break;
-                        }
-                        if (EncargadoPlaza == string.Empty)
-                        {
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            var EncargadosPlazaSQL = db.Type_Operadores.Where(x => x.Num_Gea.StartsWith("1") && x.Plaza_Id == Id_PlazaSQL).ToList();
+                            foreach (var SQLEncargado in EncargadosPlazaSQL)
+                            {
+                                if (SQLEncargado.Num_Gea == indi[0].ToString())
+                                {
+                                    EncargadoPlaza = SQLEncargado.Num_Capufe;
+                                    break;
+                                }
+                            }
 
+                            if (EncargadoPlaza != string.Empty)
+                                break;
+                            else
+                                EncargadoPlaza = indi[0].ToString();
                         }
                         //Str_detalle = Str_detalle + EncargadoPlaza + ",";
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
@@ -993,48 +967,27 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
 
                         //No. empleado Admón. Gral. 	Entero 	>>>>>9 	
-                        //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea LIKE '1%'";
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea LIKE '1%'";
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea LIKE '1%'";
-
-                        using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                        {
-                            //Cmd.Parameters.Add(new SqlParameter("numGea", "encargado_plaza"));
-                            try
-                            {
-                                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
-                                sqlDataAdapter.Fill(dataSet, "ENCARGADO_PLAZA");
-                                if (dataSet.Tables["ENCARGADO_PLAZA"].Rows.Count != 0)
-                                {
-                                    foreach (DataRow item1 in dataSet.Tables["ENCARGADO_PLAZA"].Rows)
-                                    {
-                                        EncargadoPlaza = item1[0].ToString();
-                                    }
-                                }
-                                else
-                                {
-                                    EncargadoPlaza = string.Empty;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Message = ex.Message + " " + ex.StackTrace;
-                            }
-                            finally
-                            {
-                                dataSet.Clear();
-                                Cmd.Dispose();
-                            }
-                        }
                         Query = "Select MAT_ADMIN From PTM_LASS ";
 
                         MtGlb.QueryDataSet2(Query, "PRUEBA", ConexionDim);
                         foreach (DataRow indi in MtGlb.Ds2.Tables["PRUEBA"].Rows)
                         {
-                            EncargadoPlaza = indi[0].ToString();
-                            break;
-                        }
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            var EncargadosPlazaSQL = db.Type_Operadores.Where(x => x.Num_Gea.StartsWith("1") && x.Plaza_Id == Id_PlazaSQL).ToList();
+                            foreach (var SQLEncargado in EncargadosPlazaSQL)
+                            {
+                                if (SQLEncargado.Num_Gea == indi[0].ToString())
+                                {
+                                    EncargadoPlaza = SQLEncargado.Num_Capufe;
+                                    break;
+                                }
+                            }
 
+                            if (EncargadoPlaza != string.Empty)
+                                break;
+                            else
+                                EncargadoPlaza = indi[0].ToString();
+                        }
 
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
 
@@ -1166,47 +1119,26 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
 
                                 //BUSCAR EL ENCARGADO DE PLAZA
-
-                                //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea LIKE '1%'";
-                                Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea LIKE '1%'";
-
-                                using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                                {
-                                    // Cmd.Parameters.Add(new SqlParameter("numGea", "encargado_plaza"));
-                                    try
-                                    {
-                                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
-                                        sqlDataAdapter.Fill(dataSet, "ENCARGADO_PLAZA");
-                                        if (dataSet.Tables["ENCARGADO_PLAZA"].Rows.Count != 0)
-                                        {
-                                            foreach (DataRow item in dataSet.Tables["ENCARGADO_PLAZA"].Rows)
-                                            {
-                                                EncargadoPlaza = item[0].ToString();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            EncargadoPlaza = string.Empty;
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Message = ex.Message + " " + ex.StackTrace;
-                                    }
-                                    finally
-                                    {
-                                        dataSet.Clear();
-                                        Cmd.Dispose();
-                                    }
-                                }
-                                //Modificacion para los encargados de plaza se traen de la base de oracle 
                                 Query = "Select MAT_ADMIN From PTM_LASS ";
 
                                 MtGlb.QueryDataSet2(Query, "PRUEBA", ConexionDim);
                                 foreach (DataRow indi in MtGlb.Ds2.Tables["PRUEBA"].Rows)
                                 {
-                                    EncargadoPlaza = indi[0].ToString();
-                                    break;
+                                    int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                                    var EncargadosPlazaSQL = db.Type_Operadores.Where(x => x.Num_Gea.StartsWith("1") && x.Plaza_Id == Id_PlazaSQL).ToList();
+                                    foreach (var SQLEncargado in EncargadosPlazaSQL)
+                                    {
+                                        if (SQLEncargado.Num_Gea == indi[0].ToString())
+                                        {
+                                            EncargadoPlaza = SQLEncargado.Num_Capufe;
+                                            break;
+                                        }
+                                    }
+
+                                    if (EncargadoPlaza != string.Empty)
+                                        break;
+                                    else
+                                        EncargadoPlaza = indi[0].ToString();
                                 }
                                 //No. empleado C-R 	Entero 	>>>>>9	
                                 Str_detalle = Str_detalle + EncargadoTurno + ",";
