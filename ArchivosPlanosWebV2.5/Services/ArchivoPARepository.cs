@@ -618,8 +618,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                 strCodigoVhPagoMarcado = "RP3" + ",";
                             else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                 strCodigoVhPagoMarcado = "RP4" + ",";
-                            else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                strCodigoVhPagoMarcado = "RPA" + ",";
+                            else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) // Tres Marías: RPA -> RSP
+                                strCodigoVhPagoMarcado = "RSP" + ",";
                             else
                                 strCodigoVhPagoMarcado = ",";
 
@@ -1443,8 +1443,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                     strCodigoVhPagoMarcado = "RP3" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                     strCodigoVhPagoMarcado = "RP4" + ",";
-                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                    strCodigoVhPagoMarcado = "RPA" + ",";
+                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) // Tres Marías: RPA -> RSP
+                                    strCodigoVhPagoMarcado = "RSP" + ",";
                                 else
                                     strCodigoVhPagoMarcado = ",";
 
