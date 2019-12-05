@@ -223,9 +223,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             foreach (DataRow value in dataRows)
                             {
-                                //NumCarril = value["numCarril"].ToString();
-                                //NumTramo = value["numTramo"].ToString();
-                                //NumPlaza = value["idPlaza"].ToString();
+
                                 NumCarril = value["Num_Capufe"].ToString();
                                 NumTramo = value["Num_Tramo"].ToString();
                                 NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -235,9 +233,14 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             if (dataRows.Count() != 0)
                             {
+                                if (IdPlazaCobro.Substring(1, 2) == "02")
+                                    NumTramo = "249";
+
+                                else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                    NumTramo = "247";
+                                
                                 Str_detalle = Str_detalle + NumTramo + ",";
                                 Str_detalle = Str_detalle + NumCarril + ",";
-
                             }
                             else
                             {
@@ -443,9 +446,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 foreach (DataRow value in dataRows)
                                 {
-                                    //NumCarril = value["numCarril"].ToString();
-                                    //NumTramo = value["numTramo"].ToString();
-                                    //NumPlaza = value["idPlaza"].ToString();
                                     NumCarril = value["Num_Capufe"].ToString();
                                     NumTramo = value["Num_Tramo"].ToString();
                                     NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -455,6 +455,11 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 if (dataRows.Count() != 0)
                                 {
+                                    if (IdPlazaCobro.Substring(1, 2) == "02")
+                                        NumTramo = "249";
+
+                                    else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                        NumTramo = "247";
                                     Str_detalle = Str_detalle + NumTramo + ",";
                                     Str_detalle = Str_detalle + NumCarril + ",";
 

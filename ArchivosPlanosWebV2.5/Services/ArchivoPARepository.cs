@@ -266,9 +266,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             foreach (DataRow value in dataRows)
                             {
-                                //NumCarril = value["numCarril"].ToString();
-                                //NumTramo = value["numTramo"].ToString();
-                                //NumPlaza = value["idPlaza"].ToString();
                                 NumCarril = value["Num_Capufe"].ToString();
                                 NumTramo = value["Num_Tramo"].ToString();
                                 NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -277,6 +274,16 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             if (dataRows.Count() != 0)
                             {
+                                if (IdPlazaCobro.Substring(1, 2) == "02")
+                                {
+                                    if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && (NumCarril == "1803" || NumCarril == "1810"))
+                                        NumTramo = "261";
+                                }
+                                else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                {
+                                    if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && Convert.ToString(item["Voie"]).Substring(0, 1).Trim() == "A")
+                                        NumTramo = "340";
+                                }
                                 Str_detalle = Str_detalle + NumTramo + ",";
                                 Str_detalle = Str_detalle + NumCarril + ",";
                             }
@@ -1088,9 +1095,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 foreach (DataRow value in dataRows)
                                 {
-                                    //NumCarril = value["numCarril"].ToString();
-                                    //NumTramo = value["numTramo"].ToString();
-                                    //NumPlaza = value["idPlaza"].ToString();
                                     NumCarril = value["Num_Capufe"].ToString();
                                     NumTramo = value["Num_Tramo"].ToString();
                                     NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -1099,6 +1103,16 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 if (dataRows.Count() != 0)
                                 {
+                                    if (IdPlazaCobro.Substring(1, 2) == "02")
+                                    {
+                                        if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && (NumCarril == "1803" || NumCarril == "1810"))
+                                            NumTramo = "261";
+                                    }
+                                    else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                    {
+                                        if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && Convert.ToString(MtGlb.oDataRow3["Voie"]).Substring(0, 1).Trim() == "A")
+                                            NumTramo = "340";
+                                    }
                                     Str_detalle = Str_detalle + NumTramo + ",";
                                     Str_detalle = Str_detalle + NumCarril + ",";
                                 }

@@ -1372,9 +1372,20 @@ namespace ArchivosPlanosWebV2._5.Services
 
                         if (dataRows.Count() != 0)
                         {
+                            if (IdPlazaCobro.Substring(1, 2) == "02" && (NumCarril == "1803" || NumCarril == "1810"))
+                            {
+                                Str_detalle_tc += "261,";
+                                Str_detalle_tc += NumCarril + ",";
+                                NumTramo = "249";
+                            }
+                            else if (IdPlazaCobro.Substring(1, 2) == "86" && VAR_08.Substring(0, 1).Trim() == "A")
+                            {
+                                Str_detalle_tc += "340,";
+                                Str_detalle_tc += NumCarril + ",";
+                                NumTramo = "247";
+                            }
                             Str_detalle = Str_detalle + NumTramo + ",";
                             Str_detalle = Str_detalle + NumCarril + ",";
-
                         }
                         else
                         {

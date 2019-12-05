@@ -490,6 +490,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     foreach (DataRow item in MtGlb.Ds.Tables["FIN_POSTE"].Rows)
                     {
+                        bool repetir;
                         Str_detalle = string.Empty;
                         Str_detalle_tc = string.Empty;
 
@@ -523,12 +524,23 @@ namespace ArchivosPlanosWebV2._5.Services
                             NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
 
                         }
-                        
+
                         /*************************************************/
 
                         if (dataRows.Count() != 0)
                         {
-                            
+                            if (IdPlazaCobro.Substring(1, 2) == "02" && (NumCarril == "1803" || NumCarril == "1810"))
+                            {
+                                Str_detalle_tc += "261,";
+                                Str_detalle_tc += NumCarril + ",";
+                                NumTramo = "249";
+                            }
+                            else if (IdPlazaCobro.Substring(1, 2) == "86" && Convert.ToString(item["Voie"]).Substring(0, 1).Trim() == "A")
+                            {
+                                Str_detalle_tc += "340,";
+                                Str_detalle_tc += NumCarril + ",";
+                                NumTramo = "247";
+                            }
                             Str_detalle = Str_detalle + NumTramo + ",";
                             Str_detalle = Str_detalle + NumCarril + ",";
                         }
@@ -641,6 +653,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         else
                         {
                             Str_detalle = Str_detalle + "Pendiente,";
+                            Str_detalle_tc += "Pendiente,";
                             Str_encargado = "Pendiente,";
                         }
 
@@ -759,6 +772,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         Str_detalle = Str_detalle + strSac + ",";
                         Str_detalle_tc = Str_detalle_tc + strSac + ",";
                         Str_detalle = Str_detalle.Replace("X", "N");
+                        Str_detalle_tc = Str_detalle_tc.Replace("X", "N");
 
                         Osw.WriteLine(Str_detalle);
                         Osw2.WriteLine(Str_detalle);
