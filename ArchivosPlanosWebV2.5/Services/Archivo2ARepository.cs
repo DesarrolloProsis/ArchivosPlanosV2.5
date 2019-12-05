@@ -1378,7 +1378,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 Str_detalle_tc += NumCarril + ",";
                                 NumTramo = "249";
                             }
-                            else if (IdPlazaCobro.Substring(1, 2) == "86" && VAR_08.Substring(0, 1).Trim() == "A")
+                            else if (IdPlazaCobro.Substring(1, 2) == "84" && VAR_08.Substring(0, 1).Trim() == "A")
                             {
                                 Str_detalle_tc += "340,";
                                 Str_detalle_tc += NumCarril + ",";

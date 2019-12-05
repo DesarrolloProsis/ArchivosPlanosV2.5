@@ -249,7 +249,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                         if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && (NumCarril == "1803" || NumCarril == "1810"))
                                             NumTramo = "261";
                                     }
-                                    else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                    else if (IdPlazaCobro.Substring(1, 2) == "84")
                                     {
                                         if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && Convert.ToString(item["Voie"]).Substring(0, 1).Trim() == "A")
                                             NumTramo = "340";
@@ -615,7 +615,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                             if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && (NumCarril == "1803" || NumCarril == "1810"))
                                                 NumTramo = "261";
                                         }
-                                        else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                        else if (IdPlazaCobro.Substring(1, 2) == "84")
                                         {
                                             if (Convert.ToInt32(item["ID_PAIEMENT"]) == 2 && Convert.ToString(MtGlb.oDataRow3["Voie"]).Substring(0, 1).Trim() == "A")
                                                 NumTramo = "340";

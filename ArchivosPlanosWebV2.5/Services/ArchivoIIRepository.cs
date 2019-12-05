@@ -236,7 +236,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 if (IdPlazaCobro.Substring(1, 2) == "02")
                                     NumTramo = "249";
 
-                                else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                else if (IdPlazaCobro.Substring(1, 2) == "84")
                                     NumTramo = "247";
                                 
                                 Str_detalle = Str_detalle + NumTramo + ",";
@@ -458,7 +458,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     if (IdPlazaCobro.Substring(1, 2) == "02")
                                         NumTramo = "249";
 
-                                    else if (IdPlazaCobro.Substring(1, 2) == "86")
+                                    else if (IdPlazaCobro.Substring(1, 2) == "84")
                                         NumTramo = "247";
                                     Str_detalle = Str_detalle + NumTramo + ",";
                                     Str_detalle = Str_detalle + NumCarril + ",";
