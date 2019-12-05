@@ -147,9 +147,9 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 using (OracleDataAdapter Da = new OracleDataAdapter(Cmd))
                 {
-                    Da.Fill(Ds, Column);
                     try
                     {
+                        Da.Fill(Ds, Column);
                         if (Ds.Tables[Column].Rows.Count > 0)
                         {
                             _return = true;
@@ -190,9 +190,9 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 using (OracleDataAdapter Da = new OracleDataAdapter(Cmd))
                 {
-                    Da.Fill(Ds1, Column);
                     try
                     {
+                        Da.Fill(Ds1, Column);
                         if (Ds1.Tables[Column].Rows.Count > 0)
                         {
                             _return = true;
@@ -233,9 +233,9 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 using (OracleDataAdapter Da = new OracleDataAdapter(Cmd))
                 {
-                    Da.Fill(Ds2, Column);
                     try
                     {
+                        Da.Fill(Ds2, Column);
                         if (Ds2.Tables[Column].Rows.Count > 0)
                         {
                             _return = true;
@@ -275,9 +275,9 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 using (OracleDataAdapter Da = new OracleDataAdapter(Cmd))
                 {
-                    Da.Fill(Ds3, Column);
                     try
                     {
+                        Da.Fill(Ds3, Column);
                         if (Ds3.Tables[Column].Rows.Count > 0)
                         {
                             _return = true;
@@ -318,9 +318,9 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 using (OracleDataAdapter Da = new OracleDataAdapter(Cmd))
                 {
-                    Da.Fill(Ds4, Column);
                     try
                     {
+                        Da.Fill(Ds4, Column);
                         if (Ds4.Tables[Column].Rows.Count > 0)
                         {
                             _return = true;
