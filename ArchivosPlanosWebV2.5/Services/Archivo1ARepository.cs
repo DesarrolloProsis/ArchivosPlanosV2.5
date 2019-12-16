@@ -702,7 +702,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 if (EncargadoTurno != string.Empty)
                                 {
                                     Str_detalle = Str_detalle + EncargadoTurno + ",";
-                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoPlaza + ",";
+                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + ",";
                                 }
                                 else
                                 {
@@ -716,7 +716,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 if (EncargadoTurno != string.Empty)
                                 {
                                     Str_detalle = Str_detalle + EncargadoTurno + "," + EncargadoTurno + ",";
-                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoPlaza + ",";
+                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoTurno + ",";
                                 }
                                 else
                                 {
@@ -735,7 +735,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         else
                         {
                             Str_detalle = Str_detalle + Encargado + "," + EncargadoTurno + ",";
-                            Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoPlaza + ",";
+                            Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoTurno + ",";
                         }
 
                         //AÑADIR EL ENCARGADO DE PLAZA Y LA BOLSA

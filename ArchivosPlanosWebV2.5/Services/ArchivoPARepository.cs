@@ -169,10 +169,10 @@ namespace ArchivosPlanosWebV2._5.Services
                             "(DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
                             " AND  ID_PAIEMENT  <> 0 " +
                             "AND (TRANSACTION.Id_Voie = '1' " +
-                            //"OR TRANSACTION.Id_Voie = '2' " +
+                            "OR TRANSACTION.Id_Voie = '2' " +
                             "OR TRANSACTION.Id_Voie = '3' " +
                             "OR TRANSACTION.Id_Voie = '4' " +
-                            "OR TRANSACTION.Id_Voie = 'X') AND ID_VOIE <> 2 " +
+                            "OR TRANSACTION.Id_Voie = 'X') " +
                             "ORDER BY DATE_TRANSACTION";
 
 
