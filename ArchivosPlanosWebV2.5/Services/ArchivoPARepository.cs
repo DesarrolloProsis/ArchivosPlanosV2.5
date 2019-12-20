@@ -244,8 +244,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
                     {
-                        if (item["ID_VOIE"].ToString() == "2")
-                            continue;
 
                         Str_detalle = string.Empty;
 
