@@ -542,6 +542,17 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                     Str_detalle = Str_detalle + Convert.ToDateTime(item["DATE_TRANSACTION"]).ToString("dd/MM/yyyy") + ",";
                                 }
+                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
+                                {
+                                    Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
+
+                                    Tag_iag = Tag_iag.Substring(0, 12).Trim();
+                                    Str_detalle = Str_detalle + Tag_iag + ",";
+                                    Str_detalle = Str_detalle + ",";
+
+                                    Str_detalle = Str_detalle + ",";
+                                    Str_detalle = Str_detalle + ",";
+                                }
                                 else
                                 {
                                     Str_detalle = Str_detalle + MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", "") + ",";
@@ -905,6 +916,17 @@ namespace ArchivosPlanosWebV2._5.Services
                                             Str_detalle = Str_detalle + "0,";
 
                                         Str_detalle = Str_detalle + Convert.ToDateTime(MtGlb.oDataRow3["DATE_TRANSACTION"]).ToString("dd/MM/yyyy") + ",";
+                                    }
+                                    else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
+                                    {
+                                        Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
+                                        Tag_iag = Tag_iag.Substring(0, 12).Trim();
+
+                                        Str_detalle = Str_detalle + Tag_iag + ",";
+                                        Str_detalle = Str_detalle + ",";
+
+                                        Str_detalle = Str_detalle + ",";
+                                        Str_detalle = Str_detalle + ",";
                                     }
                                     else
                                     {
