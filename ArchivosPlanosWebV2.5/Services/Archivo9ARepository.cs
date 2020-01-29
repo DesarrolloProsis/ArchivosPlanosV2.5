@@ -545,9 +545,13 @@ namespace ArchivosPlanosWebV2._5.Services
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
                                 {
                                     Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
-                                    if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
-                                        Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
-                                    Tag_iag = Tag_iag.Substring(0, 12).Trim();
+                                    if (Tag_iag != string.Empty)
+                                    {
+                                        Tag_iag = Tag_iag.Substring(0, 16).Trim();
+                                        if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
+                                            Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
+                                        Tag_iag = Tag_iag.Substring(0, 12).Trim();
+                                    }
 
                                     Str_detalle = Str_detalle + Tag_iag + ",";
                                     Str_detalle = Str_detalle + ",";
@@ -921,9 +925,13 @@ namespace ArchivosPlanosWebV2._5.Services
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
                                     {
                                         Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
-                                        if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
-                                            Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
-                                        Tag_iag = Tag_iag.Substring(0, 12).Trim();
+                                        if (Tag_iag != string.Empty)
+                                        {
+                                            Tag_iag = Tag_iag.Substring(0, 16).Trim();
+                                            if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
+                                                Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
+                                            Tag_iag = Tag_iag.Substring(0, 12).Trim();
+                                        }
 
                                         Str_detalle = Str_detalle + Tag_iag + ",";
                                         Str_detalle = Str_detalle + ",";
