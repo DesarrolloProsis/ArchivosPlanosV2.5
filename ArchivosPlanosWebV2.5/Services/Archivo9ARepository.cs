@@ -557,7 +557,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Str_detalle = Str_detalle + Tag_iag + ",";
                                     Str_detalle = Str_detalle + ",";
                                     Str_detalle = Str_detalle + ",";
-                                    Str_detalle = Str_detalle + ",";
+                                    Str_detalle = Str_detalle + ",,";
                                 }
                                 else
                                 {
@@ -938,7 +938,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                         Str_detalle = Str_detalle + Tag_iag + ",";
                                         Str_detalle = Str_detalle + ",";
                                         Str_detalle = Str_detalle + ",";
-                                        Str_detalle = Str_detalle + ",";
+                                        Str_detalle = Str_detalle + ",,";
                                     }
                                     else
                                     {
