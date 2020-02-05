@@ -547,11 +547,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
                                     if (Tag_iag != string.Empty)
                                     {
-                                        Tag_iag = Tag_iag.Substring(0, 16).Trim();
+                                        Tag_iag = Tag_iag.Substring(0, 13).Trim();
                                         if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                             Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
-                                        else
-                                            Tag_iag = Tag_iag.Substring(0, 12).Trim();
                                     }
 
                                     Str_detalle = Str_detalle + Tag_iag + ",";
@@ -928,11 +926,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                         Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
                                         if (Tag_iag != string.Empty)
                                         {
-                                            Tag_iag = Tag_iag.Substring(0, 16).Trim();
+                                            Tag_iag = Tag_iag.Substring(0, 13).Trim();
                                             if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                                 Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
-                                            else
-                                                Tag_iag = Tag_iag.Substring(0, 12).Trim();
                                         }
 
                                         Str_detalle = Str_detalle + Tag_iag + ",";
