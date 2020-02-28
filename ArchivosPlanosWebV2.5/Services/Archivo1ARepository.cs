@@ -1312,7 +1312,7 @@ namespace ArchivosPlanosWebV2._5.Services
                     }
                     else if (diferencia > Convert.ToInt32(item.Hora_Fin.ToString("HHmmss")) - Convert.ToInt32(Hora_Fin.ToString("HHmmss")))
                     {
-                        diferencia = Convert.ToInt32(item.Hora_Fin) - Convert.ToInt32(Convert.ToDateTime(Hora_Fin).ToString("HHmmss"));
+                        diferencia = Convert.ToInt32(item.Hora_Fin.ToString("HHmmss")) - Convert.ToInt32(Hora_Fin.ToString("HHmmss"));
                         item.Hora_Inicio = Hora_Fin;
                     }
                     Error = item;
