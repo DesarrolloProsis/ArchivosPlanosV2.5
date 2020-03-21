@@ -255,7 +255,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             Validar = true;
                             Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString().Trim() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().TrimStart());
 
-                            Tag_iag = Tag_iag.Substring(0, 14).Trim();
+                            if (Tag_iag.Length != 8) //Tag 00000000
+                                Tag_iag = Tag_iag.Substring(0, 14).Trim();
 
                             if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                 Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
@@ -474,7 +475,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                 Validar = true;
                                 Tag_iag = MtGlb.IIf(MtGlb.oDataRow3["CONTENU_ISO"].ToString().Trim() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", MtGlb.oDataRow3["CONTENU_ISO"].ToString().TrimStart());
 
-                                Tag_iag = Tag_iag.Substring(0, 14).Trim();
+                                if (Tag_iag.Length != 8) //Tag 00000000
+                                    Tag_iag = Tag_iag.Substring(0, 14).Trim();
 
                                 if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                     Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
