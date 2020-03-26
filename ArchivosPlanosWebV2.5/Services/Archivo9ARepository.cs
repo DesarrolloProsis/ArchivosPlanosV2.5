@@ -512,8 +512,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                 {
                                     Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
 
-                                    //IMDM22879778            ISOB0000       
-                                    Tag_iag = Tag_iag.Substring(0, 16).Trim();
+                                    //IMDM22879778            ISOB0000 
+                                    if (Tag_iag.Length != 8) //Tag 00000000      
+                                        Tag_iag = Tag_iag.Substring(0, 16).Trim();
 
                                     if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                         Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
@@ -876,7 +877,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                         //Salto de proceso por variable null 
                                         if (Tag_iag != "")
                                         {
-                                            Tag_iag = Tag_iag.Substring(0, 14).Trim();
+                                            if (Tag_iag.Length != 8) //Tag 00000000      
+                                                Tag_iag = Tag_iag.Substring(0, 14).Trim();
 
                                             if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
                                                 Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
