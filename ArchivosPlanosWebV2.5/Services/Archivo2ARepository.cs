@@ -1801,6 +1801,9 @@ namespace ArchivosPlanosWebV2._5.Services
                 {
                     foreach (DataRow item4 in MtGlb.Ds4.Tables["SEQ_VOIE_TOD"].Rows)
                     {
+                        if(Convert.ToString(item4["VOIE"]).Trim().Length < 3){
+                            continue;
+                        }
                         StrQuerys = "SELECT	* FROM 	FIN_POSTE " +
                                     "WHERE VOIE = '" + item4["VOIE"] + "' " +
                                     "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
