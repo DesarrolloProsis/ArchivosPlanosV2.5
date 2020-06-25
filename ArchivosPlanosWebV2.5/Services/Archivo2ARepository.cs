@@ -1943,7 +1943,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 else NewCabecera = NewCabecera + "0" + IdPlazaCobro;
                             }
 
-                            NewCabecera = NewCabecera + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + "." + Int_turno + "1" + StrIdentificador + FechaInicio.ToString("dd/MM/yyyy") + Int_turno;
+                            NewCabecera = NewCabecera + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + "." + Int_turno + "2" + StrIdentificador + FechaInicio.ToString("dd/MM/yyyy") + Int_turno;
 
                             if (Convert.ToString(Dbl_registros).Length == 1)
                                 No_registros = "0000" + Dbl_registros;
