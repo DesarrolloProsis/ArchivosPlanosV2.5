@@ -1215,8 +1215,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             else if (Convert.ToString(Dbl_registros).Length == 5)
                                 No_registros = Dbl_registros.ToString();
 
-                            Cabecera = Cabecera + No_registros;
-                            Nsw.WriteLine(Cabecera);
+                            NewCabecera += No_registros;
+                            Nsw.WriteLine(NewCabecera);
                         }
                         else
                         {
