@@ -51,7 +51,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
             return Conexion;
         }
-
         /// <summary>
         /// Lee archivo .ini.
         /// </summary>
