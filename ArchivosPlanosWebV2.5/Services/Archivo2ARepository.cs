@@ -1,9 +1,9 @@
 ﻿using ArchivosPlanosWebV2._5.Models;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.OracleClient;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;

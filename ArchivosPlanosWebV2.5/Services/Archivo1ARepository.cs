@@ -1,5 +1,4 @@
 ﻿using ArchivosPlanosWebV2._5.Models;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ArchivosPlanosWebV2._5.Controllers;
+using System.Data.OracleClient;
 
 namespace ArchivosPlanosWebV2._5.Services
 {
