@@ -373,7 +373,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     if (ip.AddressFamily.ToString() == "InterNetwork")
                     {
-                        if(kvp.Value.ToString() == ip.ToString())
+                        if(kvp.Value.ToString() == ip.ToString() && kvp.Key.ToString().Substring(1,2) == numPlaza)
                         {
                             return true;
                         }
