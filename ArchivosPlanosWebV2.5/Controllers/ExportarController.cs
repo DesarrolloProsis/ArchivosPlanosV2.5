@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -325,11 +326,15 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     numpla = "1" + indi["Num_Plaza"].ToString();
                 else
                     numpla = indi["Num_Plaza"].ToString();
-                Items.Add(new SelectListItem
+
+                if (ValidarPlazaLocal(indi["Num_Plaza"].ToString()))
                 {
-                    Text = numpla + " " + indi["Nom_Plaza"].ToString(),
-                    Value = indi["Num_Plaza"].ToString()
-                });
+                    Items.Add(new SelectListItem
+                    {
+                        Text = numpla + " " + indi["Nom_Plaza"].ToString(),
+                        Value = indi["Num_Plaza"].ToString()
+                    });
+                }
             }
 
             //Items.Add(new SelectListItem
@@ -341,6 +346,42 @@ namespace ArchivosPlanosWebV2._5.Controllers
             return Json(Items, JsonRequestBehavior.AllowGet);
 
 
+        }
+
+        private bool ValidarPlazaLocal(string numPlaza)
+        {
+            var listaPlazaIp = new Dictionary<string, IPAddress>()
+            {                
+                { "004",  IPAddress.Parse("10.1.1.228") },//LocalDesarrollo
+                { "005",  IPAddress.Parse("10.3.23.111") },
+                { "006",  IPAddress.Parse("10.3.25.111") },
+                { "041",  IPAddress.Parse("10.3.30.111") },
+                { "061",  IPAddress.Parse("10.3.27.111") },
+                { "069",  IPAddress.Parse("10.3.21.111") },
+                { "070",  IPAddress.Parse("10.3.22.111") },
+                { "127",  IPAddress.Parse("10.3.24.111") },
+                { "183",  IPAddress.Parse("10.3.28.111") },
+                { "186",  IPAddress.Parse("10.3.29.111") }
+            };
+
+            IPHostEntry host;            
+            host = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (KeyValuePair<string, IPAddress> kvp in listaPlazaIp)
+            {
+                foreach (IPAddress ip in host.AddressList)
+                {
+                    if (ip.AddressFamily.ToString() == "InterNetwork")
+                    {
+                        if(kvp.Value.ToString() == ip.ToString())
+                        {
+                            return true;
+                        }
+                        
+                    }
+                }
+            }
+            return false;
         }
 
         //JSON RESULT PARA LLENAR CON AJAX LOS TURNO
@@ -412,8 +453,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             return View();
         }
-
-
 
         public ActionResult Descargar()
         {
