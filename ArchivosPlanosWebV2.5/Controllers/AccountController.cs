@@ -50,18 +50,14 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 _userManager = value;
             }
-        }
-
-        //
+        }        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
-        }
-
-        //
+        }        
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -89,9 +85,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
                     return View(model);
             }
-        }
-
-        //
+        }        
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
@@ -102,9 +96,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 return View("Error");
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        //
+        }        
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -133,16 +125,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     return View(model);
             }
         }
-
-        //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
-
-        //
+        
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
