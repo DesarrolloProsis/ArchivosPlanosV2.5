@@ -34,14 +34,29 @@ namespace ArchivosPlanosWebV2._5.Controllers
         public static string Nom2;
 
         public string ConexionDB = string.Empty;
-
-
-
+        
         // GET: Exportar
         [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            string turno = "";
+            DateTime time = DateTime.Now;
+            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day -1, 22, 0, 0);
+            DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+            DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+            if (time >= turno2)
+                turno = "1";
+            else if (time >= turno3)
+                turno = "2";
+            else if(time >= turno3_help)
+                turno = "3";
+            var model = new ControlesExportar
+            {
+                TurnoId = turno,
+                FechaInicio = DateTime.Now
+            };            
+            return View(model);
         }
 
         // POST : Exportar
@@ -77,8 +92,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             //{
             //    comprimir2.EliminarZip(Nom1, Nom2);
             //}
-
-
 
             var DataStrDele = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetDelegaciones().Data); // convert json object to string.
             model.ListDelegaciones = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrDele);
@@ -136,8 +149,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
 
             DateTime FechaInicio = model.FechaInicio;
-
-
             try
             {
                 //if (entra == true && comen.ToString() != null)
@@ -352,7 +363,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
-                { "004",  IPAddress.Parse("10.1.1.228") },//LocalDesarrollo
+                { "004",  IPAddress.Parse("172.23.240.1") },//LocalDesarrollo
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
                 { "041",  IPAddress.Parse("10.3.30.111") },
@@ -405,7 +416,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             Items.Add(new SelectListItem
             {
                 Text = "14:00 - 22:00",
-                Value = "3"
+                Value = "3",                
             });
 
             return Json(Items, JsonRequestBehavior.AllowGet);

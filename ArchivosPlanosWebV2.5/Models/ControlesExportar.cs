@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,7 +25,7 @@ namespace ArchivosPlanosWebV2._5.Models
         public string EncargadoTurno { get; set; }
 
         public DateTime FechaFin { get; set; }
-
+        
         public DateTime FechaInicio { get; set; }
 
         public List<HttpPostedFileBase> files { get; set; }
