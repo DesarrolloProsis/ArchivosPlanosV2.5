@@ -21,6 +21,40 @@
 
             $(".cargar").hide();
 
+            $("#FechaInicio").change(function () {                
+                var value = $("#FechaInicio").val()
+                var fElegida = new Date(Date.parse(value))
+
+                if (fElegida <= new Date()) {
+
+                    $('#TurnoId').empty()
+                    if (value == new Date().toISOString().split('T')[0])
+                        value = "null"               
+
+                    $.ajax({
+                        url: '@Url.Action("GetTurnos", "Exportar")' + '?fecha=' + value,
+                        type: "GET",
+                        cache: false,
+                        success: function (data) {
+                            $.each(data, function (i, row) {
+                                var $option = $('<option>');
+                                $option.val(row.Value);
+                                $option.html(row.Text);
+                                $('#TurnoId').append($option);
+                            });
+                        },
+                        error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+                }
+                else {
+                    var f = new Date().toISOString().split("T")[0]                    
+                    $("#FechaInicio").val(f)
+                    alert("Fecha Invalida")
+                }
+            });
+
             $("#top2").click(function () {
                 $("#top3").css("visibility", "visible");
             });
@@ -82,7 +116,7 @@
 
     function LoadTurnos() {
         $.ajax({
-            url: '@Url.Action("GetTurnos", "Exportar")',
+            url: '@Url.Action("GetTurnos", "Exportar",new { fecha = "null" })',
             type: "GET",
             cache: false,
             success: function (data) {
@@ -97,7 +131,7 @@
                 alert("Error!!!" + ex)
             },
         });
-        }
+    }
 
 
         //$("#top2").click(function () {

@@ -100,7 +100,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var DataStrPlaza = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetPlazaCobro().Data); // convert json object to string.
             model.ListPlazaCobro = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrPlaza);
 
-            var DataStrTurno = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetTurnos().Data); // convert json object to string.
+            var DataStrTurno = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetTurnos("full").Data); // convert json object to string.
             model.ListTurno = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrTurno);
 
             var Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
@@ -398,28 +398,87 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         //JSON RESULT PARA LLENAR CON AJAX LOS TURNO
         [HttpGet]
-        public JsonResult GetTurnos()
+        public JsonResult GetTurnos(string fecha)
         {
             List<SelectListItem> Items = new List<SelectListItem>();
-
-            Items.Add(new SelectListItem
+            DateTime time = new DateTime();                                    
+            if (fecha != "null")
             {
-                Text = "22:00 - 06:00",
-                Value = "1"
-            });
+                Items.Add(new SelectListItem
+                {
+                    Text = "22:00 - 06:00",
+                    Value = "1"
+                });
 
-            Items.Add(new SelectListItem
+                Items.Add(new SelectListItem
+                {
+                    Text = "06:00 - 14:00",
+                    Value = "2"
+                });
+
+                Items.Add(new SelectListItem
+                {
+                    Text = "14:00 - 22:00",
+                    Value = "3",
+                });
+                return Json(Items, JsonRequestBehavior.AllowGet);
+            }
+            else if (fecha == "null")
             {
-                Text = "06:00 - 14:00",
-                Value = "2"
-            });
+                time = DateTime.Now;
+            }
 
-            Items.Add(new SelectListItem
+
+
+
+                            
+            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+
+            if (time >= turno2)
             {
-                Text = "14:00 - 22:00",
-                Value = "3",                
-            });
+                Items.Add(new SelectListItem
+                {
+                    Text = "22:00 - 06:00",
+                    Value = "1"
+                });
+            }
+            else if (time >= turno3)
+            {
+                Items.Add(new SelectListItem
+                {
+                    Text = "22:00 - 06:00",
+                    Value = "1"
+                });
 
+                Items.Add(new SelectListItem
+                {
+                    Text = "06:00 - 14:00",
+                    Value = "2"
+                });
+            }
+            else if (time >= turno1.AddDays(1))
+            {
+
+                Items.Add(new SelectListItem
+                {
+                    Text = "22:00 - 06:00",
+                    Value = "1"
+                });
+
+                Items.Add(new SelectListItem
+                {
+                    Text = "06:00 - 14:00",
+                    Value = "2"
+                });
+
+                Items.Add(new SelectListItem
+                {
+                    Text = "14:00 - 22:00",
+                    Value = "3",
+                });
+            }
             return Json(Items, JsonRequestBehavior.AllowGet);
         }
 
