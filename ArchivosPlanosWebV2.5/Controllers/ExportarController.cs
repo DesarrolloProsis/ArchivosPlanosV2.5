@@ -254,7 +254,25 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 ViewBag.Titulo = "Error";
                 ViewBag.Mensaje = Message;
             }
-            return View();
+            string turno = "";
+            DateTime time = DateTime.Now;
+            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+            //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+            if (time >= turno2)
+                turno = "1";
+            else if (time >= turno3)
+                turno = "2";
+            else if (time >= turno1.AddDays(1))
+                turno = "3";
+
+            var mdl = new ControlesExportar
+            {
+                TurnoId = turno,
+                FechaInicio = DateTime.Now
+            };
+            return View(mdl);
         }
 
 

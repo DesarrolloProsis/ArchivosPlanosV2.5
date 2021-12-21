@@ -21,7 +21,7 @@
 
             $(".cargar").hide();
 
-            $("#FechaInicio").change(function () {                
+            $("#FechaInicio").change(function () {
                 var value = $("#FechaInicio").val()
                 var fElegida = new Date(Date.parse(value))
 
@@ -29,7 +29,7 @@
 
                     $('#TurnoId').empty()
                     if (value == new Date().toISOString().split('T')[0])
-                        value = "null"               
+                        value = "null"
 
                     $.ajax({
                         url: '@Url.Action("GetTurnos", "Exportar")' + '?fecha=' + value,
@@ -49,8 +49,25 @@
                     });
                 }
                 else {
-                    var f = new Date().toISOString().split("T")[0]                    
+                    var f = new Date().toISOString().split("T")[0]
                     $("#FechaInicio").val(f)
+                    $('#TurnoId').empty()
+                    $.ajax({
+                        url: '@Url.Action("GetTurnos", "Exportar")' + '?fecha=' + 'null',
+                        type: "GET",
+                        cache: false,
+                        success: function (data) {
+                            $.each(data, function (i, row) {
+                                var $option = $('<option>');
+                                $option.val(row.Value);
+                                $option.html(row.Text);
+                                $('#TurnoId').append($option);
+                            });
+                        },
+                        error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
                     alert("Fecha Invalida")
                 }
             });
@@ -235,7 +252,6 @@
                             type: "POST",
                             url: "/Exportar/Index",
                             data: { Comentario }
-
 
                         });
 
