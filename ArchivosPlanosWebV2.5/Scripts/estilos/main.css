@@ -3,8 +3,18 @@ body{
 	padding: 0;
 
 }
+.loading-screen{
+	background-color: rgba(25,25,25,0.5);
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 9999;
+	margin-top: 0;
+	top: 0;
+	text-align: center;
+}
 .cargar
-{
+{	
 	position: absolute;
 	top: 50%;
 	left: 50%;

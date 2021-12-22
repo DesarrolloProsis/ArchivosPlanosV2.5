@@ -131,6 +131,7 @@ C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\M
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\Microsoft.AspNet.Identity.EntityFramework.resources.dll
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.dll
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.pdb
+C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.CopyComplete
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\ApplicationInsights.config
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\ArchivosPlanosWebV2.5.dll.config
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\ArchivosPlanosWebV2.5.dll
@@ -260,8 +261,7 @@ C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\Microsoft.AspNet.Identity.Core.resources.dll
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\Microsoft.AspNet.Identity.Owin.resources.dll
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\Microsoft.AspNet.Identity.EntityFramework.resources.dll
-C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.AssemblyReference.cache
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.CoreCompileInputs.cache
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.dll
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.pdb
-C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.CopyComplete
+C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.AssemblyReference.cache

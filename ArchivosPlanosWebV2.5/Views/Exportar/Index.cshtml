@@ -19,7 +19,7 @@
         $(document).ready(function () {
             $('#TurnoId').val("2");
 
-            $(".cargar").hide();
+            $(".loading-screen").hide();
 
             $("#FechaInicio").change(function () {
                 var value = $("#FechaInicio").val()
@@ -73,6 +73,7 @@
             });
 
             $("#top2").click(function () {
+                $(".loading-screen").show();
                 $("#top3").css("visibility", "visible");
             });
 
@@ -201,7 +202,7 @@
 
                         @Html.Label("Fecha de inicio", htmlAttributes: new { @class = "titulos" })
                         @Html.EditorFor(x => x.FechaInicio)
-                        @*@Html.EditorFor(x => x.FechaInicio)*@                        
+                        @*@Html.EditorFor(x => x.FechaInicio)*@
                         @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "datepicker", @Value = Model.FechaInicio.ToString("yyyy/MM/dd") } })*@
                     </div>
                 </div>
@@ -215,14 +216,17 @@
             </div>
 
         </div>
-
-        <div class="cargar">
-            <span class="loader"></span>
-            <span class="loader"></span>
-            <span class="loader"></span>
-            <span class="loader"></span>
+        
+        <div class="loading-screen">
+            <div class="cargar">
+                <span class="loader"></span>
+                <span class="loader"></span>
+                <span class="loader"></span>
+                <span class="loader"></span>
+            </div>
         </div>
-
+            
+       
     }
 
 
@@ -286,7 +290,7 @@
             </div>
         </div>
     </div>
-    
+
     @if (ViewBag.Mensaje != null)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
