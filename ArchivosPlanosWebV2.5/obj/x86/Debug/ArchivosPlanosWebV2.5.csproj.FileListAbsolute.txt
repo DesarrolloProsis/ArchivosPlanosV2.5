@@ -264,4 +264,3 @@ C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x8
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.CoreCompileInputs.cache
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.dll
 C:\Users\Daniel Diaz Hdz\Desktop\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.pdb
-C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\x86\Debug\ArchivosPlanosWebV2.5.csproj.CopyComplete

@@ -35,6 +35,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public string ConexionDB = string.Empty;
         
+        //GET: EXPORTAR AUTOMATICO
+        [HttpGet]
+        public ActionResult IndexAutomatico()
+        {
+            return View();
+        }
+
         // GET: Exportar
         [HttpGet]
         public ActionResult Index()
@@ -70,8 +77,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 entra = false;
             }
-
-
             ValidacionesRepository validaciones = new ValidacionesRepository();
             Archivo2ARepository archivo2A = new Archivo2ARepository();
             Archivo1ARepository archivo1A = new Archivo1ARepository();
@@ -103,9 +108,41 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var DataStrTurno = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetTurnos("full").Data); // convert json object to string.
             model.ListTurno = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrTurno);
 
-            var Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
-            var Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
-            var Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
+            SelectListItem Delegacion;
+            SelectListItem Plaza;
+            SelectListItem Turno;
+            DateTime FechaInicio;
+            bool CreacionAutomatica = false;
+
+            if (model.DelegacionesId == null && model.PlazaCobroId == null && model.TurnoId == null)
+            {
+                string turnovalid = "";
+                DateTime time_ = DateTime.Now;
+                DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
+                DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
+                //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+                if (time_ >= turno2_)
+                    turnovalid = "1";
+                else if (time_ >= turno3_)
+                    turnovalid = "2";
+                else if (time_ >= turno1_.AddDays(1))
+                    turnovalid = "3";
+
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
+                Turno = model.ListTurno.Find(p => p.Value == turnovalid);
+                FechaInicio = DateTime.Today;
+                CreacionAutomatica = true;
+            }
+            else
+            {
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
+                Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
+                FechaInicio = model.FechaInicio;                
+            }
+      
             if (Plaza == null)
             {
                 ViewBag.Error = "Falta Delegaciones";
@@ -148,8 +185,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
             }
-
-            DateTime FechaInicio = model.FechaInicio;
+            
             try
             {
                 //if (entra == true && comen.ToString() != null)
@@ -234,6 +270,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
+                    //
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -272,7 +309,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 TurnoId = turno,
                 FechaInicio = DateTime.Now
             };
-            return View(mdl);
+            if(CreacionAutomatica)
+                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);
+            //return Json(new { result = "Redirect", url = Url.Action("Index", "Exportar") });
+            else
+                return View(mdl);
         }
 
 
@@ -382,7 +423,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
-                { "004",  IPAddress.Parse("172.23.240.1") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
+                { "004",  IPAddress.Parse("10.1.1.35") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
                 { "041",  IPAddress.Parse("10.3.30.111") },

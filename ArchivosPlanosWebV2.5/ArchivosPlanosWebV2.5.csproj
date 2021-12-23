@@ -369,6 +369,7 @@
     <Content Include="Views\CRUD\EditOperador.cshtml" />
     <Content Include="Views\CRUD\DeleteOperador.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Exportar\IndexAutomatico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
