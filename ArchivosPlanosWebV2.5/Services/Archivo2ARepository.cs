@@ -29,6 +29,8 @@ namespace ArchivosPlanosWebV2._5.Services
         string StrLinea;
         string Str_Cajero_Receptor;
 
+        public string validacionesNuevas = string.Empty;
+
         /// <summary>
         /// ARCHIVO 2A
         /// </summary>

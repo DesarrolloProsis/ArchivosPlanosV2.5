@@ -21,6 +21,7 @@ namespace ArchivosPlanosWebV2._5.Services
         static string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
         static SqlConnection Connection = new SqlConnection(ConnectionString);
         public string Message = string.Empty;
+        public string validacionesNuevas = string.Empty;
 
 
         /// <summary>
@@ -57,7 +58,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
             string Tag_iag;
             string Tarjeta;
-
 
             List<string> Val = new List<string>();
             //DataTable dataTableCa = new DataTable();
@@ -212,6 +212,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
                         );
 
+                    string eventoDuplicado = string.Empty;
+
                     foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
                     {
 
@@ -257,7 +259,14 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
 
                                 //Cuerpo Caracter    X(1)
-                                Str_detalle = Str_detalle + item["Voie"].ToString().Substring(0, 1) + ",";
+                                Str_detalle = Str_detalle + item["Voie"].ToString().Substring(0, 1) + ",";                                
+                                //lineas nuevas para validar eventos repeitodos
+                                if(eventoDuplicado == item["EVENT_NUMBER"])
+                                {
+                                    //agregamos repuesta del error
+                                    validacionesNuevas = $"ARCHIVO 9A CON EVENTO REPETIDO {eventoDuplicado} REVISAR INFORMACION"; 
+                                }
+                                eventoDuplicado = item["EVENT_NUMBER"].ToString();
                                 //Número de evento 	Entero 	>>>>>>9
                                 Str_detalle = Str_detalle + item["EVENT_NUMBER"] + ",";
                                 //Número de folio 	Entero 	>>>>>>9 
@@ -618,6 +627,13 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                     //Cuerpo Caracter    X(1)
                                     Str_detalle = Str_detalle + MtGlb.oDataRow3["Voie"].ToString().Substring(0, 1) + ",";
+                                    //lineas nuevas para validar eventos repeitodos
+                                    if (eventoDuplicado == MtGlb.oDataRow3["EVENT_NUMBER"])
+                                    {
+                                        //agregamos repuesta del error
+                                        validacionesNuevas = $"ARCHIVO 9A CON EVENTO REPETIDO {eventoDuplicado} REVISAR INFORMACION";
+                                    }
+                                    eventoDuplicado = MtGlb.oDataRow3["EVENT_NUMBER"].ToString();
                                     //Número de evento 	Entero 	>>>>>>9
                                     Str_detalle = Str_detalle + MtGlb.oDataRow3["EVENT_NUMBER"] + ",";
                                     //Número de folio 	Entero 	>>>>>>9 
