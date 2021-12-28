@@ -151,7 +151,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 Plaza.Value = "0" + Plaza.Value;
                 if (Plaza.Value == "004") //Tepotzotlan
-                    ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";                
 
                 else if (Plaza.Value == "070") //Polotitlan
                     ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
@@ -423,7 +423,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
-                { "004",  IPAddress.Parse("10.1.1.35") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
+                { "004",  IPAddress.Parse("10.3.20.214") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
                 { "041",  IPAddress.Parse("10.3.30.111") },

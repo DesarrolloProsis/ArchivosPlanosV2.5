@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ArchivosPlanosWebV2._5.Controllers;
-using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 
 namespace ArchivosPlanosWebV2._5.Services
 {
