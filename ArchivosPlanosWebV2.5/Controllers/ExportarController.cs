@@ -80,6 +80,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             ArchivoPARepository archivoPA = new ArchivoPARepository();
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
+            Comparar compara = new Comparar();
             Encriptar2 encriptar2 = new Encriptar2();
             Comprimir2 comprimir2 = new Comprimir2();
             DateTime fecha_Actual = DateTime.Today;
@@ -234,6 +235,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
+                    compara.PythonExecuter();
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -382,7 +384,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
-                { "004",  IPAddress.Parse("172.23.240.1") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
+                { "004",  IPAddress.Parse("10.1.1.55") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
                 { "041",  IPAddress.Parse("10.3.30.111") },

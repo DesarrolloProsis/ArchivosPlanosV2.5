@@ -59,6 +59,7 @@
       <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -236,6 +237,7 @@
     <Compile Include="Services\Archivo9ARepository.cs" />
     <Compile Include="Services\ArchivoIIRepository.cs" />
     <Compile Include="Services\ArchivoPARepository.cs" />
+    <Compile Include="Services\Comparar.cs" />
     <Compile Include="Services\Comprimir2.cs" />
     <Compile Include="Services\ComprimirRepository.cs" />
     <Compile Include="Services\Encriptar2.cs" />
