@@ -98,8 +98,8 @@ namespace ArchivosPlanosWebV2._5.Services
             py.FileName = @"C:\Program Files\Python310\python.exe";
 
             var script = @"c:\script\prueba.py";
-
-            py.Arguments = $"\"{script}\"";
+            //var script = "c:/script/prueba.py";
+            py.Arguments = script;
 
             py.UseShellExecute = false;
             py.CreateNoWindow = true;
