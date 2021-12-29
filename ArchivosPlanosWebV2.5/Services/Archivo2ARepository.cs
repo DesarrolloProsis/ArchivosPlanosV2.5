@@ -29,6 +29,8 @@ namespace ArchivosPlanosWebV2._5.Services
         string StrLinea;
         string Str_Cajero_Receptor;
 
+        public string validacionesNuevas = string.Empty;
+
         /// <summary>
         /// ARCHIVO 2A
         /// </summary>
@@ -1397,10 +1399,14 @@ namespace ArchivosPlanosWebV2._5.Services
                         //100 (no se maneja)
                         Str_detalle = Str_detalle + ",";
                         Str_detalle_tc = Str_detalle_tc + "0,";
-                        //92
+                        if(VAR_93 - VAR_92 < 0)
+                        {
+                            validacionesNuevas = $"FOLIO FINAL  {VAR_93} MENOR QUE EL FOLIO INICIAL {VAR_92}";
+                        }
+                        //92 Folio Inicio
                         Str_detalle = Str_detalle + VAR_92 + ",";
                         Str_detalle_tc = Str_detalle_tc + "0,";
-                        //93
+                        //93 Folio Fin
                         Str_detalle = Str_detalle + VAR_93 + ",";
                         Str_detalle_tc = Str_detalle_tc + "0,";
                         //95
