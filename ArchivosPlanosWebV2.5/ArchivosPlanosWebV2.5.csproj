@@ -240,6 +240,7 @@
     <Compile Include="Services\Archivo9ARepository.cs" />
     <Compile Include="Services\ArchivoIIRepository.cs" />
     <Compile Include="Services\ArchivoPARepository.cs" />
+    <Compile Include="Services\Comparar.cs" />
     <Compile Include="Services\Comprimir2.cs" />
     <Compile Include="Services\ComprimirRepository.cs" />
     <Compile Include="Services\Encriptar2.cs" />
