@@ -22,7 +22,7 @@ namespace ArchivosPlanosWebV2._5.Services
         public void PythonExecuter()
         {
             var py = new ProcessStartInfo();
-            py.FileName = @"C:\Program Files\Python310\python.exe";
+            py.FileName = @"C:\Python38-32\python.exe";
 
             var script = @"c:\script\prueba.py";
             //var script = "c:/script/prueba.py";

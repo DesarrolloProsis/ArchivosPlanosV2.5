@@ -28,6 +28,8 @@ namespace ArchivosPlanosWebV2._5.Services
         string StrIdentificador = "A";
         public string Message = string.Empty;
 
+        public string validacionesNuevas = string.Empty;
+
         private AppDbContextSQL db = new AppDbContextSQL();
 
         /// <summary>
@@ -696,6 +698,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Str_detalle = Str_detalle + ",";
                                     Str_detalle_tc = Str_detalle_tc + ",";
                                     Message = Str_detalle + "falta encargado de turno ";
+                                    validacionesNuevas = "FALTA EL ENCARGADO DE TURNO";
                                 }
                             }
                             else
@@ -710,6 +713,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Str_detalle = Str_detalle + ",,";
                                     Str_detalle_tc = Str_detalle_tc + ",,";
                                     Message = Str_detalle + "falta operador y encargado de turno ";
+                                    validacionesNuevas = "FALTA EL ENCARGADO DE TURNO Y EL OPERADOR DE TURNO";
                                 }
                             }
                             ////SI NO ENCONTRO UN ENCARGADO POR ENDE NO ENCONTRO UN ENCARGADO DE TURNO; AGREGAMOS UNA "," SOLAMENTE

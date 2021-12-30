@@ -30,6 +30,7 @@ namespace ArchivosPlanosWebV2._5.Services
         string Str_Cajero_Receptor;
 
         public string validacionesNuevas = string.Empty;
+        public string validacionNuevaEmpalmeHorario = string.Empty;
 
         /// <summary>
         /// ARCHIVO 2A
@@ -68,6 +69,9 @@ namespace ArchivosPlanosWebV2._5.Services
             var NumPlaza = string.Empty;
             var NumTramo = string.Empty;
             bool dia_Restado = false;
+
+            List<EventoCarril> CarrilesAbiertosFecha = new List<EventoCarril>();
+            List<EventoCarril> CarrilesCerradosFecha = new List<EventoCarril>();
 
             try
             {
@@ -1371,6 +1375,14 @@ namespace ArchivosPlanosWebV2._5.Services
                             NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
                         }
                         /*************************************************************************/
+                        //agregar eventos a la lista de carrilesabierto para validar el erro de horas repetidas parche emi
+                        CarrilesAbiertosFecha.Add(new EventoCarril
+                        {
+
+                            Carril = NumCarril,
+                            Hora_Inicio = _Dt_ini_poste,
+                            Hora_Fin = _Dt_fin_poste
+                        });
 
                         if (dataRows.Count() != 0)
                         {
@@ -1737,6 +1749,27 @@ namespace ArchivosPlanosWebV2._5.Services
                             NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
                         }
                         /************************************************/
+                        //agregamos evento a la lista de evento cerrados parche emi
+                        if (Convert.ToDateTime(item["END_DHM"]) > _H_fin_turno)
+                        {
+                            CarrilesCerradosFecha.Add(new EventoCarril
+                            {
+                                Carril = NumCarril,
+                                Hora_Inicio = Convert.ToDateTime(item["BEGIN_DHM"]),
+                                Hora_Fin = _H_fin_turno
+
+                            });
+                        }
+                        else
+                        {
+                            CarrilesCerradosFecha.Add(new EventoCarril
+                            {
+                                Carril = NumCarril,
+                                Hora_Inicio = Convert.ToDateTime(item["BEGIN_DHM"]),
+                                Hora_Fin = Convert.ToDateTime(item["END_DHM"])
+
+                            });
+                        }
 
                         if (dataRows.Count() != 0)
                         {
@@ -1856,6 +1889,18 @@ namespace ArchivosPlanosWebV2._5.Services
                                     NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
                                 }
                                 /*******************************************/
+                                //agregar eventos alista carriles cerrados parche emi
+
+
+                                CarrilesCerradosFecha.Add(new EventoCarril
+                                {
+                                    Carril = NumCarril,
+                                    Hora_Inicio =_H_inicio_turno,
+                                    Hora_Fin = _H_fin_turno.AddSeconds(1)
+
+                                });
+                             
+
                                 if (dataRows.Count() != 0)
                                 {
                                     Str_detalle = Str_detalle + NumTramo + ",";
@@ -1901,6 +1946,19 @@ namespace ArchivosPlanosWebV2._5.Services
                                 Osw.WriteLine(Str_detalle);
                                 Osw2.WriteLine(Str_detalle);
                             }
+                        }
+                    }
+                }
+
+                //int s = CarrilesAbiertosFecha.Count + CarrilesCerradosFecha.Count;
+
+                foreach (var evento in CarrilesAbiertosFecha)
+                {
+                    foreach(var eventoCerrado in CarrilesCerradosFecha)
+                    {
+                        if(evento.Carril == eventoCerrado.Carril && evento.Hora_Inicio.ToString("HHmmss") == eventoCerrado.Hora_Inicio.ToString("HHmmss") && evento.Hora_Inicio.ToString("HHmmss") == eventoCerrado.Hora_Fin.ToString("HHmmss"))
+                        {
+                            validacionNuevaEmpalmeHorario = $"HORARIO EMPALMADO PARA EL CARRIL {evento.Carril}";
                         }
                     }
                 }
