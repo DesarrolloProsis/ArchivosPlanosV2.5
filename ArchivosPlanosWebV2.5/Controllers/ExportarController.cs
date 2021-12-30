@@ -245,7 +245,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //    return View(ViewBag.List, model);
 
                 //}
-                else if (validaciones.ValidarCarrilesCerrados( FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Existen carriles sin cerrar:";
                     ViewBag.Mensaje = validaciones.Message;
@@ -269,7 +269,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);                    
+                    archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     compara.PythonExecuter();
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -277,17 +277,16 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     Nom1 = comprimir2.Nombre1;
-                    Nom2 = comprimir2.Nombre2;
-                    //Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
-
+                    Nom2 = comprimir2.Nombre2;                    
                     ViewBag.Titulo = "Resumen de creación de archivos";
-                    if(archivo9A.validacionesNuevas != string.Empty)                    
-                        ViewBag.Mensaje = archivo9A.validacionesNuevas; 
-                    else if(archivo2A.validacionesNuevas != string.Empty)
-                        ViewBag.Mensaje = archivo2A.validacionesNuevas;
-                    else
-                        ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: "+ comprimir.Message + "<br />Errores: " + compara.Message;
-
+                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: " + comprimir.Message + "<br />Errores: " + compara.Message + "\n" + archivo1A.validacionesNuevas + "\n" + archivo2A.validacionesNuevas + "\n" + archivo9A.validacionesNuevas;
+                    //if (archivo9A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo9A.validacionesNuevas;
+                    //else if (archivo2A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo2A.validacionesNuevas;
+                    //else if (archivo1A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo1A.validacionesNuevas;
+                    //else                        
                 }
 
             }
