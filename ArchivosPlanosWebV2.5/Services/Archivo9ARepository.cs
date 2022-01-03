@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 namespace ArchivosPlanosWebV2._5.Services
 {
@@ -446,7 +447,16 @@ namespace ArchivosPlanosWebV2._5.Services
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                     strCodigoVhPagoMarcado = "RP4" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP.
-                                    strCodigoVhPagoMarcado = "RSP" + ",";
+                                {
+                                    if (IdPlazaCobro == "070")
+                                    {
+                                        strCodigoVhPagoMarcado = "RSP" + ",";
+                                    }
+                                    else
+                                    {
+                                        strCodigoVhPagoMarcado = "RPA" + ",";
+                                    }
+                                }
                                 else
                                     strCodigoVhPagoMarcado = ",";
 
@@ -836,7 +846,16 @@ namespace ArchivosPlanosWebV2._5.Services
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                         strCodigoVhPagoMarcado = "RP4" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP
-                                        strCodigoVhPagoMarcado = "RSP" + ",";
+                                    {
+                                        if (IdPlazaCobro == "070")
+                                        {
+                                            strCodigoVhPagoMarcado = "RSP" + ",";
+                                        }
+                                        else
+                                        {
+                                            strCodigoVhPagoMarcado = "RPA" + ",";
+                                        }
+                                    }
                                     else
                                         strCodigoVhPagoMarcado = ",";
 
@@ -1058,6 +1077,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 Message = Message.Replace(System.Environment.NewLine, "  ");
             }
         }
+       
 
     }
 }
