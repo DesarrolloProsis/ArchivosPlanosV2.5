@@ -445,8 +445,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                     strCodigoVhPagoMarcado = "RP3" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                     strCodigoVhPagoMarcado = "RP4" + ",";
-                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                    strCodigoVhPagoMarcado = "RPA" + ",";
+                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP.
+                                    strCodigoVhPagoMarcado = "RSP" + ",";
                                 else
                                     strCodigoVhPagoMarcado = ",";
 
@@ -835,8 +835,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                         strCodigoVhPagoMarcado = "RP3" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                         strCodigoVhPagoMarcado = "RP4" + ",";
-                                    else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                        strCodigoVhPagoMarcado = "RPA" + ",";
+                                    else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP
+                                        strCodigoVhPagoMarcado = "RSP" + ",";
                                     else
                                         strCodigoVhPagoMarcado = ",";
 
@@ -1042,11 +1042,6 @@ namespace ArchivosPlanosWebV2._5.Services
                     Osw.WriteLine(item);
                     Osw2.WriteLine(item);
                     t++;
-                    if (t == 1755)
-                    {
-                        string Aqui = string.Empty;
-                    }
-
                 }
 
                 Osw.Flush();
