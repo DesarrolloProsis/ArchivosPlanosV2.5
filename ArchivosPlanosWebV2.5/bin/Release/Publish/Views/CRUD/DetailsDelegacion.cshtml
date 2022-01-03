@@ -1,0 +1,38 @@
+﻿@model ArchivosPlanosWebV2._5.Models.Type_Delegacion
+@{
+    ViewBag.Title = "Detalles de Delegación";
+}
+<div class="container">
+    <div class="card shadow-lg" style="margin-top:1rem !important">
+        <div class="card-body">
+            <h2>Detalles de Delegación</h2>
+
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Num_Delegacion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Num_Delegacion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nom_Delegacion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Nom_Delegacion)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Editar Delegacion", "EditDelegacion", new { id = Model.Id_Delegacion }, new { type = "button", @class = "btn btn-success" })
+            </p>
+            @Html.ActionLink("Regresar a Delegaciones", "Index")
+        </div>
+       
+    </div>
+    </div>

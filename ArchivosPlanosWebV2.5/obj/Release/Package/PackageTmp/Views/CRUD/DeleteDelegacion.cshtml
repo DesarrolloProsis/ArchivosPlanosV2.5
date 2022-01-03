@@ -1,0 +1,43 @@
+﻿@model ArchivosPlanosWebV2._5.Models.Type_Delegacion
+
+@{
+    ViewBag.Title = "Eliminar Delegación";
+}
+<div class="container">
+    <div class="card shadow-lg" style="margin-top:1rem !important">
+        <div class="card-body">
+            <h2>Eliminar Delegación</h2>  
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Num_Delegacion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Num_Delegacion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nom_Delegacion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Nom_Delegacion)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Eliminar" class="btn btn-danger" style="margin-bottom:5px !important;" />
+                    </div>
+                    @Html.ActionLink("Regresar a Delegaciones", "Index")
+                }
+            </div>
+            </div>
+        </div>
+    </div>
