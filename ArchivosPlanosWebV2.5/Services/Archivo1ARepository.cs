@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ArchivosPlanosWebV2._5.Controllers;
-using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 
 namespace ArchivosPlanosWebV2._5.Services
 {
@@ -27,6 +27,8 @@ namespace ArchivosPlanosWebV2._5.Services
         string Carpeta2 = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         string StrIdentificador = "A";
         public string Message = string.Empty;
+
+        public string validacionesNuevas = string.Empty;
 
         private AppDbContextSQL db = new AppDbContextSQL();
 
@@ -696,6 +698,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Str_detalle = Str_detalle + ",";
                                     Str_detalle_tc = Str_detalle_tc + ",";
                                     Message = Str_detalle + "falta encargado de turno ";
+                                    validacionesNuevas = "FALTA EL ENCARGADO DE TURNO";
                                 }
                             }
                             else
@@ -710,6 +713,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Str_detalle = Str_detalle + ",,";
                                     Str_detalle_tc = Str_detalle_tc + ",,";
                                     Message = Str_detalle + "falta operador y encargado de turno ";
+                                    validacionesNuevas = "FALTA EL ENCARGADO DE TURNO Y EL OPERADOR DE TURNO";
                                 }
                             }
                             ////SI NO ENCONTRO UN ENCARGADO POR ENDE NO ENCONTRO UN ENCARGADO DE TURNO; AGREGAMOS UNA "," SOLAMENTE

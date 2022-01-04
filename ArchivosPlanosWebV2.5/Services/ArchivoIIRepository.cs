@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OracleClient;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-
+using Oracle.ManagedDataAccess.Client;
 
 namespace ArchivosPlanosWebV2._5.Services
 {

@@ -35,6 +35,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public string ConexionDB = string.Empty;
         
+        //GET: EXPORTAR AUTOMATICO
+        [HttpGet]
+        public ActionResult IndexAutomatico()
+        {
+            return View();
+        }
+
         // GET: Exportar
         [HttpGet]
         public ActionResult Index()
@@ -45,11 +52,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
             //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
-            if (time >= turno2)
+            if (time >= turno1 && time < turno3)
                 turno = "1";
-            else if (time >= turno3)
+            else if (time >= turno2 && time < turno1.AddDays(1))
                 turno = "2";
-            else if(time >= turno1.AddDays(1))
+            else 
                 turno = "3";
 
             var model = new ControlesExportar
@@ -70,8 +77,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 entra = false;
             }
-
-
             ValidacionesRepository validaciones = new ValidacionesRepository();
             Archivo2ARepository archivo2A = new Archivo2ARepository();
             Archivo1ARepository archivo1A = new Archivo1ARepository();
@@ -80,6 +85,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             ArchivoPARepository archivoPA = new ArchivoPARepository();
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
+            Comparar compara = new Comparar();
             Encriptar2 encriptar2 = new Encriptar2();
             Comprimir2 comprimir2 = new Comprimir2();
             DateTime fecha_Actual = DateTime.Today;
@@ -103,9 +109,41 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var DataStrTurno = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetTurnos("full").Data); // convert json object to string.
             model.ListTurno = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrTurno);
 
-            var Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
-            var Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
-            var Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
+            SelectListItem Delegacion;
+            SelectListItem Plaza;
+            SelectListItem Turno;
+            DateTime FechaInicio;
+            bool CreacionAutomatica = false;
+
+            if (model.DelegacionesId == null && model.PlazaCobroId == null && model.TurnoId == null)
+            {
+                string turnovalid = "";
+                DateTime time_ = DateTime.Now;
+                DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
+                DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
+                //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+                if (time_ >= turno1_ && time_ < turno3_ )
+                    turnovalid = "1";
+                else if (time_ >= turno2_ && time_ < turno1_.AddDays(1))
+                    turnovalid = "2";
+                else 
+                    turnovalid = "3";
+
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
+                Turno = model.ListTurno.Find(p => p.Value == turnovalid);
+                FechaInicio = DateTime.Today;
+                CreacionAutomatica = true;
+            }
+            else
+            {
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
+                Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
+                FechaInicio = model.FechaInicio;                
+            }
+      
             if (Plaza == null)
             {
                 ViewBag.Error = "Falta Delegaciones";
@@ -114,7 +152,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 Plaza.Value = "0" + Plaza.Value;
                 if (Plaza.Value == "004") //Tepotzotlan
-                    ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                    ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";                
 
                 else if (Plaza.Value == "070") //Polotitlan
                     ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
@@ -148,8 +186,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
             }
-
-            DateTime FechaInicio = model.FechaInicio;
+            
             try
             {
                 //if (entra == true && comen.ToString() != null)
@@ -208,7 +245,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //    return View(ViewBag.List, model);
 
                 //}
-                else if (validaciones.ValidarCarrilesCerrados( FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Existen carriles sin cerrar:";
                     ViewBag.Mensaje = validaciones.Message;
@@ -228,23 +265,28 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
                 {
 
-                    //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN 
+                    //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN                     
                     archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
+                    compara.PythonExecuter();
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
-                    //Response.Write("<script>alert('Archivo 1A: " + archivo1A.Message + "\\nArchivo 2A: " + archivo2A.Message + "\\nArchivo 9A: " + archivo9A.Message + "\\nArchivo LL: " + archivoII.Message + "\\nArchivo PA:" + archivoPA.Message + "\\nEncriptación: " + encriptar.Message + "\\nCompresión: " + comprimir.Message + "');</script>");
-
                     ViewBag.Titulo = "Resumen de creación de archivos";
-                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: "+ comprimir.Message;
-
+                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: " + comprimir.Message + "<br />Errores: " + compara.Message + "\n" + archivo1A.validacionesNuevas + "\n" + archivo2A.validacionesNuevas + "\n" + archivo9A.validacionesNuevas + "\n" + archivo2A.validacionNuevaEmpalmeHorario;
+                    //if (archivo9A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo9A.validacionesNuevas;
+                    //else if (archivo2A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo2A.validacionesNuevas;
+                    //else if (archivo1A.validacionesNuevas != string.Empty)
+                    //    ViewBag.Mensaje = archivo1A.validacionesNuevas;
+                    //else                        
                 }
 
             }
@@ -272,7 +314,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 TurnoId = turno,
                 FechaInicio = DateTime.Now
             };
-            return View(mdl);
+            if(CreacionAutomatica)
+                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);
+            //return Json(new { result = "Redirect", url = Url.Action("Index", "Exportar") });
+            else
+                return View(mdl);
         }
 
 
@@ -382,7 +428,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
-                { "004",  IPAddress.Parse("10.1.1.89") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
+                { "004",  IPAddress.Parse("10.3.20.214") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
                 { "041",  IPAddress.Parse("10.3.30.111") },
@@ -453,8 +499,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+                                                                                
 
-            if (time >= turno2)
+            if (time >= turno1 && time < turno3)
             {
                 Items.Add(new SelectListItem
                 {
@@ -462,7 +509,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     Value = "1"
                 });
             }
-            else if (time >= turno3)
+            else if (time >= turno2 && time < turno1.AddDays(1))
             {
                 Items.Add(new SelectListItem
                 {
@@ -476,7 +523,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     Value = "2"
                 });
             }
-            else if (time >= turno1.AddDays(1))
+            else
             {
 
                 Items.Add(new SelectListItem
