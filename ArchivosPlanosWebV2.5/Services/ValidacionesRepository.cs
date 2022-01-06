@@ -132,7 +132,12 @@ namespace ArchivosPlanosWebV2._5.Services
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
                                 sqlDataAdapter.Fill(dataSet, "STR_ENCARGADO");
                                 if (dataSet.Tables["STR_ENCARGADO"].Rows.Count != 0)
-                                    Cajero = dataSet.Tables["STR_ENCARGADO"].Rows[0].ToString();
+                                {
+                                    foreach (DataRow item1 in dataSet.Tables["STR_ENCARGADO"].Rows)
+                                    {
+                                        Cajero = item1[0].ToString();
+                                    }
+                                }                                
 
                             }
                             catch (Exception ex)
@@ -156,7 +161,12 @@ namespace ArchivosPlanosWebV2._5.Services
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
                                 sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
                                 if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
-                                    EncargadoTurno = dataSet.Tables["STRENCARGADO_TURNO"].Rows[0].ToString();
+                                {
+                                    foreach (DataRow item1 in dataSet.Tables["STRENCARGADO_TURNO"].Rows)
+                                    {
+                                        EncargadoTurno = item1[0].ToString();
+                                    }
+                                }                                    
                             }
                             catch (Exception ex)
                             {
@@ -182,8 +192,12 @@ namespace ArchivosPlanosWebV2._5.Services
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
                                 sqlDataAdapter.Fill(dataSet, "MATRICULE");
                                 if (dataSet.Tables["MATRICULE"].Rows.Count != 0)
-                                    Cajero = dataSet.Tables["STR_ENCARGADO"].Rows[0].ToString();
-                                
+                                {
+                                    foreach (DataRow item1 in dataSet.Tables["MATRICULE"].Rows)
+                                    {
+                                        Cajero = item1[0].ToString();
+                                    }
+                                }                                                                
                             }
                             catch (Exception ex)
                             {
