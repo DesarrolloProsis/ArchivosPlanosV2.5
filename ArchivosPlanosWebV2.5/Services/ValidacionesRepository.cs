@@ -17,6 +17,7 @@ namespace ArchivosPlanosWebV2._5.Services
         bool BanValidaciones2 = false;
         bool BanValidaciones3 = false;
         public List<filas> listass = new List<filas>();
+        public List<string> erresCajeroEncargado = new List<string>();
         public string Message = string.Empty;
         bool Null = false;
 
@@ -87,11 +88,14 @@ namespace ArchivosPlanosWebV2._5.Services
                         "Numero_Poste, " +
                         "Matricule " +
                         ",Sac";
+
             OracleConnection ConexionDim = new OracleConnection(Conexion);
             MetodosGlbRepository MtGlb = new MetodosGlbRepository();
             string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             DataSet dataSet = new DataSet();
+            EnumerableRowCollection<DataRow> dataRows;
+            DataTable dt = new DataTable();
 
             if (MtGlb.QueryDataSet(StrQuerys, "FIN_POSTE", ConexionDim))
             {
@@ -139,33 +143,32 @@ namespace ArchivosPlanosWebV2._5.Services
                             {
                                 dataSet.Clear();
                                 Cmd.Dispose();
-                            }
-                            //VERFICAR EL ENCARGADO DE TURNO                            
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
-
-                            using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                            {
-                                Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
-                                try
-                                {
-                                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
-                                    sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
-                                    if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
-                                        EncargadoTurno = dataSet.Tables["STRENCARGADO_TURNO"].Rows[0].ToString();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Message = ex.Message + " " + ex.StackTrace;
-                                }
-                                finally
-                                {
-                                    dataSet.Clear();
-                                    Cmd.Dispose();
-                                }
-                            }
-
+                            }               
                         }
-                                             
+                        //VERFICAR EL ENCARGADO DE TURNO                            
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+
+                        using (SqlCommand Cmd = new SqlCommand(Query, Connection))
+                        {
+                            Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                            try
+                            {
+                                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
+                                sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
+                                if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
+                                    EncargadoTurno = dataSet.Tables["STRENCARGADO_TURNO"].Rows[0].ToString();
+                            }
+                            catch (Exception ex)
+                            {
+                                Message = ex.Message + " " + ex.StackTrace;
+                            }
+                            finally
+                            {
+                                dataSet.Clear();
+                                Cmd.Dispose();
+                            }
+                        }
+
                     }
                     else
                     {
@@ -193,8 +196,41 @@ namespace ArchivosPlanosWebV2._5.Services
                             }
                         }
                     }
-                    //BUSCAMOS EN ENCARGADO DE TURNO
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
+                    var props = typeof(Type_Carril).GetProperties();
+                    dt = new DataTable("Tabla_Carriles");
+                    dt.Columns.AddRange(
+                        props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
+                    );
+
+                    string NumCarril = string.Empty;
+                    dataRows = from myRow in dt.AsEnumerable()
+                               where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
+                               select myRow;
+
+                    foreach (DataRow value in dataRows)
+                    {
+                     
+                        NumCarril = value["Num_Capufe"].ToString();                                          
+
+                    }
+                    if (Cajero == string.Empty &&  EncargadoTurno == string.Empty)
+                    {
+                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO NI DE ENARGADO DE TURNO");
+                    }
+                    else if(Cajero == string.Empty)
+                    {
+                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO");
+                    }
+                    else if(EncargadoTurno == string.Empty)
+                    {
+                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE ENCARGADO DE TURNO");
+                    }
                 }
+                if (erresCajeroEncargado.Count == 0)
+                    return "OK";
+                else
+                    return "STOP";                  
             }
             return "OK";
         }
