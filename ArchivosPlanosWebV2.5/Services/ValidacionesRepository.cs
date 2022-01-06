@@ -93,6 +93,7 @@ namespace ArchivosPlanosWebV2._5.Services
             MetodosGlbRepository MtGlb = new MetodosGlbRepository();
             string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
+            AppDbContextSQL db = new AppDbContextSQL();
             DataSet dataSet = new DataSet();
             EnumerableRowCollection<DataRow> dataRows;
             DataTable dt = new DataTable();
@@ -211,26 +212,28 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                     }
                     //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
+                    var id_pla = IdPlaza.Substring(1, 2);                    
+                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
                     var props = typeof(Type_Carril).GetProperties();
                     dt = new DataTable("Tabla_Carriles");
                     dt.Columns.AddRange(
                         props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
                     );
-
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
+                       i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
+                   );
                     string NumCarril = string.Empty;
                     dataRows = from myRow in dt.AsEnumerable()
                                where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
                                select myRow;
 
                     foreach (DataRow value in dataRows)
-                    {
-                     
+                    {                     
                         NumCarril = value["Num_Capufe"].ToString();                                          
-
                     }
                     if (Cajero == string.Empty &&  EncargadoTurno == string.Empty)
                     {
-                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO NI DE ENARGADO DE TURNO");
+                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO NI DE ENCARGADO DE TURNO");
                     }
                     else if(Cajero == string.Empty)
                     {
@@ -240,6 +243,8 @@ namespace ArchivosPlanosWebV2._5.Services
                     {
                         erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE ENCARGADO DE TURNO");
                     }
+                    Cajero = string.Empty;
+                    EncargadoTurno = string.Empty;
                 }
                 if (erresCajeroEncargado.Count == 0)
                     return "OK";

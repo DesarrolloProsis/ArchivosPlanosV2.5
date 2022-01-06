@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ArchivosPlanosWebV2._5.Controllers
 {
@@ -263,7 +264,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else if (validaciones.ValidarCajeroEncargado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
-                    ViewBag.Mensaje = validaciones.erresCajeroEncargado;
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json = jsonSerialiser.Serialize(validaciones.erresCajeroEncargado);
+                    ViewBag.Mensaje = json;
                 }
                 else
                 {
