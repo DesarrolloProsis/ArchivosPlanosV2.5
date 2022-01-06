@@ -260,9 +260,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-
+                else if (validaciones.ValidarCajeroEncargado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
+                {
+                    ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
+                    ViewBag.Mensaje = validaciones.erresCajeroEncargado;
+                }
                 else
-
                 {
 
                     //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN                     
