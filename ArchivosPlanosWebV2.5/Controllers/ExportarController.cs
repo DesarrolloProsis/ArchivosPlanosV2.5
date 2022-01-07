@@ -95,12 +95,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime _Hora = DateTime.Now;
             int Int_turno;
             string Message = string.Empty;
-
-            //if (Nom1 != null && Nom2 != null)
-            //{
-            //    comprimir2.EliminarZip(Nom1, Nom2);
-            //}
-
             var DataStrDele = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetDelegaciones().Data); // convert json object to string.
             model.ListDelegaciones = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrDele);
 
@@ -190,16 +184,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             
             try
             {
-                //if (entra == true && comen.ToString() != null)
-                //{
-
-                //    entra = false;
-                //     if (validaciones.Isertar_Comentarios(listaaa, comen) == "OK")
-                //     {
-                //        Response.Write("<script>alert('" + "error" + "');</script>");
-                //        return View();
-                //     }
-                //}
 
                 if (Delegacion == null)
                 {
@@ -231,21 +215,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     ViewBag.Titulo = "Formulario llenado incorrectamente";
                     ViewBag.Mensaje = "Aún puedes generar este archivo<br />";
-                }
-
-                //else
-                //listaaa = validaciones.ValidarComentarios(FechaInicio.AddDays(-1), FechaInicio, Turno.Text);
-
-                //if(listaaa.Count == 1)
-                //{
-
-                //    ViewBag.List = new List<filas>();
-                //    ViewBag.List = listaaa;
-                //    entra = true;
-                //    Response.Write("<script>alert('" + validaciones.Message + "');</script>");
-                //    return View(ViewBag.List, model);
-
-                //}
+                }                           
                 else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Existen carriles sin cerrar:";
@@ -261,11 +231,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                else if (validaciones.ValidarCajeroEncargado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
+                else if (validaciones.ValidarCajeroEncargadoAbierto(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP" || validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
+                    string errorFormat = string.Empty;                    
                     var jsonSerialiser = new JavaScriptSerializer();
-                    var json = jsonSerialiser.Serialize(validaciones.erresCajeroEncargado);
+                    var json = jsonSerialiser.Serialize(validaciones.erresCajeroEncargadoAbierto);
                     ViewBag.Mensaje = json;
                 }
                 else
@@ -285,14 +256,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
                     ViewBag.Titulo = "Resumen de creación de archivos";
-                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: " + comprimir.Message + "<br />Errores: " + compara.Message + "\n" + archivo1A.validacionesNuevas + "\n" + archivo2A.validacionesNuevas + "\n" + archivo9A.validacionesNuevas + "\n" + archivo2A.validacionNuevaEmpalmeHorario;
-                    //if (archivo9A.validacionesNuevas != string.Empty)
-                    //    ViewBag.Mensaje = archivo9A.validacionesNuevas;
-                    //else if (archivo2A.validacionesNuevas != string.Empty)
-                    //    ViewBag.Mensaje = archivo2A.validacionesNuevas;
-                    //else if (archivo1A.validacionesNuevas != string.Empty)
-                    //    ViewBag.Mensaje = archivo1A.validacionesNuevas;
-                    //else                        
+                    ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: " + comprimir.Message + "<br />Errores: " + compara.Message + "\n" + archivo1A.validacionesNuevas + "\n" + archivo2A.validacionesNuevas + "\n" + archivo9A.validacionesNuevas + "\n" + archivo2A.validacionNuevaEmpalmeHorario;                              
                 }
 
             }
@@ -306,8 +270,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime time = DateTime.Now;
             DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
-            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
-            //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);            
             if (time >= turno2)
                 turno = "1";
             else if (time >= turno3)
@@ -321,8 +284,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 FechaInicio = DateTime.Now
             };
             if(CreacionAutomatica)
-                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);
-            //return Json(new { result = "Redirect", url = Url.Action("Index", "Exportar") });
+                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);            
             else
                 return View(mdl);
         }
@@ -335,20 +297,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
-            Connection.Open();
-
-            //string query = string.Empty;
-            //query = @"SELECT idTramo,nomTramo FROM TYPE_TRAMO";
-            //query = @"SELECT ID_Delegacion, Nom_Delegacion FROM TYPE_TRAMO";
-            List<SelectListItem> Items = new List<SelectListItem>();
-            //SqlCommand cmd = new SqlCommand(query, Connection);
-            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            //DataTable dataTable = new DataTable();
-            //sqlDataAdapter.Fill(dataTable);
-            //SelectListItem listItem = new SelectListItem();
-            //DataSet dataSet = new DataSet();
-            //dataSet.Tables.Add(dataTable);
-
+            Connection.Open();                                    
+            List<SelectListItem> Items = new List<SelectListItem>();     
             var propsdelega = typeof(Type_Delegacion).GetProperties();
             DataTable dataTable = new DataTable("Tabla_Deolegaciones");
             dataTable.Columns.AddRange(

@@ -17,11 +17,260 @@ namespace ArchivosPlanosWebV2._5.Services
         bool BanValidaciones2 = false;
         bool BanValidaciones3 = false;
         public List<filas> listass = new List<filas>();
-        public List<string> erresCajeroEncargado = new List<string>();
+        public List<string> erresCajeroEncargadoAbierto = new List<string>();
+        public List<string> erresCajeroEncargadoCerrado = new List<string>();
+        public List<string> erresIdentOperacionAbierto = new List<string>();
         public string Message = string.Empty;
         bool Null = false;
 
-        public string ValidarCajeroEncargado(DateTime FechaSelect, string Str_Turno_block, string IdPlaza, string Conexion)
+
+        public string ValidarCajeroEncargadoCerrado(DateTime FechaSelect, string Str_Turno_block, string IdPlazaCobro, string Conexion)
+        {
+
+            int Int_turno;
+            string H_inicio_turno = string.Empty;
+            string H_fin_turno = string.Empty;
+            if (Str_Turno_block.Substring(0, 2) == "06")
+            {
+                Int_turno = 5;
+                H_inicio_turno = FechaSelect.ToString("MM/dd/yyyy") + " 06:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 13:59:59";
+            }
+            else if (Str_Turno_block.Substring(0, 2) == "14")
+            {
+                Int_turno = 6;
+                H_inicio_turno = FechaSelect.ToString("MM/dd/yyyy") + " 14:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 21:59:59";
+            }
+            else if (Str_Turno_block.Substring(0, 2) == "22")
+            {
+                Int_turno = 4;
+                H_inicio_turno = FechaSelect.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 05:59:59";
+            }
+            DateTime _H_inicio_turno = DateTime.ParseExact(H_inicio_turno, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime _H_fin_turno = DateTime.ParseExact(H_fin_turno, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+
+            string StrQuerys = "SELECT ID_NETWORK, ID_PLAZA,ID_LANE, LANE, BEGIN_DHM, END_DHM, BAG_NUMBER, REPORT_FLAG, GENERATION_DHM " +
+                        "FROM CLOSED_LANE_REPORT, SITE_GARE " +
+                        "where " +
+                        "CLOSED_LANE_REPORT.ID_PLAZA	=	SITE_GARE.id_Gare " +
+                        "AND	SITE_GARE.id_Site		=	'" + IdPlazaCobro.Substring(1, 2) + "' " +
+                        "AND ((BEGIN_DHM >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                        "AND (BEGIN_DHM <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
+                        "order by BEGIN_DHM";
+
+            OracleConnection ConexionDim = new OracleConnection(Conexion);
+            MetodosGlbRepository MtGlb = new MetodosGlbRepository();
+            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+            SqlConnection Connection = new SqlConnection(ConnectionString);
+            AppDbContextSQL db = new AppDbContextSQL();
+            DataSet dataSet = new DataSet();
+            EnumerableRowCollection<DataRow> dataRows;
+            DataTable dt = new DataTable();
+            string StrEncargadoTurno = string.Empty;
+            //CARRILES CERRADOS UNO
+            if (MtGlb.QueryDataSet(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim))
+            {
+                foreach (DataRow item in MtGlb.Ds.Tables["CLOSED_LANE_REPORT"].Rows)
+                {
+
+                    StrQuerys = "SELECT	LANE_ASSIGN.Id_plaza,LANE_ASSIGN.Id_lane,TO_CHAR(LANE_ASSIGN.MSG_DHM,'MM/DD/YY HH24:MI:SS'),LANE_ASSIGN.SHIFT_NUMBER,LANE_ASSIGN.OPERATION_ID, " +
+                                      "LANE_ASSIGN.DELEGATION, TO_CHAR(LANE_ASSIGN.ASSIGN_DHM,'MM/DD/YY'),LTRIM(TO_CHAR(LANE_ASSIGN.JOB_NUMBER,'09')),	LANE_ASSIGN.STAFF_NUMBER,LANE_ASSIGN.IN_CHARGE_SHIFT_NUMBER " +
+                                      "FROM 	LANE_ASSIGN, SITE_GARE " +
+                                      "WHERE	LANE_ASSIGN.id_NETWORK = SITE_GARE.id_Reseau " +
+                                      "AND LANE_ASSIGN.id_plaza = SITE_GARE.id_Gare " +
+                                      "AND SITE_GARE.id_reseau = '01' " +
+                                      "AND	SITE_GARE.id_Site = '" + IdPlazaCobro.Substring(1, 2) + "' " +
+                                      "AND LANE_ASSIGN.Id_lane = '" + item["LANE"] + "' " +
+                                      "AND ((MSG_DHM >= TO_DATE('" + Convert.ToDateTime(item["BEGIN_DHM"]).ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (MSG_DHM <= TO_DATE('" + Convert.ToDateTime(item["BEGIN_DHM"]).ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
+                                      "ORDER BY LANE_ASSIGN.Id_PLAZA, LANE_ASSIGN.Id_LANE, LANE_ASSIGN.MSG_DHM";
+
+                    string Query;
+                    string Cajero = string.Empty;
+                    string EncargadoTurno = string.Empty;
+
+                    //SI NO ENCUENTRA NADA, SE ASIGNA PENDIENTE A ENCARGADO
+                    if (MtGlb.QueryDataSet2(StrQuerys, "Asig_Carril", ConexionDim))
+                    {
+                        StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
+
+                        //VERIFICAR SI EL ENCARGADO TURNO EXISTEN
+                        //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+
+                        using (SqlCommand Cmd = new SqlCommand(Query, Connection))
+                        {
+                            Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                            try
+                            {
+                                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
+                                sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
+                                if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
+                                {
+                                    foreach (DataRow item1 in dataSet.Tables["STRENCARGADO_TURNO"].Rows)
+                                    {
+                                        EncargadoTurno = item1[0].ToString();
+                                    }
+                                }                            
+                            }
+                            catch (Exception ex)
+                            {
+                                Message = ex.Message + " " + ex.StackTrace;
+                            }
+                            finally
+                            {
+                                dataSet.Clear();
+                                Cmd.Dispose();
+                            }
+                        }
+                    }
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
+                    var id_pla = IdPlazaCobro.Substring(1, 2);
+                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                    var props = typeof(Type_Carril).GetProperties();
+                    dt = new DataTable("Tabla_Carriles");
+                    dt.Columns.AddRange(
+                        props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
+                    );
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
+                       i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
+                   );
+                    string NumCarril = string.Empty;
+                    dataRows = from myRow in dt.AsEnumerable()
+                               where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
+                               select myRow;
+
+
+                    foreach (DataRow value in dataRows)
+                    {
+                        NumCarril = value["Num_Capufe"].ToString();
+                    }
+
+                    if (EncargadoTurno == string.Empty)
+                    {
+                        erresCajeroEncargadoCerrado.Add(NumCarril);
+                    }
+                }
+
+            }
+            //CARRILES CERRADOS DOS
+            StrQuerys = "SELECT VOIE, NUM_SEQUENCE FROM SEQ_VOIE_TOD ";
+
+            if (IdPlazaCobro == "106")
+                StrQuerys = StrQuerys + "where VOIE <> 'B04' and VOIE <> 'A03' ";
+
+            if (MtGlb.QueryDataSet1(StrQuerys, "SEQ_VOIE_TOD", ConexionDim))
+            {
+                foreach (DataRow item1 in MtGlb.Ds1.Tables["SEQ_VOIE_TOD"].Rows)
+                {
+                    StrQuerys = "SELECT	* FROM 	FIN_POSTE " +
+                                  "WHERE	VOIE = '" + item1["VOIE"] + "' " +
+                                  "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                                  "AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) ";
+
+
+                    string Query;                    
+                    string EncargadoTurno = string.Empty;
+
+                    if (MtGlb.QueryDataSet(StrQuerys, "FIN_POSTE", ConexionDim) == false)
+                    {
+                        StrQuerys = "SELECT * " +
+                                    "FROM CLOSED_LANE_REPORT, SITE_GARE " +
+                                    "where " +
+                                    "CLOSED_LANE_REPORT.ID_PLAZA	=	SITE_GARE.id_Gare " +
+                                    "AND	SITE_GARE.id_Site		=	'" + IdPlazaCobro.Substring(1, 2) + "' " +
+                                    "AND	LANE		=	'" + item1["VOIE"] + "' " +
+                                    "AND ((BEGIN_DHM >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                                    "AND (BEGIN_DHM <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
+                                    "order by BEGIN_DHM";
+
+                        if (MtGlb.QueryDataSet(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim) == false)
+                        {
+
+                            if (StrEncargadoTurno.Trim() == "")
+                                StrEncargadoTurno = "encargado_plaza";
+
+                            //VERIFICAR EL ENCARGADO EL TURNO; SI NO ESTA, SERÁ EL ENCARGADO DE PLAZA                             
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
+
+                            using (SqlCommand Cmd = new SqlCommand(Query, Connection))
+                            {
+                                Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                                try
+                                {
+                                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
+                                    sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
+                                    if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
+                                    {
+                                        foreach (DataRow item in dataSet.Tables["STRENCARGADO_TURNO"].Rows)
+                                        {
+                                            EncargadoTurno = item[0].ToString();
+                                        }
+                                    }                                    
+                                }
+                                catch (Exception ex)
+                                {
+                                    Message = ex.Message + " " + ex.StackTrace;
+                                }
+                                finally
+                                {
+                                    dataSet.Clear();
+                                    Cmd.Dispose();
+
+                                }
+                            }
+
+                        }
+                    }
+
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
+                    var id_pla = IdPlazaCobro.Substring(1, 2);
+                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                    var props = typeof(Type_Carril).GetProperties();
+                    dt = new DataTable("Tabla_Carriles");
+                    dt.Columns.AddRange(
+                        props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
+                    );
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
+                       i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
+                   );
+                    string NumCarril = string.Empty;
+                    dataRows = from myRow in dt.AsEnumerable()
+                               where myRow.Field<string>("Num_Gea") == Convert.ToString(item1["Voie"]).Substring(1, 2)
+                               select myRow;
+
+
+                    foreach (DataRow value in dataRows)
+                    {
+                        NumCarril = value["Num_Capufe"].ToString();
+                    }
+
+                    if (EncargadoTurno == string.Empty)
+                    {
+                        erresCajeroEncargadoCerrado.Add(NumCarril);
+                    }
+                }
+
+            }
+
+            
+            if (erresCajeroEncargadoCerrado.Count == 0)
+                return "OK";
+            else
+            {
+                string errorFormat = "FALTA CAJERO O ENCARGADO DE TURNO EN LOS CARRILES <br/>";
+                foreach(string carril in erresCajeroEncargadoCerrado)
+                {
+                    errorFormat = errorFormat + carril;
+                }
+                return "STOP";
+            }
+                
+            
+        }
+        public string ValidarCajeroEncargadoAbierto(DateTime FechaSelect, string Str_Turno_block, string IdPlazaCobro, string Conexion)
         {
             int Int_turno;
             string H_inicio_turno = string.Empty;
@@ -70,7 +319,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         "AND FIN_POSTE.id_reseau	= 	SITE_GARE.id_Reseau " +
                         "AND	FIN_POSTE.id_Gare	=	SITE_GARE.id_Gare " +
                         "AND	SITE_GARE.id_reseau		= 	'01' " +
-                        "AND	SITE_GARE.id_Site		=	'" + IdPlaza.Substring(1, 2) + "' " +
+                        "AND	SITE_GARE.id_Site		=	'" + IdPlazaCobro.Substring(1, 2) + "' " +
                         "AND (Id_Mode_Voie IN (1,7,9)) " +
                         "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
                         "AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
@@ -109,7 +358,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 "WHERE	LANE_ASSIGN.id_NETWORK = SITE_GARE.id_Reseau " +
                                 "AND LANE_ASSIGN.id_plaza = SITE_GARE.id_Gare " +
                                 "AND SITE_GARE.id_reseau = '01' " +
-                                "AND	SITE_GARE.id_Site ='" + IdPlaza.Substring(1, 2) + "' " +
+                                "AND	SITE_GARE.id_Site ='" + IdPlazaCobro.Substring(1, 2) + "' " +
                                 "AND LANE_ASSIGN.Id_lane = '" + item["Voie"].ToString().Trim() + "' " +
                                 "AND ((MSG_DHM >= TO_DATE('" + Convert.ToDateTime(item["DATE_DEBUT_POSTE"]).ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (MSG_DHM <= TO_DATE('" + Convert.ToDateTime(item["DATE_DEBUT_POSTE"]).ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS'))) " +
                                 "ORDER BY LANE_ASSIGN.Id_PLAZA, LANE_ASSIGN.Id_LANE, LANE_ASSIGN.MSG_DHM";
@@ -118,9 +367,11 @@ namespace ArchivosPlanosWebV2._5.Services
                     string Query;
                     string Cajero = string.Empty;
                     string EncargadoTurno = string.Empty;
+                    string IdentOperacion = string.Empty;
 
                     if (MtGlb.QueryDataSet2(StrQuerys, "Asig_Carril", ConexionDim))
-                    {                        
+                    {
+                        IdentOperacion = MtGlb.oDataRow2["OPERATION_ID"].ToString();
                         string Str_encargado = MtGlb.oDataRow2["STAFF_NUMBER"].ToString();
                         string StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();                        
                         Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
@@ -212,7 +463,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                     }
                     //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
-                    var id_pla = IdPlaza.Substring(1, 2);                    
+                    var id_pla = IdPlazaCobro.Substring(1, 2);                    
                     var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
                     var props = typeof(Type_Carril).GetProperties();
                     dt = new DataTable("Tabla_Carriles");
@@ -233,20 +484,22 @@ namespace ArchivosPlanosWebV2._5.Services
                     }
                     if (Cajero == string.Empty &&  EncargadoTurno == string.Empty)
                     {
-                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO NI DE ENCARGADO DE TURNO");
+                        erresCajeroEncargadoAbierto.Add(NumCarril);
                     }
                     else if(Cajero == string.Empty)
                     {
-                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE CAJERO");
+                        erresCajeroEncargadoAbierto.Add(NumCarril);
                     }
                     else if(EncargadoTurno == string.Empty)
                     {
-                        erresCajeroEncargado.Add($"EL CARRIL {NumCarril} NO CUENTA CON NUMERO DE ENCARGADO DE TURNO");
+                        erresCajeroEncargadoAbierto.Add(NumCarril);
                     }
-                    Cajero = string.Empty;
-                    EncargadoTurno = string.Empty;
+                    else if(IdentOperacion == string.Empty)
+                    {
+                        erresIdentOperacionAbierto.Add(NumCarril);
+                    }
                 }
-                if (erresCajeroEncargado.Count == 0)
+                if (erresCajeroEncargadoAbierto.Count == 0 && erresIdentOperacionAbierto.Count == 0)
                     return "OK";
                 else
                     return "STOP";                  
