@@ -249,7 +249,15 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    compara.PythonExecuter();              
+
+                    bool Errores = compara.PythonExecuter();
+                    if (Errores)
+                    {
+                        ViewBag.Titulo = "Errores en los archivos planos";
+                        ViewBag.Mensaje = "Errores: " + compara.Message;
+                        return View(Index());
+                    }
+
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -290,9 +298,117 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 return View(mdl);
         }
 
+        [HttpPost]
+        public ActionResult Comprimir(ControlesExportar model)
+        {
+            //entra = false;
+            EncriptarRepository encriptar = new EncriptarRepository();
+            ComprimirRepository comprimir = new ComprimirRepository();
+            Comparar compara = new Comparar();
+            Encriptar2 encriptar2 = new Encriptar2();
+            Comprimir2 comprimir2 = new Comprimir2();
+            SelectListItem Plaza;
+            SelectListItem Turno;
+            DateTime FechaInicio;
+            string Message = string.Empty;
 
-        //JSON RESULT PARA LLENAR CON AJAX LAS DELEGACIONES
-        [HttpGet]
+            comen = model.Comentario;
+            if (comen == null)
+            {
+                entra = false;
+            }
+
+            bool CreacionAutomatica = false;
+
+            if (model.DelegacionesId == null && model.PlazaCobroId == null && model.TurnoId == null)
+            {
+                string turnovalid = "";
+                DateTime time_ = DateTime.Now;
+                DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
+                DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
+                //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+                if (time_ >= turno1_ && time_ < turno3_)
+                    turnovalid = "1";
+                else if (time_ >= turno2_ && time_ < turno1_.AddDays(1))
+                    turnovalid = "2";
+                else
+                    turnovalid = "3";
+
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
+                Turno = model.ListTurno.Find(p => p.Value == turnovalid);
+                FechaInicio = DateTime.Today;
+                CreacionAutomatica = true;
+            }
+            else
+            {
+                Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
+                Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
+                FechaInicio = model.FechaInicio;
+            }
+
+            try
+            {
+                bool Errores = compara.PythonExecuter();
+
+                if (Errores)
+                {
+                    ViewBag.Titulo = "Errores en los archivos planos";
+                    ViewBag.Mensaje = "Errores: " + compara.Message;
+                    return View(Index());
+                }
+
+                string Carpeta = @"C:\ArchivosPlanosWeb\";
+                var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
+                string[] nueveA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                var DosA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("2A")).ToList();
+                string[] dosA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                var UnoA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("1A")).ToList();
+                string[] unoA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                var PA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("PA")).ToList();
+                string[] pA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                var II = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("II")).ToList();
+                string[] ii = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+
+                encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                ViewBag.Titulo = "Errores en los archivos planos";
+                ViewBag.Mensaje = "Errores: " + compara.Message;
+            }
+            catch (Exception ex)
+            {
+                Message = ex.Message + " " + ex.StackTrace;
+                ViewBag.Titulo = "Error";
+                ViewBag.Mensaje = Message;
+            }
+
+            string turno = "";
+            DateTime time = DateTime.Now;
+            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+            if (time >= turno2)
+                turno = "1";
+            else if (time >= turno3)
+                turno = "2";
+            else if (time >= turno1.AddDays(1))
+                turno = "3";
+            var mdl = new ControlesExportar
+            {
+                TurnoId = turno,
+                FechaInicio = DateTime.Now
+            };
+            if (CreacionAutomatica)
+                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);
+            else
+                return View(mdl);
+        }
+
+
+            //JSON RESULT PARA LLENAR CON AJAX LAS DELEGACIONES
+            [HttpGet]
         public JsonResult GetDelegaciones()
         {
 
