@@ -362,19 +362,24 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             try
             {
-                bool Errores = compara.PythonExecuter();
-
+                bool Errores = compara.PythonExecuter();                
                 if (Errores)
                 {
                     ViewBag.Titulo = "Errores en los archivos planos";
                     ViewBag.Mensaje = "Errores: " + compara.Message;
                     var mdlpy = new ControlesExportar
                     {
+                        DelegacionesId = model.DelegacionesId,
+                        PlazaCobroId = model.PlazaCobroId,
                         TurnoId = Turno.Value,
                         FechaInicio = FechaInicio
+                        
                     };
-                    return View("Index",mdlpy);
+
+                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy }, JsonRequestBehavior.AllowGet);
                 }
+
+
 
                 string Carpeta = @"C:\ArchivosPlanosWeb\";
                 var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
