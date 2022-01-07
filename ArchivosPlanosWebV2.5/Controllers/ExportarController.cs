@@ -181,10 +181,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
             }
-            
+
             try
             {
-
+                bool validacionCajeroCerrado = validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB).Equals("STOP");
+                bool validacionCajeroAbierto = validaciones.ValidarCajeroEncargadoAbierto(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB).Equals("STOP");
                 if (Delegacion == null)
                 {
                     ViewBag.Titulo = "Formulario incompleto";
@@ -231,7 +232,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                else if (validaciones.ValidarCajeroEncargadoAbierto(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP" || validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
+                
+                else if (validacionCajeroAbierto == true || validacionCajeroCerrado == true)
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
                     string errorFormat = string.Empty;
@@ -255,7 +257,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     {
                         ViewBag.Titulo = "Errores en los archivos planos";
                         ViewBag.Mensaje = "Errores: " + compara.Message;
-                        return View(Index());
+                        return View();
                     }
 
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);

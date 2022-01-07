@@ -139,7 +139,7 @@ namespace ArchivosPlanosWebV2._5.Services
                     // Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
                     //    i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
                     //);
-                    string NumCarril = Convert.ToString(item["Voie"]);
+                    string NumCarril = Convert.ToString(item["Lane"]);
                     //dataRows = from myRow in dt.AsEnumerable()
                     //           where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
                     //           select myRow;
