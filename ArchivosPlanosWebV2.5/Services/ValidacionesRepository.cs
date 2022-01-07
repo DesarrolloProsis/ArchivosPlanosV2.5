@@ -128,28 +128,8 @@ namespace ArchivosPlanosWebV2._5.Services
                             }
                         }
                     }
-                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
-                    // var id_pla = IdPlazaCobro.Substring(1, 2);
-                    // var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
-                    // var props = typeof(Type_Carril).GetProperties();
-                    // dt = new DataTable("Tabla_Carriles");
-                    // dt.Columns.AddRange(
-                    //     props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                    // );
-                    // Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                    //    i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                    //);
-                    string NumCarril = Convert.ToString(item["Lane"]);
-                    //dataRows = from myRow in dt.AsEnumerable()
-                    //           where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
-                    //           select myRow;
-
-
-                    //foreach (DataRow value in dataRows)
-                    //{
-                    //    NumCarril = value["Num_Capufe"].ToString();
-                    //}
-
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS               
+                    string NumCarril = Convert.ToString(item["Lane"]);     
                     if (EncargadoTurno == string.Empty)
                     {
                         erresCajeroEncargadoCerrado.Add($"{NumCarril}-{StrEncargadoTurno}->Ambos");
@@ -195,7 +175,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 StrEncargadoTurno = "encargado_plaza";
 
                             //VERIFICAR EL ENCARGADO EL TURNO; SI NO ESTA, SERÁ EL ENCARGADO DE PLAZA                             
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
@@ -227,30 +207,15 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                     }
 
-                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
-                    // var id_pla = IdPlazaCobro.Substring(1, 2);
-                    // var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
-                    // var props = typeof(Type_Carril).GetProperties();
-                    // dt = new DataTable("Tabla_Carriles");
-                    // dt.Columns.AddRange(
-                    //     props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                    // );
-                    // Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                    //    i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                    //);
-                    string NumCarril = Convert.ToString(item1["Voie"]);
-                    //           where myRow.Field<string>("Num_Gea") == Convert.ToString(item1["Voie"]).Substring(1, 2)
-                    //           select myRow;
-
-
-                    //foreach (DataRow value in dataRows)
-                    //{
-                    //    NumCarril = value["Num_Capufe"].ToString();
-                    //}
-
-                    if (EncargadoTurno == string.Empty)
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS                 
+                    if (MtGlb.QueryDataSet(StrQuerys, "FIN_POSTE", ConexionDim) == false)
                     {
-                        erresCajeroEncargadoCerrado.Add($"{NumCarril}-{StrEncargadoTurno}->Ambos");
+                        string NumCarril = Convert.ToString(item1["Voie"]);
+
+                        if (EncargadoTurno == string.Empty)
+                        {
+                            erresCajeroEncargadoCerrado.Add($"{NumCarril}-{StrEncargadoTurno}->Ambos");
+                        }
                     }
                 }
 

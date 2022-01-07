@@ -255,9 +255,15 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     bool Errores = compara.PythonExecuter();
                     if (Errores)
                     {
-                        ViewBag.Titulo = "Errores en los archivos planos";
-                        ViewBag.Mensaje = "Errores: " + compara.Message;
-                        return View();
+                        ViewBag.Titulo = "Errores en los archivos planos python";
+                        ViewBag.Python = true;
+                        ViewBag.Mensaje = "Errores: " + compara.Message;                   
+                        var mdlpy = new ControlesExportar
+                        {
+                            TurnoId = Turno.Value,
+                            FechaInicio = FechaInicio
+                        };
+                        return View(mdlpy);
                     }
 
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -321,6 +327,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
 
             bool CreacionAutomatica = false;
+            var DataStrPlaza = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetPlazaCobro().Data); // convert json object to string.
+            model.ListPlazaCobro = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrPlaza);
+
+            var DataStrTurno = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetTurnos("full").Data); // convert json object to string.
+            model.ListTurno = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrTurno);
 
             if (model.DelegacionesId == null && model.PlazaCobroId == null && model.TurnoId == null)
             {
@@ -357,7 +368,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     ViewBag.Titulo = "Errores en los archivos planos";
                     ViewBag.Mensaje = "Errores: " + compara.Message;
-                    return View(Index());
+                    var mdlpy = new ControlesExportar
+                    {
+                        TurnoId = Turno.Value,
+                        FechaInicio = FechaInicio
+                    };
+                    return View("Index",mdlpy);
                 }
 
                 string Carpeta = @"C:\ArchivosPlanosWeb\";

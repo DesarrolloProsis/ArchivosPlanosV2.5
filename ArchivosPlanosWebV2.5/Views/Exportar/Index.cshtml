@@ -21,6 +21,35 @@
 
             $(".loading-screen").hide();
 
+            $("#botonPython").click(function () {
+                var delegacion = $("#DelegacionesId").val()
+                var plaza= $("#PlazaCobroId").val()
+                var turno = $("#TurnoId").val()
+                var fecha = $("#FechaInicio").val()
+
+                var json = {
+                    DelegacionesId: delegacion,
+                    PlazaCobroId: plaza,
+                    TurnoId: turno,
+                    FechaInicio: fecha
+
+                }
+                                
+                  $.ajax({
+                      url: '@Url.Action("Comprimir", "Exportar")',
+                      type: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(json),
+                      cache: false,
+                      success: function (data) {
+                          console.log(data)
+                       },
+                      error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+            })
+
             $("#FechaInicio").change(function () {
                 var value = $("#FechaInicio").val()
                 var fElegida = new Date(Date.parse(value))
@@ -216,7 +245,7 @@
             </div>
 
         </div>
-        
+
         <div class="loading-screen">
             <div class="cargar">
                 <span class="loader"></span>
@@ -225,8 +254,8 @@
                 <span class="loader"></span>
             </div>
         </div>
-            
-       
+
+
     }
 
 
@@ -290,7 +319,7 @@
         </div>
     </div>
 
-    @if (ViewBag.Mensaje != null)
+    @if (ViewBag.Mensaje != null && ViewBag.Python != true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
             <div class="modal-dialog" role="document">
@@ -306,6 +335,28 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.Mensaje != null && ViewBag.Python == true)
+    {
+        <div class="modal" tabindex="-1" role="dialog" id="mensaje">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ViewBag.Titulo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@Html.Raw(ViewBag.Mensaje)</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="botonPython" type="button" class="btn btn-secondary" data-dismiss="modal">ReValidar</button>
                     </div>
                 </div>
             </div>
