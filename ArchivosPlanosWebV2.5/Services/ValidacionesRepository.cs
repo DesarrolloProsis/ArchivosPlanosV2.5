@@ -18,8 +18,11 @@ namespace ArchivosPlanosWebV2._5.Services
         bool BanValidaciones3 = false;
         public List<filas> listass = new List<filas>();
         public List<string> erresCajeroEncargadoAbierto = new List<string>();
+        public string errorFormatCajeroEncargadoAbiertos = string.Empty;        
         public List<string> erresCajeroEncargadoCerrado = new List<string>();
+        public string errorFormatCajeroEncargadoCerrado = string.Empty;
         public List<string> erresIdentOperacionAbierto = new List<string>();
+        public string errorFormatIdentOperacionAbierto = string.Empty;
         public string Message = string.Empty;
         bool Null = false;
 
@@ -260,11 +263,12 @@ namespace ArchivosPlanosWebV2._5.Services
                 return "OK";
             else
             {
-                string errorFormat = "FALTA CAJERO O ENCARGADO DE TURNO EN LOS CARRILES <br/>";
+                string errorFormat = "FALTA CAJERO O ENCARGADO DE TURNO EN LOS CARRILES CERRADOS: ";
                 foreach(string carril in erresCajeroEncargadoCerrado)
                 {
                     errorFormat = errorFormat + carril;
                 }
+                errorFormatCajeroEncargadoCerrado = errorFormat;
                 return "STOP";
             }
                 
@@ -502,7 +506,24 @@ namespace ArchivosPlanosWebV2._5.Services
                 if (erresCajeroEncargadoAbierto.Count == 0 && erresIdentOperacionAbierto.Count == 0)
                     return "OK";
                 else
-                    return "STOP";                  
+                {
+
+                    string errorFormat = "FALTA CAJERO O ENCARGADO DE TURNO EN LOS CARRILES ABIERTOS: ";
+                    foreach (string carril in erresCajeroEncargadoAbierto)
+                    {
+                        errorFormat = errorFormat + carril;
+                    }
+                    errorFormatCajeroEncargadoAbiertos = errorFormat;
+
+                    string errorFormat2 = "FALTA IDENT OPERACION EN LOS CARRILES ABIERTOS: ";
+                    foreach (string carril in erresIdentOperacionAbierto)
+                    {
+                        errorFormat2 = errorFormat + carril;
+                    }
+                    errorFormatIdentOperacionAbierto = errorFormat2;
+                    return "STOP";
+                }
+                    
             }
             return "OK";
         }
