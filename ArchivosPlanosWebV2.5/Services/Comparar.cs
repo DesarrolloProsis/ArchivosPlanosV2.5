@@ -1,13 +1,8 @@
 ﻿using ArchivosPlanosWebV2._5.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OracleClient;
-using System.Data.SqlClient;
+
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Web;
 
 
 namespace ArchivosPlanosWebV2._5.Services
@@ -19,7 +14,7 @@ namespace ArchivosPlanosWebV2._5.Services
         public string Message = string.Empty;
         public string Error = string.Empty;
 
-        public void PythonExecuter()
+        public bool PythonExecuter()
         {
             var py = new ProcessStartInfo();
             py.FileName = @"C:\Python38-32\python.exe";
@@ -43,6 +38,11 @@ namespace ArchivosPlanosWebV2._5.Services
             }
             Message = result;
             Error = errors;
+
+            if (Message.Contains(" Todo bien"))
+                return false;
+            else
+                return true;
         }
     }
 } 
