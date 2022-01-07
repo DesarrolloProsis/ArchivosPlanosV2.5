@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ArchivosPlanosWebV2._5.Controllers
 {
@@ -260,9 +261,14 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-
+                else if (validaciones.ValidarCajeroEncargado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
+                {
+                    ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json = jsonSerialiser.Serialize(validaciones.erresCajeroEncargado);
+                    ViewBag.Mensaje = json;
+                }
                 else
-
                 {
 
                     //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN                     
