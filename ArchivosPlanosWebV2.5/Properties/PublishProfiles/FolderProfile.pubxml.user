@@ -22,10 +22,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>01/03/2022 14:18:00</publishTime>
     </File>
     <File Include="bin/ArchivosPlanosWebV2.5.dll">
-      <publishTime>01/04/2022 12:09:42</publishTime>
+      <publishTime>01/07/2022 13:14:34</publishTime>
     </File>
     <File Include="bin/ArchivosPlanosWebV2.5.pdb">
-      <publishTime>01/04/2022 12:09:42</publishTime>
+      <publishTime>01/07/2022 13:14:34</publishTime>
     </File>
     <File Include="bin/EncriptCapufe.dll">
       <publishTime>01/03/2022 14:18:00</publishTime>

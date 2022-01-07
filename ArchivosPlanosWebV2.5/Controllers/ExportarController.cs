@@ -234,10 +234,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else if (validaciones.ValidarCajeroEncargadoAbierto(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP" || validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
-                    string errorFormat = string.Empty;                    
-                    var jsonSerialiser = new JavaScriptSerializer();
-                    var json = jsonSerialiser.Serialize(validaciones.erresCajeroEncargadoAbierto);
-                    ViewBag.Mensaje = json;
+                    string errorFormat = string.Empty;
+                    errorFormat = validaciones.errorFormatCajeroEncargadoAbiertos + "<br/>";
+                    errorFormat = errorFormat + validaciones.errorFormatCajeroEncargadoCerrado + "<br/>";
+                    errorFormat = errorFormat + validaciones.errorFormatIdentOperacionAbierto;
+                    ViewBag.Mensaje = errorFormat;
                 }
                 else
                 {
