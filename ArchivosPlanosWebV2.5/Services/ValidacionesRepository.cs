@@ -17,15 +17,112 @@ namespace ArchivosPlanosWebV2._5.Services
         bool BanValidaciones2 = false;
         bool BanValidaciones3 = false;
         public List<filas> listass = new List<filas>();
+
         public List<string> erresCajeroEncargadoAbierto = new List<string>();
-        public string errorFormatCajeroEncargadoAbiertos = string.Empty;        
+        public string errorFormatCajeroEncargadoAbiertos = string.Empty;
+
         public List<string> erresCajeroEncargadoCerrado = new List<string>();
         public string errorFormatCajeroEncargadoCerrado = string.Empty;
+
         public List<string> erresIdentOperacionAbierto = new List<string>();
         public string errorFormatIdentOperacionAbierto = string.Empty;
+
+        public string errorFormatClaseDetectada = string.Empty;
+
         public string Message = string.Empty;
         bool Null = false;
 
+        public string ValidarClaseVehiculo(DateTime FechaSelect, string Str_Turno_block, string Conexion)
+        {
+            int Int_turno;
+            string H_inicio_turno = string.Empty;
+            string H_fin_turno = string.Empty;
+            List<string> erroresClaseDetectada = new List<string>();
+
+            if (Str_Turno_block.Substring(0, 2) == "06")
+            {
+                Int_turno = 5;
+                H_inicio_turno = FechaSelect.ToString("MM/dd/yyyy") + " 06:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 13:59:59";
+            }
+            else if (Str_Turno_block.Substring(0, 2) == "14")
+            {
+                Int_turno = 6;
+                H_inicio_turno = FechaSelect.ToString("MM/dd/yyyy") + " 14:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 21:59:59";
+            }
+            else if (Str_Turno_block.Substring(0, 2) == "22")
+            {
+                Int_turno = 4;
+                H_inicio_turno = FechaSelect.AddDays(-1).ToString("MM/dd/yyyy") + " 22:00:00";
+                H_fin_turno = FechaSelect.ToString("MM/dd/yyyy") + " 05:59:59";
+            }
+            DateTime _H_inicio_turno = DateTime.ParseExact(H_inicio_turno, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime _H_fin_turno = DateTime.ParseExact(H_fin_turno, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string StrQuerys = "SELECT DATE_TRANSACTION, VOIE,  ID_GARE, EVENT_NUMBER, FOLIO_ECT, Version_Tarif, ID_PAIEMENT, INDICE_SUITE," +
+                                    "TAB_ID_CLASSE, TYPE_CLASSE.LIBELLE_COURT1 AS CLASE_MARCADA,  NVL(TRANSACTION.Prix_Total,0) as MONTO_MARCADO, " +
+                                    "ACD_CLASS, TYPE_CLASSE_ETC.LIBELLE_COURT1 AS CLASE_DETECTADA, NVL(TRANSACTION.transaction_CPT1 / 100, 0) as MONTO_DETECTADO, CONTENU_ISO, CODE_GRILLE_TARIF, ID_OBS_MP, ID_OBS_TT, ISSUER_ID " +
+                               "FROM TRANSACTION " +
+                                    "JOIN TYPE_CLASSE ON TAB_ID_CLASSE = TYPE_CLASSE.ID_CLASSE  " +
+                                    "LEFT JOIN TYPE_CLASSE   TYPE_CLASSE_ETC  ON ACD_CLASS = TYPE_CLASSE_ETC.ID_CLASSE " +
+                               "WHERE " +
+                                    "(DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                                    " AND  ID_PAIEMENT  <> 0 " +
+                                    "AND (TRANSACTION.Id_Voie = '1' " +
+                                    "OR TRANSACTION.Id_Voie = '2' " +
+                                    "OR TRANSACTION.Id_Voie = '3' " +
+                                    "OR TRANSACTION.Id_Voie = '4' " +
+                                    "OR TRANSACTION.Id_Voie = 'X') " +
+                                "ORDER BY DATE_TRANSACTION";
+            OracleConnection ConexionDim = new OracleConnection(Conexion);
+            MetodosGlbRepository MtGlb = new MetodosGlbRepository();
+
+            if (MtGlb.QueryDataSet(StrQuerys, "TRANSACTION", ConexionDim))
+            {
+                foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
+                {
+                    if (DBNull.Value.Equals(item["CLASE_DETECTADA"]) == true)
+                    {
+                        StrQuerys = "SELECT DATE_TRANSACTION, VOIE,  EVENT_NUMBER, FOLIO_ECT, Version_Tarif, ID_PAIEMENT, " +
+                                       "TAB_ID_CLASSE, TYPE_CLASSE.LIBELLE_COURT1 AS CLASE_MARCADA,  NVL(TRANSACTION.Prix_Total,0) as MONTO_MARCADO, " +
+                                       "ACD_CLASS, TYPE_CLASSE_ETC.LIBELLE_COURT1 AS CLASE_DETECTADA, NVL(TRANSACTION.transaction_CPT1 / 100, 0) as MONTO_DETECTADO, CONTENU_ISO, CODE_GRILLE_TARIF, ID_OBS_MP, ID_OBS_TT, ISSUER_ID " +
+                                       "FROM TRANSACTION " +
+                                       "JOIN TYPE_CLASSE ON TAB_ID_CLASSE = TYPE_CLASSE.ID_CLASSE  " +
+                                       "LEFT JOIN TYPE_CLASSE   TYPE_CLASSE_ETC  ON ACD_CLASS = TYPE_CLASSE_ETC.ID_CLASSE " +
+                                       "WHERE " +
+                                       "(DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                                       "AND VOIE = '" + item["VOIE"] + "' " +
+                                       "AND  ID_OBS_SEQUENCE <> '7777' " +
+                                       "AND EVENT_NUMBER = " + item["EVENT_NUMBER"] + " " +
+                                       "AND (TRANSACTION.Id_Voie = '1' " +
+                                       "OR TRANSACTION.Id_Voie = '2' " +
+                                       "OR TRANSACTION.Id_Voie = '3' " +
+                                       "OR TRANSACTION.Id_Voie = '4' " +
+                                       "OR TRANSACTION.Id_Voie = 'X') " +
+                                       "ORDER BY DATE_TRANSACTION desc";
+
+                        if (MtGlb.QueryDataSet3(StrQuerys, "TRANSACTION", ConexionDim) == false)
+                        {
+                            erroresClaseDetectada.Add(item["EVENT_NUMBER"].ToString());
+                        }
+                    }
+                }
+            }
+            if (erroresClaseDetectada.Count == 0)
+                return "OK";
+            else
+            {
+                string errorFormat = "FALTA CLASE DETECTADA EN LOS SIGUIENTES EVENTOS: ";
+                foreach (string evento in erroresClaseDetectada)
+                {
+                    errorFormat = errorFormat + evento + " ";
+                }
+                errorFormatClaseDetectada = errorFormat;
+                return "STOP";
+            }
+        }
+    
 
         public string ValidarCajeroEncargadoCerrado(DateTime FechaSelect, string Str_Turno_block, string IdPlazaCobro, string Conexion)
         {

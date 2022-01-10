@@ -227,6 +227,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Existen bolsas sin declarar:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
+                else if(validaciones.ValidarClaseVehiculo(FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                {
+                    ViewBag.Titulo = "Faltam Clases Detectadas:";
+                    ViewBag.Mensaje = validaciones.errorFormatClaseDetectada;
+                }            
                 else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Falta ingresar comentarios:";
@@ -466,26 +471,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
             string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
-            //string query = string.Empty;
-            //query = @"SELECT idPlaza,nomPlaza FROM TYPE_PLAZA";
-            //query = @"SELECT ID_Plaza, Nom_Plaza FROM TYPE_PLAZA";
             List<SelectListItem> Items = new List<SelectListItem>();
             var propsplaza = typeof(Type_Plaza).GetProperties();
             DataTable dataTable = new DataTable("Tabla_Plazas");
-            dataTable.Columns.AddRange(propsplaza.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                );
+            dataTable.Columns.AddRange(propsplaza.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
             var plazas = db2.Type_Plaza.ToList();
-
-            plazas.ToList().ForEach(
-                i => dataTable.Rows.Add(propsplaza.Select(p => p.GetValue(i, null)).ToArray())
-                );
-            //SqlCommand cmd = new SqlCommand(query, Connection);
-            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            //DataTable dataTable = new DataTable();
-            //sqlDataAdapter.Fill(dataTable);
-            //SelectListItem listItem = new SelectListItem();
-            //DataSet dataSet = new DataSet();
-            //dataSet.Tables.Add(dataTable);
+            plazas.ToList().ForEach(i => dataTable.Rows.Add(propsplaza.Select(p => p.GetValue(i, null)).ToArray()));
 
             foreach (DataRow indi in dataTable.Rows)
             {
@@ -504,16 +495,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     });
                 }
             }
-
-            //Items.Add(new SelectListItem
-            //{
-            //    Value = "08",
-            //    Text = "Tlalpan"
-            //});
-
             return Json(Items, JsonRequestBehavior.AllowGet);
-
-
         }
 
         private bool ValidarPlazaLocal(string numPlaza)
@@ -583,10 +565,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 time = DateTime.Now;
             }
-
-
-
-
                             
             DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
@@ -651,34 +629,24 @@ namespace ArchivosPlanosWebV2._5.Controllers
             List<HttpPostedFileBase> lista = new List<HttpPostedFileBase>();
             if (file != null)
             {
-
                 foreach (var indi in file)
                 {
                     lista.Add(indi);
                 }
 
-            }
-            //string ruta = Server.MapPath("~/Temp/");
+            }            
             string ruta = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Temp";
-
             if (lista.Count == 5)
             {
-
                 ReEncriptarRepository ce = new ReEncriptarRepository();
                 ce.SeleccionarArchivos(lista, ruta);
                 Response.Write("<script>alert('" + ce.Message + "C:ARCHIVOSPLANOS2\" " + "');</script>");
-
-
             }
             else
 
             {
                 Response.Write("<script>alert('Faltan Archivos compruebe que sean 5');</script>");
             }
-
-
-
-
             return View();
         }
 
@@ -690,19 +658,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 Response.Write("<script>alert('" + "Tienes que generar los archivos primero" + "');</script>");
                 return View("Index");
             }
-
-
             using (ZipFile zip = new ZipFile())
             {
-
-                //C:\Users\Desarrollo3\Desktop\ArchivosPlanosWebModel\ArchivosPlanosWeb\Descargas\Tlalpan\2017\junio\22
-                //000106222017.Z4A
-
-                //C:\Users\Desarrollo3\Desktop\ArchivosPlanosWebModel\ArchivosPlanosWeb\Descargas\Tlalpan\2017\junio\22\SinEncriptar
-                //00010622.Z4A
-
-                //var archivo1 = Server.MapPath("~/Descargas/" + "\\" + "SinEncriptar\\" + nombre1);
-                //var archivo2 = Server.MapPath("~/Descargas/" + nombre2);
 
                 var archivo1 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + "SinEncriptar\\" + Nom1;
                 var archivo2 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + Nom2;
@@ -717,7 +674,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 zip.AddEntry(archivo2_nombre, archivo2_arreglo);
 
                 var nombredelZIp = "MIZIP.zip";
-
 
                 using (MemoryStream output = new MemoryStream())
                 {

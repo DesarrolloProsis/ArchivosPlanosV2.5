@@ -163,44 +163,6 @@ namespace ArchivosPlanosWebV2._5.Services
                     Dbl_registros = 0;
 
                     /*************************************************************/
-
-                    //EN UN DATATABLE ALACENAMOS TODOS LOS CARRILES PARA LA BUSQUEDA RAPIDA 
-
-                    //Connection.Open();
-                    //string Query = @"SELECT t.idTramo, t.nomTramo, p.idPlaza, p.nomPlaza, c.idCarril, c.numCarril, c.numTramo 
-                    //                  FROM TYPE_PLAZA p 
-                    //                  INNER JOIN TYPE_TRAMO t ON t.idenTramo = p.idTramo
-                    //                  INNER JOIN TYPE_CARRIL c ON c.idPlaza = p.idenPlaza
-                    //                  WHERE t.idTramo = @tramo and p.idPlaza = @plaza";
-
-
-                    //string Query = @"SELECT d.ID_Delegacion, d.Nom_Delegacion, p.ID_Plaza, p.Nom_Plaza, c.Num_Gea, c.num_Capufe, c.Num_Tramo " +
-                    //              "FROM TYPE_PLAZA p " +
-                    //              "INNER JOIN TYPE_TRAMO d on d.ID_Delegacion = d.ID_Delegacion " +
-                    //              "INNER JOIN TYPE_CARRIL c on c.ID_Plaza = p.ID_Plaza " +
-                    //              "WHERE d.ID_Delegacion = @tramo and p.ID_Plaza = @plaza";
-
-
-                    //using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                    //{
-                    //    Cmd.Parameters.Add(new SqlParameter("tramo", Tramo));
-                    //    Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro));
-                    //    //Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro.Substring(1, 2)));
-                    //    try
-                    //    {
-                    //        SqlDataAdapter da = new SqlDataAdapter(Cmd);
-                    //        da.Fill(dataTableCa);
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Message = ex.Message + " " + ex.StackTrace;
-                    //    }
-                    //    finally
-                    //    {
-                    //        Cmd.Dispose();
-                    //        Connection.Close();
-                    //    }
-                    //}
                     var idpla = IdPlazaCobro.Substring(1, 2);
                     var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == idpla);
 
@@ -234,16 +196,12 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 /*******************************/
 
-                                dataRows = from myRow in dt.AsEnumerable()
-                                               //where myRow.Field<string>("idCarril") == item["Voie"].ToString().Substring(1, 2)
+                                dataRows = from myRow in dt.AsEnumerable()                                               
                                            where myRow.Field<string>("Num_Gea") == item["Voie"].ToString().Substring(1, 2)
                                            select myRow;
 
                                 foreach (DataRow value in dataRows)
-                                {
-                                    //NumCarril = value["numCarril"].ToString();
-                                    //NumTramo = value["numTramo"].ToString();
-                                    //NumPlaza = value["idPlaza"].ToString();
+                                {                                                                                                            
                                     NumCarril = value["Num_Capufe"].ToString();
                                     NumTramo = value["Num_Tramo"].ToString();
                                     NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -644,16 +602,12 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                     /*******************************/
 
-                                    dataRows = from myRow in dt.AsEnumerable()
-                                                   //where myRow.Field<string>("idCarril") == MtGlb.oDataRow3["Voie"].ToString().Substring(1, 2)
+                                    dataRows = from myRow in dt.AsEnumerable()                                                   
                                                where myRow.Field<string>("Num_Gea") == MtGlb.oDataRow3["Voie"].ToString().Substring(1, 2)
                                                select myRow;
 
                                     foreach (DataRow value in dataRows)
-                                    {
-                                        //NumCarril = value["numCarril"].ToString();
-                                        //NumTramo = value["numTramo"].ToString();
-                                        //NumPlaza = value["idPlaza"].ToString();
+                                    {                                                                                                                        
                                         NumCarril = value["Num_Capufe"].ToString();
                                         NumTramo = value["Num_Tramo"].ToString();
                                         NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
