@@ -375,7 +375,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                         FechaInicio = FechaInicio
                         
                     };
-                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = false }, JsonRequestBehavior.AllowGet);
+                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = true }, JsonRequestBehavior.AllowGet);
                 }
 
 
