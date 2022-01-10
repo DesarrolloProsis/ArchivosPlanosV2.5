@@ -375,8 +375,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                         FechaInicio = FechaInicio
                         
                     };
-
-                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy }, JsonRequestBehavior.AllowGet);
+                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = false }, JsonRequestBehavior.AllowGet);
                 }
 
 
@@ -423,10 +422,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 TurnoId = turno,
                 FechaInicio = DateTime.Now
             };
-            if (CreacionAutomatica)
-                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);
-            else
-                return View(mdl);
+            return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdl, errores = false }, JsonRequestBehavior.AllowGet);
         }
 
 
