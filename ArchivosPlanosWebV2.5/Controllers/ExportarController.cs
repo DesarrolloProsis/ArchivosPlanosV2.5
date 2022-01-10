@@ -216,7 +216,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     ViewBag.Titulo = "Formulario llenado incorrectamente";
                     ViewBag.Mensaje = "Aún puedes generar este archivo<br />";
-                }                           
+                }
                 else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Existen carriles sin cerrar:";
@@ -227,10 +227,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Existen bolsas sin declarar:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                else if(validaciones.ValidarClaseVehiculo(FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                else if (validaciones.ValidarClaseVehiculo(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Faltam Clases Detectadas:";
-                    ViewBag.Mensaje = validaciones.errorFormatClaseDetectada;
+                    string errorFormat = string.Empty;
+                    errorFormat = validaciones.errorFormatClaseDetectada + "<br/>";
+                    errorFormat = errorFormat + validaciones.errorFormatClaseMarcada + "<br/>";
+                    ViewBag.Mensaje = errorFormat;
                 }            
                 else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {

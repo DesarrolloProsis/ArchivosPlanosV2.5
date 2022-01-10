@@ -28,7 +28,7 @@ namespace ArchivosPlanosWebV2._5.Services
         public string errorFormatIdentOperacionAbierto = string.Empty;
 
         public string errorFormatClaseDetectada = string.Empty;
-
+        public string errorFormatClaseMarcada = string.Empty;
         public string Message = string.Empty;
         bool Null = false;
 
@@ -38,6 +38,7 @@ namespace ArchivosPlanosWebV2._5.Services
             string H_inicio_turno = string.Empty;
             string H_fin_turno = string.Empty;
             List<string> erroresClaseDetectada = new List<string>();
+            List<string> erroresClaseMarcada = new List<string>();
 
             if (Str_Turno_block.Substring(0, 2) == "06")
             {
@@ -82,7 +83,7 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
                 {
-                    if (DBNull.Value.Equals(item["CLASE_DETECTADA"]) == true)
+                    if (DBNull.Value.Equals(item["CLASE_DETECTADA"]) == true || DBNull.Value.Equals(item["CLASE_MARCADA"]) == true)
                     {
                         StrQuerys = "SELECT DATE_TRANSACTION, VOIE,  EVENT_NUMBER, FOLIO_ECT, Version_Tarif, ID_PAIEMENT, " +
                                        "TAB_ID_CLASSE, TYPE_CLASSE.LIBELLE_COURT1 AS CLASE_MARCADA,  NVL(TRANSACTION.Prix_Total,0) as MONTO_MARCADO, " +
@@ -105,20 +106,56 @@ namespace ArchivosPlanosWebV2._5.Services
                         if (MtGlb.QueryDataSet3(StrQuerys, "TRANSACTION", ConexionDim) == false)
                         {
                             erroresClaseDetectada.Add(item["EVENT_NUMBER"].ToString());
+                            erroresClaseMarcada.Add(item["EVENT_NUMBER"].ToString());
                         }
+                        else
+                        {
+                            if (DBNull.Value.Equals(MtGlb.oDataRow3["CLASE_DETECTADA"]) == true)
+                            {
+                                erroresClaseDetectada.Add(item["EVENT_NUMBER"].ToString());
+                            }
+                            if (DBNull.Value.Equals(MtGlb.oDataRow3["CLASE_MARCADA"]) == true)
+                            {
+                                erroresClaseMarcada.Add(item["EVENT_NUMBER"].ToString());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (DBNull.Value.Equals(item["CLASE_DETECTADA"]) == true)
+                        {
+                            erroresClaseDetectada.Add(item["EVENT_NUMBER"].ToString());
+                        }
+                        if(DBNull.Value.Equals(item["CLASE_MARCADA"]) == true)
+                        {
+                            erroresClaseMarcada.Add(item["EVENT_NUMBER"].ToString());
+                        }
+
                     }
                 }
             }
-            if (erroresClaseDetectada.Count == 0)
+            if (erroresClaseDetectada.Count == 0 && erroresClaseMarcada.Count == 0)
                 return "OK";
             else
             {
-                string errorFormat = "FALTA CLASE DETECTADA EN LOS SIGUIENTES EVENTOS: ";
-                foreach (string evento in erroresClaseDetectada)
+                if (erroresClaseDetectada.Count > 0)
                 {
-                    errorFormat = errorFormat + evento + " ";
+                    string errorFormat = "FALTA CLASE DETECTADA EN LOS SIGUIENTES EVENTOS: ";
+                    foreach (string evento in erroresClaseDetectada)
+                    {
+                        errorFormat = errorFormat + evento + " ";
+                    }
+                    errorFormatClaseDetectada = errorFormat;
                 }
-                errorFormatClaseDetectada = errorFormat;
+                if(erroresClaseMarcada.Count > 0)
+                {
+                    string errorFormat = "FALTA CLASE MARCADA EN LOS SIGUIENTES EVENTOS: ";
+                    foreach (string evento in erroresClaseDetectada)
+                    {
+                        errorFormat = errorFormat + evento + " ";
+                    }
+                    errorFormatClaseMarcada= errorFormat;
+                }
                 return "STOP";
             }
         }
