@@ -20,9 +20,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         private AppDbContextSQL db2 = new AppDbContextSQL();
 
         private object SubirArchivo;
-
-        public object Paht { get; private set; }
-        //public object Files { get; private set; }
+        public object Paht { get; private set; }        
         public object MapPath { get; private set; }
         public object SubirArchivoModelo { get; private set; }
         public object SubirArchivosMdel { get; private set; }
@@ -32,6 +30,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         public static bool entra = false;
 
         public static string Nom1;
+
         public static string Nom2;
 
         public string ConexionDB = string.Empty;
@@ -255,7 +254,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
                 {
                     ViewBag.Titulo = "Formulario llenado incorrectamente";
-                    ViewBag.Mensaje = "Aún puedes generar este archivo<br />";
+                    ViewBag.Mensaje = "Aún no puedes generar este archivo<br />";
                 }
                 else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
@@ -274,13 +273,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     errorFormat = validaciones.errorFormatClaseDetectada + "<br/>";
                     errorFormat = errorFormat + validaciones.errorFormatClaseMarcada + "<br/>";
                     ViewBag.Mensaje = errorFormat;
-                }            
+                }
                 else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Falta ingresar comentarios:";
                     ViewBag.Mensaje = validaciones.Message;
                 }
-                
                 else if (validacionCajeroAbierto == true || validacionCajeroCerrado == true)
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
@@ -293,12 +291,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                 {
 
-                    //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN                     
-                    archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
-                    archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
+                    //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN
+                    string tramoNew = Delegacion.Value == "06" ? "01" : "03";
+                    archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
+                    archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
+                    archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
+                    archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
+                    archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
 
                     bool Errores = compara.PythonExecuter();
                     if (Errores)
@@ -356,8 +355,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         [HttpPost]
         public ActionResult Comprimir(ControlesExportar model)
-        {
-            //entra = false;
+        {            
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
             Comparar compara = new Comparar();
@@ -373,8 +371,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 entra = false;
             }
-
-            bool CreacionAutomatica = false;
+            
             var DataStrPlaza = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetPlazaCobro().Data); // convert json object to string.
             model.ListPlazaCobro = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrPlaza);
 
@@ -388,7 +385,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
                 DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
-                //DateTime turno3_help = new DateTime(time.Year, time.Month, time.Day, 22, 0, 0);
+                
                 if (time_ >= turno1_ && time_ < turno3_)
                     turnovalid = "1";
                 else if (time_ >= turno2_ && time_ < turno1_.AddDays(1))
@@ -425,8 +422,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     };
                     return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = true }, JsonRequestBehavior.AllowGet);
                 }
-
-
 
                 string Carpeta = @"C:\ArchivosPlanosWeb\";
                 var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
@@ -514,8 +509,12 @@ namespace ArchivosPlanosWebV2._5.Controllers
             foreach (DataRow indi in dataTable.Rows)
             {
                 string numpla;
+                //Validaciones Irapuato
                 if (indi["Num_Plaza"].ToString() == "27" || indi["Num_Plaza"].ToString() == "86" || indi["Num_Plaza"].ToString() == "83")
                     numpla = "1" + indi["Num_Plaza"].ToString();
+                //Validacion Acapulco
+                else if(indi["Num_Plaza"].ToString() == "81" || indi["Num_Plaza"].ToString() == "81" || indi["Num_Plaza"].ToString() == "81")
+                    numpla = "8" + indi["Num_Plaza"].ToString();
                 else
                     numpla = indi["Num_Plaza"].ToString();
 
@@ -535,6 +534,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
+                //Tramo Irapuato
                 { "004",  IPAddress.Parse("10.3.20.214") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
                 { "005",  IPAddress.Parse("10.3.23.111") },
                 { "006",  IPAddress.Parse("10.3.25.111") },
@@ -544,7 +544,18 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 { "070",  IPAddress.Parse("10.3.22.111") },
                 { "127",  IPAddress.Parse("10.3.24.111") },
                 { "183",  IPAddress.Parse("10.3.28.111") },
-                { "186",  IPAddress.Parse("10.3.29.111") }
+                { "186",  IPAddress.Parse("10.3.29.111") },
+                //Tramo Acapulco pendiente de buscar ip
+                { "001'",  IPAddress.Parse("10.3.20.214") },
+                { "001'",  IPAddress.Parse("10.3.23.111") },
+                { "101'",  IPAddress.Parse("10.3.25.111") },
+                { "102",  IPAddress.Parse("10.3.30.111") },
+                { "103",  IPAddress.Parse("10.3.27.111") },
+                { "104",  IPAddress.Parse("10.3.21.111") },
+                { "105",  IPAddress.Parse("10.3.22.111") },
+                { "106",  IPAddress.Parse("10.3.24.111") },
+                { "107",  IPAddress.Parse("10.3.28.111") },
+                { "184",  IPAddress.Parse("10.3.29.111") }
             };
 
             IPHostEntry host;            
@@ -603,7 +614,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
                                                                                 
-
             if (time >= turno1 && time < turno3)
             {
                 Items.Add(new SelectListItem
@@ -619,7 +629,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     Text = "22:00 - 06:00",
                     Value = "1"
                 });
-
                 Items.Add(new SelectListItem
                 {
                     Text = "06:00 - 14:00",
@@ -628,19 +637,16 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             else
             {
-
                 Items.Add(new SelectListItem
                 {
                     Text = "22:00 - 06:00",
                     Value = "1"
                 });
-
                 Items.Add(new SelectListItem
                 {
                     Text = "06:00 - 14:00",
                     Value = "2"
                 });
-
                 Items.Add(new SelectListItem
                 {
                     Text = "14:00 - 22:00",
@@ -649,8 +655,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             return Json(Items, JsonRequestBehavior.AllowGet);
         }
-
-
         public ActionResult Encriptar()
         {
             return View();
@@ -666,7 +670,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     lista.Add(indi);
                 }
-
             }            
             string ruta = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Temp";
             if (lista.Count == 5)
@@ -676,7 +679,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 Response.Write("<script>alert('" + ce.Message + "C:ARCHIVOSPLANOS2\" " + "');</script>");
             }
             else
-
             {
                 Response.Write("<script>alert('Faltan Archivos compruebe que sean 5');</script>");
             }
@@ -693,7 +695,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             using (ZipFile zip = new ZipFile())
             {
-
                 var archivo1 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + "SinEncriptar\\" + Nom1;
                 var archivo2 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + Nom2;
 
