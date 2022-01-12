@@ -398,8 +398,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
                 Turno = model.ListTurno.Find(p => p.Value == turnovalid);
-                FechaInicio = DateTime.Today;
-                CreacionAutomatica = true;
+                FechaInicio = DateTime.Today;                
             }
             else
             {

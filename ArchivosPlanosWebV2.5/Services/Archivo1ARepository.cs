@@ -27,6 +27,7 @@ namespace ArchivosPlanosWebV2._5.Services
         string Carpeta2 = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         string StrIdentificador = "A";
         public string Message = string.Empty;
+        bool RewriteHeader;
 
         public string validacionesNuevas = string.Empty;
 
