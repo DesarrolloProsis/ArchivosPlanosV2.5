@@ -13,13 +13,103 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 
 
-
     <script>
-
-        $(document).ready(function () {
-            $('#TurnoId').val("2");
-
+        $("#mensaje2").hide();
+        $(document).ready(function () {                        
             $(".loading-screen").hide();
+
+            $("#botonPython").click(function () {
+                var delegacion = $("#DelegacionesId").val()
+                var plaza= $("#PlazaCobroId").val()
+                var turno = $("#TurnoId").val()
+                var fecha = $("#FechaInicio").val()
+                $('#mensaje2').hide()
+                $("#OkValidar").hide()
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
+
+                var json = {
+                    DelegacionesId: delegacion,
+                    PlazaCobroId: plaza,
+                    TurnoId: turno,
+                    FechaInicio: fecha
+                }
+                  $.ajax({
+                      url: '@Url.Action("Comprimir", "Exportar")',
+                      type: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(json),
+                      cache: false,
+                      success: function (data) {
+                          console.log(data)
+                          console.log(data.errores)
+                          if (data.errores) {
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").show()
+                              $('#mensaje2').show()
+                          }
+                          else {
+                              $('#mensaje2').show()
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").hide()
+                              $("#OkValidar").show()
+                          }
+                       },
+                      error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+            })
+
+            $("#reValidar").click(function () {
+                var delegacion = $("#DelegacionesId").val()
+                var plaza= $("#PlazaCobroId").val()
+                var turno = $("#TurnoId").val()
+                var fecha = $("#FechaInicio").val()
+                $("#OkValidar").hide()
+                $('#mensaje2').hide()
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
+
+                var json = {
+                    DelegacionesId: delegacion,
+                    PlazaCobroId: plaza,
+                    TurnoId: turno,
+                    FechaInicio: fecha
+                }
+                  $.ajax({
+                      url: '@Url.Action("Comprimir", "Exportar")',
+                      type: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(json),
+                      cache: false,
+                      success: function (data) {                                                    
+                          if (data.errores) {
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").show()
+                              $('#mensaje2').show()                              
+                          }
+                          else {
+                              $('#mensaje2').show()
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").hide()
+                              $("#OkValidar").show()
+                          }
+                       },
+                      error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+            })
+            $("#OkValidar").click(function () {
+                $("#OkValidar").show()
+                $("#reValidar").show()
+                $('#mensaje2').hide();
+            })
 
             $("#FechaInicio").change(function () {
                 var value = $("#FechaInicio").val()
@@ -82,10 +172,7 @@
             LoadDelegaciones();
             LoadPlazas();
             LoadTurnos();
-            Show();
-            console.log(Model)
-            //Mostar();
-
+            Show();                        
         });
 
 
@@ -151,12 +238,6 @@
         });
     }
 
-
-        //$("#top2").click(function () {
-        //    $("#top3").css("visibility", "visible");
-        //});
-
-
     </script>
 
     @using (Html.BeginForm("Index", "Exportar", FormMethod.Post))
@@ -216,7 +297,7 @@
             </div>
 
         </div>
-        
+
         <div class="loading-screen">
             <div class="cargar">
                 <span class="loader"></span>
@@ -225,23 +306,9 @@
                 <span class="loader"></span>
             </div>
         </div>
-            
-       
+
+
     }
-
-
-    @*@using (Html.BeginForm("Descargar", "Exportar", FormMethod.Post))
-        {
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <input type="submit" class="btn btn-primary crear" value="Descargar archivo" id="top3" />
-
-                    </div>
-                </div>
-                </div>
-         }*@
-
 
     @if (ViewBag.List != null)
     {
@@ -282,15 +349,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>
-                        @*<input class="btn-default" type="button" id="Subir" value="Mandar Comentario" />*@
+                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @if (ViewBag.Mensaje != null)
+    @if (ViewBag.Mensaje != null && ViewBag.Python != true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
             <div class="modal-dialog" role="document">
@@ -312,6 +378,44 @@
         </div>
     }
 
+    @if (ViewBag.Mensaje != null && ViewBag.Python == true)
+    {
+        <div class="modal" tabindex="-1" role="dialog" id="mensaje">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ViewBag.Titulo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@Html.Raw(ViewBag.Mensaje)</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="botonPython" type="button" class="btn btn-secondary" data-dismiss="modal">ReValidar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
 
 }
 
+<div tabindex="-1" role="dialog" id="mensaje2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="tituloModal" class="modal-title"></h5>                                
+            </div>
+            <div class="modal-body">
+                <p id="mensajeModal"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
+                <button id="OkValidar" type="button" class="btn btn-secondary">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

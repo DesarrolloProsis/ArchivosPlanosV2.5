@@ -25,15 +25,14 @@
                 var fecha = $("#FechaInicio").val()
                 $('#mensaje2').hide()
                 $("#OkValidar").hide()
-                $("#mensajeModal").append("")
-                $("#tituloModal").append("")
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
 
                 var json = {
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
                     TurnoId: turno,
                     FechaInicio: fecha
-
                 }
                   $.ajax({
                       url: '@Url.Action("Comprimir", "Exportar")',
@@ -71,15 +70,14 @@
                 var fecha = $("#FechaInicio").val()
                 $("#OkValidar").hide()
                 $('#mensaje2').hide()
-                $("#mensajeModal").append("")
-                $("#tituloModal").append("")
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
 
                 var json = {
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
                     TurnoId: turno,
                     FechaInicio: fecha
-
                 }
                   $.ajax({
                       url: '@Url.Action("Comprimir", "Exportar")',

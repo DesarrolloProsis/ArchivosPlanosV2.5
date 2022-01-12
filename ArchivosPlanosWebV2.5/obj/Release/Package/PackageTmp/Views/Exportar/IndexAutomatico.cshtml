@@ -25,38 +25,83 @@
                 url: '@Url.Action("Index", "Exportar")',
                 type: "POST",
                 cache: false,
-                success: function (data) {
-                    console.log(data)
-                    $("#mensajeModal").append(data.mensaje)
-                    $("#tituloModal").append(data.titulo)
+                success: function (data) {                                                           
                     $("#mensaje").show()
+                    if (data.errores) {
+                        $("#mensajeModal").append(data.mensaje)
+                        $("#tituloModal").append(data.titulo)
+                        $("#reValidar").show()
+                        $("#OkValidar").hide()
+                    }
+                    else {                        
+                        $("#mensajeModal").append(data.mensaje)
+                        $("#tituloModal").append(data.titulo)
+                        $("#reValidar").hide()
+                        $("#OkValidar").show()
+                    }
                 },
                 error: function (ex) {
                     alert("Error!!!" + ex)
                 },
             });
+            $("#reValidar").click(function () {
+                $("#mensaje").hide()
+                $("#tituloModal").empty()
+                $("#mensajeModal").empty()
+                var json = {
+                    DelegacionesId: null,
+                    PlazaCobroId: null,
+                    TurnoId: null,
+                    FechaInicio: null
+
+                }
+                $.ajax({
+                    url: '@Url.Action("Comprimir", "Exportar")',
+                    type: "POST",
+                    cache: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        console.log(data)
+                        $("#mensaje").show()
+                        if (data.errores) {
+                            $("#mensajeModal").append(data.mensaje)
+                            $("#tituloModal").append(data.titulo)
+                            $("#reValidar").show()
+                            $("#OkValidar").hide()
+                        }
+                        else {
+                            $("#mensajeModal").append(data.mensaje)
+                            $("#tituloModal").append(data.titulo)
+                            $("#reValidar").hide()
+                            $("#OkValidar").show()
+                        }
+                    },
+                    error: function (ex) {
+                        alert("Error!!!" + ex)
+                    },
+                });
+            })
         })
     </script>
 }
 
 <h2>IndexAutomatico</h2>
-
-
-
     <div tabindex="-1" role="dialog" id="mensaje">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 id="tituloModal" class="modal-title"></h5>
-                    <button id="close" type="button">
+                    @*<button id="close" type="button">
                         @Html.ActionLink("X", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })
-                    </button>
+                    </button>*@
                 </div>
                 <div class="modal-body">
                     <p id="mensajeModal"></p>
                 </div>
                 <div class="modal-footer">
-                    <button id="close2" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
+                    <button id="OkValidar" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
+                    <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
                 </div>
             </div>
         </div>

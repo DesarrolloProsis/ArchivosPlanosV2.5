@@ -184,7 +184,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             try
             {
-                bool validacionCajeroCerrado = validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB).Equals("STOP");
+                bool validacionCajeroCerrado = false;//validaciones.ValidarCajeroEncargadoCerrado(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB).Equals("STOP");
                 bool validacionCajeroAbierto = validaciones.ValidarCajeroEncargadoAbierto(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), ConexionDB).Equals("STOP");
                 if (Delegacion == null)
                 {
@@ -271,7 +271,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                             TurnoId = Turno.Value,
                             FechaInicio = FechaInicio
                         };
-                        return View(mdlpy);
+                        if (CreacionAutomatica)
+                            return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, errores = ViewBag.Python }, JsonRequestBehavior.AllowGet);
+                        else
+                            return View(mdlpy);
                     }
 
                     encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
@@ -309,7 +312,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 FechaInicio = DateTime.Now
             };
             if(CreacionAutomatica)
-                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, error = ViewBag.Error }, JsonRequestBehavior.AllowGet);            
+                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, errores = ViewBag.Error }, JsonRequestBehavior.AllowGet);            
             else
                 return View(mdl);
         }
@@ -392,13 +395,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
                 string[] nueveA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
                 var DosA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("2A")).ToList();
-                string[] dosA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                string[] dosA = DosA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
                 var UnoA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("1A")).ToList();
-                string[] unoA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                string[] unoA = UnoA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
                 var PA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("PA")).ToList();
-                string[] pA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                string[] pA = PA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
                 var II = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("II")).ToList();
-                string[] ii = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
+                string[] ii = II[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
 
                 encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                 encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
