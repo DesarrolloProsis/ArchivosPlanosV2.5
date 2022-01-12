@@ -474,9 +474,10 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     if (MtGlb.QueryDataSet2(StrQuerys, "Asig_Carril", ConexionDim))
                     {
+                        
                         IdentOperacion = MtGlb.oDataRow2["OPERATION_ID"].ToString();
                         Str_encargado = MtGlb.oDataRow2["STAFF_NUMBER"].ToString();
-                        StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();                        
+                        StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();                       
                         Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
 
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
@@ -492,7 +493,11 @@ namespace ArchivosPlanosWebV2._5.Services
                                     {
                                         Cajero = item1[0].ToString();
                                     }
-                                }                                
+                                }
+                                else
+                                {
+                                    Cajero = string.Empty;
+                                }
 
                             }
                             catch (Exception ex)
@@ -515,13 +520,17 @@ namespace ArchivosPlanosWebV2._5.Services
                             {
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
                                 sqlDataAdapter.Fill(dataSet, "STRENCARGADO_TURNO");
-                                if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count != 0)
+                                if (dataSet.Tables["STRENCARGADO_TURNO"].Rows.Count > 0)
                                 {
                                     foreach (DataRow item1 in dataSet.Tables["STRENCARGADO_TURNO"].Rows)
                                     {
                                         EncargadoTurno = item1[0].ToString();
                                     }
-                                }                                    
+                                }
+                                else
+                                {
+                                    Cajero = string.Empty;
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -535,24 +544,28 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
 
                     }
-                    else
+                    if(Cajero == string.Empty)
                     {
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
-
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        StrEncargadoTurno = item["Matricule"].ToString();
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                         {
-                            Cmd.Parameters.Add(new SqlParameter("numGEa", item["Matricule"].ToString()));
+                            Cmd.Parameters.Add(new SqlParameter("numGea", item["Matricule"].ToString()));
                             try
-                            {
+                            {                                
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
                                 sqlDataAdapter.Fill(dataSet, "MATRICULE");
-                                if (dataSet.Tables["MATRICULE"].Rows.Count != 0)
+                                if (dataSet.Tables["MATRICULE"].Rows.Count > 0)
                                 {
                                     foreach (DataRow item1 in dataSet.Tables["MATRICULE"].Rows)
                                     {
                                         Cajero = item1[0].ToString();
                                     }
-                                }                                                                
+                                }
+                                else
+                                {
+                                    Cajero = string.Empty;
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -565,38 +578,17 @@ namespace ArchivosPlanosWebV2._5.Services
                             }
                         }
                     }
-                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS
-                    // var id_pla = IdPlazaCobro.Substring(1, 2);                    
-                    // var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
-                    // var props = typeof(Type_Carril).GetProperties();
-                    // dt = new DataTable("Tabla_Carriles");
-                    // dt.Columns.AddRange(
-                    //     props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                    // );
-                    // Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                    //    i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                    //);
+                    //VERIFICAMOS EL CAJERO Y ENCARGADO GUARDAMOS EL EVENTO AL QUE LE FALTAN DATOS              
                     string NumCarril = Convert.ToString(item["Voie"]);
-                    //dataRows = from myRow in dt.AsEnumerable()
-                    //           where myRow.Field<string>("Num_Gea") == Convert.ToString(item["Voie"]).Substring(1, 2)
-                    //           select myRow;
-
-                    //foreach (DataRow value in dataRows)
-                    //{                     
-                    //    NumCarril = value["Num_Capufe"].ToString();                                          
-                    //}
-                    if (Cajero == string.Empty &&  EncargadoTurno == string.Empty)
+                  
+                    if (Cajero == string.Empty && EncargadoTurno == string.Empty)
                     {
                         erresCajeroEncargadoAbierto.Add($"{NumCarril}-{Str_encargado}-{StrEncargadoTurno}->Ambos");
                     }
-                    else if(Cajero == string.Empty)
-                    {
-                        erresCajeroEncargadoAbierto.Add($"{NumCarril}-{Str_encargado}->Cajero");
-                    }
-                    else if(EncargadoTurno == string.Empty)
+                    else if(Cajero != string.Empty && EncargadoTurno == string.Empty)
                     {
                         erresCajeroEncargadoAbierto.Add($"{NumCarril}-{StrEncargadoTurno}->Encargado");
-                    }
+                    }                   
                     else if(IdentOperacion == string.Empty)
                     {
                         erresIdentOperacionAbierto.Add($"{NumCarril}");
