@@ -112,7 +112,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Nombre_archivo = "0001";
                     else if (IdPlazaCobro == "109")
                         Nombre_archivo = "001B";
@@ -136,7 +136,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 Cabecera = CabeceraTag;
                 if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Cabecera = Cabecera + "0001";
                     else if (IdPlazaCobro == "109")
                         Cabecera = Cabecera + "001B";
@@ -428,66 +428,13 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 if (MtGlb.QueryDataSet(StrQuerys, "FIN_POSTE", ConexionDim))
                 {
-                    /************************************************************/
-
-                    //TRAEMOS DE LA BD SQLSERVER TODOS LOS CARRILES POR PLAZA 
-                    //Connection.Open();
-
-                    //Query = @"SELECT t.idTramo, t.nomTramo, p.idPlaza, p.nomPlaza, c.idCarril, c.numCarril, c.numTramo 
-                    //                  FROM TYPE_PLAZA p 
-                    //                  INNER JOIN TYPE_TRAMO t ON t.idenTramo = p.idTramo
-                    //                  INNER JOIN TYPE_CARRIL c ON c.idPlaza = p.idenPlaza
-                    //                  WHERE t.idTramo = @tramo and p.idPlaza = @plaza";
-
-                    ///NUEVO QUERY
-
-                    //Query = @"SELECT d.ID_Delegacion, d.Nom_Delegacion, p.ID_Plaza, p.Nom_Plaza, c.Num_Gea, c.num_Capufe, c.Num_Tramo " +
-                    //              "FROM TYPE_PLAZA p " +
-                    //              "INNER JOIN TYPE_TRAMO d on d.ID_Delegacion = d.ID_Delegacion " +
-                    //              "INNER JOIN TYPE_CARRIL c on c.ID_Plaza = p.ID_Plaza " +
-                    //              "WHERE d.ID_Delegacion = @tramo and p.ID_Plaza = @plaza";
-
-                    //using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                    //{
-                    //    Cmd.Parameters.Add(new SqlParameter("tramo", Tramo));
-                    //    Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro));
-                    //    //Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro.Substring(1, 2)));
-                    //    //Cmd.Parameters.Add(new SqlParameter("carril", Convert.ToString(MtGlb.oDataRow["Voie"]).Substring(1, 2)));
-                    //    try
-                    //    {
-                    //        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
-                    //        sqlDataAdapter.Fill(dataTableCa);
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Message = ex.Message + " " + ex.StackTrace;
-                    //    }
-                    //    finally
-                    //    {
-                    //        Cmd.Dispose();
-                    //    }
-                    //
-
-                    //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
-                    var id_pla = IdPlazaCobro.Substring(1, 2);
-                    //var Carriles_Plazas = db.Type_Carril.Join(db.Type_Plaza, car => car.Plaza_Id, pla => pla.Id_Plaza, (car, pla) => new { car, pla }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                    var id_pla = IdPlazaCobro.Substring(1, 2);                    
                     var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
 
                     var props = typeof(Type_Carril).GetProperties();
                     dt = new DataTable("Tabla_Carriles");
-                    dt.Columns.AddRange(
-                        props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                    );
-
-                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                        i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                    );
-
-                    //foreach (var item in Carriles_Plazas.FirstOrDefault().car)
-                    //{
-                    //    dt.Rows.Add(props.Select(p => p.GetValue(item, null)).ToArray());
-                    //}
-
+                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));              
                     /************************************************************/
 
                     foreach (DataRow item in MtGlb.Ds.Tables["FIN_POSTE"].Rows)
@@ -516,27 +463,20 @@ namespace ArchivosPlanosWebV2._5.Services
                         NumTramo = string.Empty;
                         NumPlaza = string.Empty;
                         foreach (DataRow value in dataRows)
-                        {
-                            //NumCarril = value["numCarril"].ToString();
-                            //NumTramo = value["numTramo"].ToString();
-                            //NumPlaza = value["idPlaza"].ToString();
+                        {                         
                             NumCarril = value["Num_Capufe"].ToString();
                             NumTramo = value["Num_Tramo"].ToString();
                             NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
-
                         }
                         
                         /*************************************************/
-
                         if (dataRows.Count() != 0)
-                        {
-                            
+                        {                            
                             Str_detalle = Str_detalle + NumTramo + ",";
                             Str_detalle = Str_detalle + NumCarril + ",";
                         }
                         else
-                        {
-                            
+                        {                            
                             Str_detalle = Str_detalle + ",,";
                         }
 
@@ -567,13 +507,8 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             Str_encargado = MtGlb.oDataRow2["STAFF_NUMBER"].ToString();
                             StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
-
-                            //VERIFICAR SI EL CAJERO Y EL CAJERO TURNO EXISTEN
-
-                            //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
+                            //VERIFICAR SI EL CAJERO Y EL CAJERO TURNO EXISTEN                            
                             Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
-
-
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
@@ -715,13 +650,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Message = Str_detalle + "falta operador y encargado de turno ";
                                     validacionesNuevas = "FALTA EL ENCARGADO DE TURNO Y EL OPERADOR DE TURNO";
                                 }
-                            }
-                            ////SI NO ENCONTRO UN ENCARGADO POR ENDE NO ENCONTRO UN ENCARGADO DE TURNO; AGREGAMOS UNA "," SOLAMENTE
-                            //if (Str_encargado == "Pendiente," )
-                            //{
-                            //    Str_detalle = Str_detalle + ",";
-                            //    Str_detalle_tc = Str_detalle_tc + ",";
-                            //}
+                            }                     
                         }
                         else
                         {
@@ -749,11 +678,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                 break;
                             else
                                 EncargadoPlaza = indi[0].ToString();
-                        }
-                        //Str_detalle = Str_detalle + EncargadoPlaza + ",";
+                        }                        
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
                         Str_detalle_tc = Str_detalle_tc + EncargadoPlaza + ",";
-
                         //No. de control de preliquidación  	Entero 	>>>9 
                         strSac = MtGlb.IIf(DBNull.Value.Equals((item["Sac"])), "", item["Sac"].ToString());
                         strSac = strSac.Replace("A", "");
@@ -781,9 +708,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 }
 
                 /***************************************************************************************************************************************/
-
                 //INICIO CARRILES CERRADOS
-
                 StrQuerys = "SELECT LANE, BEGIN_DHM, END_DHM FROM CLOSED_LANE_REPORT " +
                             "WHERE BEGIN_DHM IN( " +
                                 "SELECT BEGIN_DHM " +
@@ -847,7 +772,6 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
                             }
                         }
-
                         Str_detalle = string.Empty;
 
                         //Fecha base de operación 	Fecha 	dd/mm/aaaa
@@ -865,8 +789,7 @@ namespace ArchivosPlanosWebV2._5.Services
                             Str_detalle = Str_detalle + Convert.ToDateTime(item["END_DHM"]).ToString("HHmmss") + ",";
 
                         /*************************************************/
-                        dataRows = from myRow in dt.AsEnumerable()
-                                       //where myRow.Field<string>("idCarril") == Convert.ToString(item["LANE"]).Substring(1, 2)
+                        dataRows = from myRow in dt.AsEnumerable()                                       
                                    where myRow.Field<string>("Num_Gea") == Convert.ToString(item["LANE"]).Substring(1, 2)
                                    select myRow;
 
@@ -874,10 +797,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         NumTramo = string.Empty;
                         NumPlaza = string.Empty;
                         foreach (DataRow value in dataRows)
-                        {
-                            //NumCarril = value["numCarril"].ToString();
-                            //NumTramo = value["numTramo"].ToString();
-                            //NumPlaza = value["idPlaza"].ToString();
+                        {                 
                             NumCarril = value["Num_Capufe"].ToString();
                             NumTramo = value["Num_Tramo"].ToString();
                             NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
@@ -969,7 +889,6 @@ namespace ArchivosPlanosWebV2._5.Services
                             //No. empleado encargado de turno 	Entero 	>>>>>9 	
                             Str_detalle = Str_detalle + EncargadoTurno + ",";
                         }
-
                         //No. empleado Admón. Gral. 	Entero 	>>>>>9 	
                         Query = "Select MAT_ADMIN From PTM_LASS ";
 
@@ -986,15 +905,12 @@ namespace ArchivosPlanosWebV2._5.Services
                                     break;
                                 }
                             }
-
                             if (EncargadoPlaza != string.Empty)
                                 break;
                             else
                                 EncargadoPlaza = indi[0].ToString();
                         }
-
                         Str_detalle = Str_detalle + EncargadoPlaza + ",";
-
                         //No. de control de preliquidación  	Entero 	>>>9 	
                         Str_detalle = Str_detalle + ",";
 
@@ -1002,9 +918,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         Osw2.WriteLine(Str_detalle);
                     }
                 }
-
                 /************************************************/
-
                 //CARRILES CERRADOS DOS
                 StrQuerys = "SELECT VOIE, NUM_SEQUENCE FROM SEQ_VOIE_TOD ";
 
@@ -1015,6 +929,12 @@ namespace ArchivosPlanosWebV2._5.Services
                 {
                     foreach (DataRow item1 in MtGlb.Ds1.Tables["SEQ_VOIE_TOD"].Rows)
                     {
+                        //CODIGO ENCONTRADO EN VERSION MEXICO ACAPULCO POR VERIFICAR SI FUNCIONA PARA ALGO
+                        // if(Convert.ToString(item1["VOIE"]).Trim().Length < 3){
+                        //     Dbl_registros--;
+                        //     RewriteHeader = true;
+                        //     continue;
+                        // }
                         StrQuerys = "SELECT	* FROM 	FIN_POSTE " +
                                     "WHERE	VOIE = '" + item1["VOIE"] + "' " +
                                     "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
@@ -1043,11 +963,9 @@ namespace ArchivosPlanosWebV2._5.Services
                                 Str_detalle = Str_detalle + _H_inicio_turno.ToString("HHmmss") + ",";
                                 //Hora final de operación 	Caracter 	hhmmss 	
                                 Str_detalle = Str_detalle + _H_fin_turno.AddSeconds(1).ToString("HHmmss") + ",";
-                                //                        ''Número de carril 	Entero 	>>9	Valores posibles: Tabla 13 - Ejemplo del Catálogo de Carriles y Tramos por Plaza de Cobro.
-
+                                //''Número de carril 	Entero 	>>9	Valores posibles: Tabla 13 - Ejemplo del Catálogo de Carriles y Tramos por Plaza de Cobro.
                                 /*************************************************/
-                                dataRows = from myRow in dt.AsEnumerable()
-                                               //where myRow.Field<string>("idCarril") == Convert.ToString(item1["VOIE"]).Substring(1, 2)
+                                dataRows = from myRow in dt.AsEnumerable()                                               
                                            where myRow.Field<string>("Num_Gea") == Convert.ToString(item1["VOIE"]).Substring(1, 2)
                                            select myRow;
 
@@ -1055,10 +973,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 NumTramo = string.Empty;
                                 NumPlaza = string.Empty;
                                 foreach (DataRow value in dataRows)
-                                {
-                                    //NumCarril = value["numCarril"].ToString();
-                                    //NumTramo = value["numTramo"].ToString();
-                                    //NumPlaza = value["idPlaza"].ToString();
+                                {                                                                                                            
                                     NumCarril = value["Num_Capufe"].ToString();
                                     NumTramo = value["Num_Tramo"].ToString();
                                     NumPlaza = value.Field<Type_Plaza>("Type_plaza").Num_Plaza.ToString();
@@ -1076,7 +991,6 @@ namespace ArchivosPlanosWebV2._5.Services
                                     Errores = "No se encontró tramo y carril de " + Str_detalle + "\n";
                                     Str_detalle = Str_detalle + ",,";
                                 }
-
 
                                 //Cuerpo 	Caracter 	X(1)	Valores posibles: Tabla 13 - Ejemplo del Catálogo de Carriles y Tramos por Plaza de Cobro.
                                 Str_detalle = Str_detalle + item1["VOIE"].ToString().Substring(0, 1) + ",";
@@ -1159,7 +1073,6 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                     }
                 }
-
                 /************************************************/
 
                 //CERRAMOS CONEXIONES 
@@ -1170,6 +1083,58 @@ namespace ArchivosPlanosWebV2._5.Services
                 Osw.Close();
                 Osw2.Flush();
                 Osw2.Close();
+                //CODIGO ENCONTRADO EN LA RAMA DE MEXICO ACAPULCO VALIDAR SI SIRVE DE ALGO
+                // if (RewriteHeader)
+                // {
+                //     string[] lines = System.IO.File.ReadAllLines(Carpeta + Nombre_archivo);
+                //     System.IO.File.WriteAllText(Carpeta + Nombre_archivo, String.Empty);
+                //     StreamWriter Nsw = new StreamWriter(Carpeta + Nombre_archivo);
+
+                //     for (int i = 1; i <= lines.Length; i++)
+                //     {
+                //         if (i == 1)
+                //         {
+                //             String NewCabecera = CabeceraTag;
+                //             if (IdPlazaCobro.Length == 3)
+                //             {
+                //                 if (IdPlazaCobro == "008" || IdPlazaCobro == "108")
+                //                     NewCabecera = NewCabecera + "0001";
+                //                 else if (IdPlazaCobro == "109")
+                //                     NewCabecera = NewCabecera + "001B";
+                //                 else if (IdPlazaCobro == "107")
+                //                     NewCabecera = NewCabecera + "0107";
+                //                 else if (IdPlazaCobro == "061")
+                //                     NewCabecera = NewCabecera + "061B";
+                //                 else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
+                //                     NewCabecera = NewCabecera + "01" + IdPlazaCobro.Substring(1, 2);
+
+                //                 else NewCabecera = NewCabecera + "0" + IdPlazaCobro;
+                //             }
+
+                //             NewCabecera = NewCabecera + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + "." + Int_turno + "1" + StrIdentificador + FechaInicio.ToString("dd/MM/yyyy") + Int_turno;
+
+                //             if (Convert.ToString(Dbl_registros).Length == 1)
+                //                 No_registros = "0000" + Dbl_registros;
+                //             else if (Convert.ToString(Dbl_registros).Length == 2)
+                //                 No_registros = "000" + Dbl_registros;
+                //             else if (Convert.ToString(Dbl_registros).Length == 3)
+                //                 No_registros = "00" + Dbl_registros;
+                //             else if (Convert.ToString(Dbl_registros).Length == 4)
+                //                 No_registros = "0" + Dbl_registros;
+                //             else if (Convert.ToString(Dbl_registros).Length == 5)
+                //                 No_registros = Dbl_registros.ToString();
+
+                //             NewCabecera += No_registros;
+                //             Nsw.WriteLine(NewCabecera);
+                //         }
+                //         else
+                //         {
+                //             Nsw.WriteLine(lines[i - 1]);
+                //         }
+                //     }
+                //     Nsw.Flush();
+                //     Nsw.Close();
+                // }
 
                 if (Message == string.Empty)
                 {
