@@ -107,7 +107,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Nombre_archivo = "0001";
                     else if (IdPlazaCobro == "109")
                         Nombre_archivo = "001B";
@@ -174,6 +174,26 @@ namespace ArchivosPlanosWebV2._5.Services
                             "OR TRANSACTION.Id_Voie = '4' " +
                             "OR TRANSACTION.Id_Voie = 'X') AND ID_VOIE <> 2" +
                             "ORDER BY DATE_TRANSACTION";
+
+                if(Cabecera == "01"){
+                    StrQuerys = "SELECT DATE_TRANSACTION, VOIE,ID_VOIE,  EVENT_NUMBER, FOLIO_ECT, Version_Tarif, ID_PAIEMENT, " +
+                                "TAB_ID_CLASSE, TYPE_CLASSE.LIBELLE_COURT1 AS CLASE_MARCADA,  NVL(TRANSACTION.Prix_Total,0) as MONTO_MARCADO, " +
+                                "ACD_CLASS, TYPE_CLASSE_ETC.LIBELLE_COURT1 AS CLASE_DETECTADA, NVL(TRANSACTION.transaction_CPT1 / 100, 0) as MONTO_DETECTADO, CONTENU_ISO, CODE_GRILLE_TARIF, ID_OBS_MP, ID_OBS_TT, ISSUER_ID, " +
+                                "TYPE_CLASSE_PRE.LIBELLE_COURT1 AS CLASE_PRE, TRANSACTION.ID_CLASSE AS ID_CLASE_PRE, CODE1 AS PRE_EJES_EX " +
+                                "FROM TRANSACTION " +
+                                "JOIN TYPE_CLASSE ON TAB_ID_CLASSE = TYPE_CLASSE.ID_CLASSE  " +
+                                "LEFT JOIN TYPE_CLASSE   TYPE_CLASSE_ETC  ON ACD_CLASS = TYPE_CLASSE_ETC.ID_CLASSE " +
+                                "LEFT JOIN TYPE_CLASSE   TYPE_CLASSE_PRE  ON TRANSACTION.ID_CLASSE = TYPE_CLASSE_PRE.ID_CLASSE " +
+                                "WHERE " +
+                                "(DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) AND (DATE_DEBUT_POSTE <= TO_DATE('" + _H_fin_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
+                                " AND  ID_PAIEMENT  <> 0 " +
+                                "AND (TRANSACTION.Id_Voie = '1' " +
+                                "OR TRANSACTION.Id_Voie = '2' " +
+                                "OR TRANSACTION.Id_Voie = '3' " +
+                                "OR TRANSACTION.Id_Voie = '4' " +
+                                "OR TRANSACTION.Id_Voie = 'X') " +
+                                "ORDER BY DATE_TRANSACTION";    
+                }        
 
 
                 if (MtGlb.QueryDataSet(StrQuerys, "TRANSACTION", ConexionDim))
@@ -244,7 +264,8 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
                     {
-                        if (item["ID_VOIE"].ToString() == "2")
+
+                        if (item["ID_VOIE"].ToString() == "2" && CabeceraTag == "03")
                             continue;
 
                         Str_detalle = string.Empty;
