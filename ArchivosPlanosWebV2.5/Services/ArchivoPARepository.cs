@@ -131,7 +131,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 Cabecera = CabeceraTag;
                 if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Cabecera = Cabecera + "0001";
                     else if (IdPlazaCobro == "109")
                         Cabecera = Cabecera + "001B";
@@ -175,7 +175,7 @@ namespace ArchivosPlanosWebV2._5.Services
                             "OR TRANSACTION.Id_Voie = 'X') AND ID_VOIE <> 2" +
                             "ORDER BY DATE_TRANSACTION";
 
-                if(Cabecera == "01"){
+                if(Tramo == "01"){
                     StrQuerys = "SELECT DATE_TRANSACTION, VOIE,ID_VOIE,  EVENT_NUMBER, FOLIO_ECT, Version_Tarif, ID_PAIEMENT, " +
                                 "TAB_ID_CLASSE, TYPE_CLASSE.LIBELLE_COURT1 AS CLASE_MARCADA,  NVL(TRANSACTION.Prix_Total,0) as MONTO_MARCADO, " +
                                 "ACD_CLASS, TYPE_CLASSE_ETC.LIBELLE_COURT1 AS CLASE_DETECTADA, NVL(TRANSACTION.transaction_CPT1 / 100, 0) as MONTO_DETECTADO, CONTENU_ISO, CODE_GRILLE_TARIF, ID_OBS_MP, ID_OBS_TT, ISSUER_ID, " +
@@ -265,7 +265,7 @@ namespace ArchivosPlanosWebV2._5.Services
                     foreach (DataRow item in MtGlb.Ds.Tables["TRANSACTION"].Rows)
                     {
 
-                        if (item["ID_VOIE"].ToString() == "2" && CabeceraTag == "03")
+                        if (item["ID_VOIE"].ToString() == "2" && Tramo == "03")
                             continue;
 
                         Str_detalle = string.Empty;
