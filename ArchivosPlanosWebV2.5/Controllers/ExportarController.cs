@@ -252,6 +252,18 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 }
                 else
                 {
+                    string Carpeta = @"C:\ArchivosPlanosWeb\";
+                    var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();      
+                    var DosA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("2A")).ToList();  
+                    var UnoA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("1A")).ToList(); 
+                    var PA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("PA")).ToList();
+                    var II = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("II")).ToList();
+
+                    compara.Borrar(NueveA);
+                    compara.Borrar(DosA);
+                    compara.Borrar(UnoA);
+                    compara.Borrar(PA);
+                    compara.Borrar(II);
 
                     //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN                     
                     archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
@@ -260,7 +272,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), "03", ConexionDB);
 
-                    bool Errores = compara.PythonExecuter();
+                    bool Errores = compara.Executer();
                     if (Errores)
                     {
                         ViewBag.Titulo = "Errores en los archivos planos python";
