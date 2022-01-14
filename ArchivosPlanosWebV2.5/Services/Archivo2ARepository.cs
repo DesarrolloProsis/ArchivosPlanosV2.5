@@ -403,7 +403,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 string VAR_08 = string.Empty;
                 string VAR_02 = string.Empty;
 
-                double VAR_11 = 0;
+                float VAR_11 = 0;//double VAR_11 = 0; //se cambia double por float
                 double VAR_12 = 0;
                 double VAR_13 = 0;
                 double VAR_14 = 0;
@@ -830,7 +830,17 @@ namespace ArchivosPlanosWebV2._5.Services
 
                         if (MtGlb.QueryDataSet2(StrQuerys, "REDDITION", ConexionDim))
                         {
-                            VAR_11 = Convert.ToInt64(MtGlb.oDataRow2["Expr3"].ToString());
+                            //Validacion solo presente en tramo acapulco quiza sea version de la base que manda , en vez de .
+                            string Expr3 = MtGlb.oDataRow2["Expr3"].ToString();
+                            if (Expr3.Contains(',') && Tramo == "01")
+                            {
+                                Expr3 = Expr3.Replace(",",".");
+                                VAR_11 = float.Parse(Expr3, System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                            else
+                            {
+                                VAR_11 = float.Parse(MtGlb.oDataRow2["Expr3"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
+                            }                            
                             VAR_58 = Convert.ToInt64(MtGlb.oDataRow2["Expr6"].ToString());
 
                             if (!DBNull.Value.Equals(MtGlb.oDataRow2["RED_CPT21"]))
