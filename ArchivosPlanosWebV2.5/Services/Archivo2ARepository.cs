@@ -866,7 +866,6 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
 
                         //---------------------------------------
-
                         //VEHICULOS RESIDENTES PAGO INMEDIATO
                         DateTime _Dt_ini_poste = DateTime.ParseExact(Dt_ini_poste, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                         DateTime _Dt_fin_poste = DateTime.ParseExact(Dt_fin_poste, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
