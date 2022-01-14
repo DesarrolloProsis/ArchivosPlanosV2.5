@@ -94,7 +94,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Nombre_archivo = "0001";
                     else if (IdPlazaCobro == "109")
                         Nombre_archivo = "001B";
@@ -117,7 +117,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 Cabecera = CabeceraTag;
                 if (IdPlazaCobro.Length == 3)
                 {
-                    if (IdPlazaCobro == "108")
+                    if (IdPlazaCobro == "108" || IdPlazaCobro == "008")
                         Cabecera = Cabecera + "0001";
                     else if (IdPlazaCobro == "109")
                         Cabecera = Cabecera + "001B";
