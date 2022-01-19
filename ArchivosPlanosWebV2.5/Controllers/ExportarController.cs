@@ -349,7 +349,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 entra = false;
             }
 
-            bool CreacionAutomatica = false;
+                bool CreacionAutomatica = false;
             var DataStrPlaza = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetPlazaCobro().Data); // convert json object to string.
             model.ListPlazaCobro = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrPlaza);
 
@@ -382,6 +382,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
                 FechaInicio = model.FechaInicio;
             }
+
+            if (Plaza.Value.Length == 2)
+                Plaza.Value = "0" + Plaza.Value;
 
             try
             {
