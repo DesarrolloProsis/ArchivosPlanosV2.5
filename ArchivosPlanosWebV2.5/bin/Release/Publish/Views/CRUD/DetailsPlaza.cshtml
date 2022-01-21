@@ -1,0 +1,47 @@
+﻿@model ArchivosPlanosWebV2._5.Models.Type_Plaza
+@{
+    ViewBag.Title = "Detalles de Plaza";
+}
+<div class="container">
+    <div class="card shadow-lg" style="margin-top:1rem !important">
+        <div class="card-body">
+            <h2>Detalles de Plaza</h2>
+
+            <div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Type_Delegacion.Nom_Delegacion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Type_Delegacion.Nom_Delegacion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Num_Plaza)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Num_Plaza)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nom_Plaza)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Nom_Plaza)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Editar Plaza", "EditPlaza", new { id = Model.Id_Plaza }, new { type = "button", @class = "btn btn-success" })
+
+            </p>
+            @Html.ActionLink("Regresar a Plaza", "VerPlaza", new { Id_Del = ViewBag.SelectedDelegacion })
+        </div>
+     
+    </div>
+</div>

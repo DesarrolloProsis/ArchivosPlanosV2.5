@@ -122,6 +122,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     turnovalid = "3";
 
+
                 Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
                 Turno = model.ListTurno.Find(p => p.Value == turnovalid);
@@ -349,12 +350,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime time = DateTime.Now;
             DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
-            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);            
-            if (time >= turno2)
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+
+            if (time >= turno1 && time < turno3)
                 turno = "1";
-            else if (time >= turno3)
+            else if (time >= turno2 && time < turno1.AddDays(1))
                 turno = "2";
-            else if (time >= turno1.AddDays(1))
+            else
                 turno = "3";
 
             var mdl = new ControlesExportar
@@ -407,6 +409,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     turnovalid = "2";
                 else
                     turnovalid = "3";
+
 
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
                 Turno = model.ListTurno.Find(p => p.Value == turnovalid);
