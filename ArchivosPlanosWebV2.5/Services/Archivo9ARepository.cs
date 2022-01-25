@@ -408,7 +408,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                     strCodigoVhPagoMarcado = "RP4" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP.
                                 {
-                                    if (IdPlazaCobro == "070")
+                                    if (IdPlazaCobro == "070" || IdPlazaCobro == "109")
                                     {
                                         strCodigoVhPagoMarcado = "RSP" + ",";
                                     }
@@ -818,7 +818,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                         strCodigoVhPagoMarcado = "RP4" + ",";
                                     else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75) //Cambio de RPA a RSP
                                     {
-                                        if (IdPlazaCobro == "070")
+                                        if (IdPlazaCobro == "070" || IdPlazaCobro == "109")
                                         {
                                             strCodigoVhPagoMarcado = "RSP" + ",";
                                         }

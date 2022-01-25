@@ -639,8 +639,17 @@ namespace ArchivosPlanosWebV2._5.Services
                                 strCodigoVhPagoMarcado = "RP3" + ",";
                             else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                 strCodigoVhPagoMarcado = "RP4" + ",";
-                            else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                strCodigoVhPagoMarcado = "RPA" + ",";
+                            else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75){//CAmbio solo tres marias
+                                if (IdPlazaCobro == "109")
+                                {
+                                    strCodigoVhPagoMarcado = "RSP" + ",";
+                                }
+                                else
+                                {
+                                    strCodigoVhPagoMarcado = "RPA" + ",";
+                                }
+                                //strCodigoVhPagoMarcado = "RPA" + ",";
+                            }
                             else
                                 strCodigoVhPagoMarcado = ",";
 
@@ -1464,8 +1473,17 @@ namespace ArchivosPlanosWebV2._5.Services
                                     strCodigoVhPagoMarcado = "RP3" + ",";
                                 else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 74)
                                     strCodigoVhPagoMarcado = "RP4" + ",";
-                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75)
-                                    strCodigoVhPagoMarcado = "RPA" + ",";
+                                else if (Convert.ToInt32(item["ID_PAIEMENT"]) == 75){ //Cambio solo en tres marias
+                                    if (IdPlazaCobro == "109")
+                                    {
+                                        strCodigoVhPagoMarcado = "RSP" + ",";
+                                    }
+                                    else
+                                    {
+                                        strCodigoVhPagoMarcado = "RPA" + ",";
+                                    }
+                                    //strCodigoVhPagoMarcado = "RPA" + ",";
+                                }                                    
                                 else
                                     strCodigoVhPagoMarcado = ",";
 
