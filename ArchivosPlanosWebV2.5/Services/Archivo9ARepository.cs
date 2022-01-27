@@ -566,6 +566,32 @@ namespace ArchivosPlanosWebV2._5.Services
                                             Str_detalle = Str_detalle + ",";
                                         }
                                     }
+                                    //Validacion solo xochitepec-Alpuyeca-Aeropuerto
+                                    else if(IdPlazaCobro == "105" || IdPlazaCobro == "106" || IdPlazaCobro == "101"){
+                                        if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
+                                        {
+                                            Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
+                                            if (Tag_iag != string.Empty)
+                                            {
+                                                if (Tag_iag.Length != 8) //Tag 00000000
+                                                    Tag_iag = Tag_iag.Substring(0, 13).Trim();
+                                                if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
+                                                    Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
+                                            }
+                                            Str_detalle = Str_detalle + Tag_iag + ",";
+                                            Str_detalle = Str_detalle + ",";
+                                            Str_detalle = Str_detalle + ",";
+                                            Str_detalle = Str_detalle + ",,";
+                                        }
+                                        else
+                                        {
+                                            Str_detalle = Str_detalle + MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", "") + ",";
+                                            Str_detalle = Str_detalle + ",";
+
+                                            Str_detalle = Str_detalle + ",";
+                                            Str_detalle = Str_detalle + ",";
+                                        }                    
+                                    }
                                     else
                                     {
                                         Str_detalle = Str_detalle + MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", "") + ",";
@@ -978,7 +1004,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                                 Str_detalle = Str_detalle + "V" + ",";
                                                 Str_detalle = Str_detalle + ",";
                                                 Str_detalle = Str_detalle + ",";
-                                            }
+                                            }                                       
                                             else
                                             {
                                                 Str_detalle = Str_detalle + MtGlb.IIf(MtGlb.oDataRow3["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", "") + ",";
@@ -987,6 +1013,33 @@ namespace ArchivosPlanosWebV2._5.Services
                                                 Str_detalle = Str_detalle + ",";
                                                 Str_detalle = Str_detalle + ",";
                                             }
+                                        }
+                                        //Validacion solo xochitepec-Alpuyeca-Aeropuerto
+                                        else if(IdPlazaCobro == "105" || IdPlazaCobro == "106" || IdPlazaCobro == "101")
+                                        {
+                                            if (Convert.ToInt32(item["ID_PAIEMENT"]) == 10 || Convert.ToInt32(item["ID_PAIEMENT"]) == 71)
+                                            {
+                                                Tag_iag = MtGlb.IIf(item["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", item["CONTENU_ISO"].ToString().Trim());
+                                                if (Tag_iag != string.Empty)
+                                                {
+                                                    if (Tag_iag.Length != 8) //Tag 00000000
+                                                        Tag_iag = Tag_iag.Substring(0, 13).Trim();
+                                                    if (Tag_iag.Length == 13 && Tag_iag.Substring(0, 3) == "009")
+                                                        Tag_iag = Tag_iag.Substring(0, 3) + Tag_iag.Substring(5, 8);
+                                                }
+
+                                                Str_detalle = Str_detalle + Tag_iag + ",";
+                                                Str_detalle = Str_detalle + ",";
+                                                Str_detalle = Str_detalle + ",";
+                                                Str_detalle = Str_detalle + ",,";
+                                            }  
+                                            else
+                                            {
+                                                Str_detalle = Str_detalle + MtGlb.IIf(MtGlb.oDataRow3["CONTENU_ISO"].ToString() == "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "", "") + ",";
+                                                Str_detalle = Str_detalle + ",";
+                                                Str_detalle = Str_detalle + ",";
+                                                Str_detalle = Str_detalle + ",";
+                                            }                 
                                         }                                        
                                         else
                                         {
