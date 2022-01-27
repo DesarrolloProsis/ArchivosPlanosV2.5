@@ -122,6 +122,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     turnovalid = "3";
 
+
                 Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
                 Turno = model.ListTurno.Find(p => p.Value == turnovalid);
@@ -320,7 +321,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                         var mdlpy = new ControlesExportar
                         {
                             TurnoId = Turno.Value,
-                            FechaInicio = FechaInicio
+                            FechaInicio = FechaInicio,
+                            DelegacionesId = Delegacion.Value
                         };
                         if (CreacionAutomatica)
                             return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, errores = ViewBag.Python }, JsonRequestBehavior.AllowGet);
@@ -349,12 +351,13 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime time = DateTime.Now;
             DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
-            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);            
-            if (time >= turno2)
+            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+
+            if (time >= turno1 && time < turno3)
                 turno = "1";
-            else if (time >= turno3)
+            else if (time >= turno2 && time < turno1.AddDays(1))
                 turno = "2";
-            else if (time >= turno1.AddDays(1))
+            else
                 turno = "3";
 
             var mdl = new ControlesExportar
@@ -378,6 +381,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             Comprimir2 comprimir2 = new Comprimir2();
             SelectListItem Plaza;
             SelectListItem Turno;
+            SelectListItem Delegacion;
             DateTime FechaInicio;
             string Message = string.Empty;
 
@@ -386,7 +390,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 entra = false;
             }
-            
+
+            var DataStrDele = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetDelegaciones().Data); // convert json object to string.
+            model.ListDelegaciones = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrDele);
+
             var DataStrPlaza = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(GetPlazaCobro().Data); // convert json object to string.
             model.ListPlazaCobro = JsonConvert.DeserializeObject<List<SelectListItem>>(DataStrPlaza);
 
@@ -396,6 +403,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             if (model.DelegacionesId == null && model.PlazaCobroId == null && model.TurnoId == null)
             {
                 string turnovalid = "";
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
                 DateTime time_ = DateTime.Now;
                 DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
@@ -408,20 +416,29 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                     turnovalid = "3";
 
+
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.ListPlazaCobro[0].Value);
                 Turno = model.ListTurno.Find(p => p.Value == turnovalid);
                 FechaInicio = DateTime.Today;                
             }
             else
             {
+                Delegacion = model.ListDelegaciones.Find(x => x.Value == model.DelegacionesId);
                 Plaza = model.ListPlazaCobro.Find(p => p.Value == model.PlazaCobroId);
                 Turno = model.ListTurno.Find(p => p.Value == model.TurnoId);
                 FechaInicio = model.FechaInicio;
             }
 
             if (Plaza.Value.Length == 2)
+            {
                 Plaza.Value = "0" + Plaza.Value;
-
+                if (Delegacion.Value == "06")
+                {
+                    Plaza.Value = "1" + Plaza.Value;
+                    if (Plaza.Value == "108") //Tlalpan
+                        Plaza.Value = "008";
+                }
+            }
             try
             {
                 bool Errores = compara.Executer();                

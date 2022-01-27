@@ -1,0 +1,56 @@
+﻿@model ArchivosPlanosWebV2._5.Models.Type_Plaza
+@{
+    ViewBag.Title = "Editar Plaza";
+}
+<div class="container">
+    <div class="card shadow-lg" style="margin-top:1rem !important">
+        <div class="card-body">
+            <h2>Editar Plaza</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id_Plaza)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Num_Plaza, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Num_Plaza, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Num_Plaza, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nom_Plaza, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nom_Plaza, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nom_Plaza, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Delegacion_Id, "Delegacion_Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("Delegacion_Id", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Delegacion_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Regresar a Plazas", "VerPlaza", new { Id_Del = ViewBag.SelectedDelegacion })
+            </div>
+            </div>
+        </div>
+    </div>
