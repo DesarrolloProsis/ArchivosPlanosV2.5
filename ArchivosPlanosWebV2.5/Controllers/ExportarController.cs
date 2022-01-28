@@ -569,27 +569,27 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
                 //Tramo Irapuato
-                { "004",  IPAddress.Parse("10.3.20.214") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
-                { "005",  IPAddress.Parse("10.3.23.111") },
-                { "006",  IPAddress.Parse("10.3.25.111") },
-                { "041",  IPAddress.Parse("10.3.30.111") },
-                { "061",  IPAddress.Parse("10.3.27.111") },
-                { "069",  IPAddress.Parse("10.3.21.111") },
-                { "070",  IPAddress.Parse("10.3.22.111") },
-                { "127",  IPAddress.Parse("10.3.24.111") },
-                { "183",  IPAddress.Parse("10.3.28.111") },
-                { "186",  IPAddress.Parse("10.3.29.111") },
+                { "004",  IPAddress.Parse("10.3.20") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
+                { "005",  IPAddress.Parse("10.3.23") },
+                { "006",  IPAddress.Parse("10.3.25") },
+                { "041",  IPAddress.Parse("10.3.30") },
+                { "061",  IPAddress.Parse("10.3.27") },
+                { "069",  IPAddress.Parse("10.3.21") },
+                { "070",  IPAddress.Parse("10.3.22") },
+                { "127",  IPAddress.Parse("10.3.24") },
+                { "183",  IPAddress.Parse("10.3.28") },
+                { "186",  IPAddress.Parse("10.3.29") },
                 //Tramo Acapulco pendiente de buscar ip
-                { "008'",  IPAddress.Parse("10.4.168.223") },
-                { "001'",  IPAddress.Parse("10.3.23.111") },
-                { "101'",  IPAddress.Parse("10.3.25.111") },
-                { "102",  IPAddress.Parse("10.3.30.111") },
-                { "103",  IPAddress.Parse("10.3.27.111") },
-                { "104",  IPAddress.Parse("10.3.21.111") },
-                { "105",  IPAddress.Parse("10.3.22.111") },
-                { "106",  IPAddress.Parse("10.3.24.111") },
-                { "107",  IPAddress.Parse("10.3.28.111") },
-                { "184",  IPAddress.Parse("10.3.29.111") }
+                { "008",  IPAddress.Parse("10.4.168")},
+                { "001",  IPAddress.Parse("10.3.23") },
+                { "101",  IPAddress.Parse("10.3.25") },
+                { "102",  IPAddress.Parse("10.3.30") },
+                { "103",  IPAddress.Parse("10.3.27") },
+                { "104",  IPAddress.Parse("10.3.21") },
+                { "105",  IPAddress.Parse("10.3.22") },
+                { "106",  IPAddress.Parse("10.3.24") },
+                { "107",  IPAddress.Parse("10.3.28") },
+                { "184",  IPAddress.Parse("10.3.29") }
             };
 
             IPHostEntry host;            
@@ -601,7 +601,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
                     if (ip.AddressFamily.ToString() == "InterNetwork")
                     {
-                        if(kvp.Value.ToString() == ip.ToString() && kvp.Key.ToString().Substring(1,2) == numPlaza)
+                        var ipSplite = ip.ToString().Split('.');
+                        string ipCut = ipSplite[0] + "." + ipSplite[1] + "." + ipSplite[2];
+                        if(kvp.Value.ToString() == ipCut && kvp.Key.ToString().Substring(1,2) == numPlaza)
                         {
                             return true;
                         }
