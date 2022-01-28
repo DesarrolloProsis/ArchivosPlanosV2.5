@@ -569,27 +569,27 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
                 //Tramo Irapuato
-                { "004",  IPAddress.Parse("10.3.20") },//LocalDesarrollo se debe cambiar por la ip de su maquina 
-                { "005",  IPAddress.Parse("10.3.23") },
-                { "006",  IPAddress.Parse("10.3.25") },
-                { "041",  IPAddress.Parse("10.3.30") },
-                { "061",  IPAddress.Parse("10.3.27") },
-                { "069",  IPAddress.Parse("10.3.21") },
-                { "070",  IPAddress.Parse("10.3.22") },
-                { "127",  IPAddress.Parse("10.3.24") },
-                { "183",  IPAddress.Parse("10.3.28") },
-                { "186",  IPAddress.Parse("10.3.29") },
+                { "004",  IPAddress.Parse("10.3.20") },//Tepozotlan
+                { "005",  IPAddress.Parse("10.3.23") },//Palmillas
+                { "006",  IPAddress.Parse("10.3.25") },//Queretaro
+                { "041",  IPAddress.Parse("10.3.30") },//Salamanca
+                { "061",  IPAddress.Parse("10.3.27") },//Libramiento
+                { "069",  IPAddress.Parse("10.3.21") },//Jorobas
+                { "070",  IPAddress.Parse("10.3.22") },//Polotitlan
+                { "127",  IPAddress.Parse("10.3.24") },//Chichimequillas
+                { "183",  IPAddress.Parse("10.3.28") },//Villagran
+                { "186",  IPAddress.Parse("10.3.29") },//Cerro Gordo
                 //Tramo Acapulco pendiente de buscar ip
-                { "008",  IPAddress.Parse("10.4.168")},
-                { "001",  IPAddress.Parse("10.3.23") },
-                { "101",  IPAddress.Parse("10.3.25") },
-                { "102",  IPAddress.Parse("10.3.30") },
-                { "103",  IPAddress.Parse("10.3.27") },
-                { "104",  IPAddress.Parse("10.3.21") },
-                { "105",  IPAddress.Parse("10.3.22") },
-                { "106",  IPAddress.Parse("10.3.24") },
-                { "107",  IPAddress.Parse("10.3.28") },
-                { "184",  IPAddress.Parse("10.3.29") }
+                { "008",  IPAddress.Parse("10.4.168")},//Tlalpan
+                { "001",  IPAddress.Parse("10.4.169")},//TresMarias
+                { "101",  IPAddress.Parse("10.4.161")},//Alpuyeca
+                { "102",  IPAddress.Parse("10.4.162")},//PasoMorelos
+                { "103",  IPAddress.Parse("10.4.163")},//PaloBlanco
+                { "104",  IPAddress.Parse("10.4.164")},//LaVenta
+                { "105",  IPAddress.Parse("10.4.165")},//Xochitepec
+                { "106",  IPAddress.Parse("10.4.166")},//Aeropuerto
+                { "107",  IPAddress.Parse("10.4.167")},//EmilianoZapata
+                { "184",  IPAddress.Parse("10.4.184")}//FranciscoVelasco
             };
 
             IPHostEntry host;            
