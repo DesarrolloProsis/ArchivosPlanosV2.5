@@ -51,9 +51,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno1;
             if (time.Day == 1)            
                 if(time.Month == 1)
-                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                    turno1 = new DateTime(time.Year, 12, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                 else
-                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);            
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);            
             else
                 turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
@@ -124,9 +124,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 DateTime turno1_;
                 if (time_.Day == 1)
                     if (time_.Month == 1)
-                        turno1_ = new DateTime(time_.Year, 12, time_.Day).AddMonths(1).AddDays(-1);
+                        turno1_ = new DateTime(time_.Year, 12, time_.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                     else
-                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day).AddMonths(1).AddDays(-1);
+                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                 else
                     turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
@@ -369,9 +369,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno1;
             if (time.Day == 1)
                 if (time.Month == 1)
-                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                    turno1 = new DateTime(time.Year, 12, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                 else
-                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
             else
                 turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
@@ -432,9 +432,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 DateTime turno1_;
                 if (time_.Day == 1)
                     if (time_.Month == 1)
-                        turno1_ = new DateTime(time_.Year, 12, time_.Day).AddMonths(1).AddDays(-1);
+                        turno1_ = new DateTime(time_.Year, 12, time_.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                     else
-                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day).AddMonths(1).AddDays(-1);
+                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                 else
                     turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
@@ -519,9 +519,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
             DateTime turno1;
             if (time.Day == 1)
                 if (time.Month == 1)
-                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                    turno1 = new DateTime(time.Year, 12, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
                 else
-                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day, 22, 0, 0).AddMonths(1).AddDays(-1);
             else
                 turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
@@ -607,27 +607,27 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var listaPlazaIp = new Dictionary<string, IPAddress>()
             {                
                 //Tramo Irapuato
-                { "004",  IPAddress.Parse("10.3.20") },//Tepozotlan
-                { "005",  IPAddress.Parse("10.3.23") },//Palmillas
-                { "006",  IPAddress.Parse("10.3.25") },//Queretaro
-                { "041",  IPAddress.Parse("10.3.30") },//Salamanca
-                { "061",  IPAddress.Parse("10.3.27") },//Libramiento
-                { "069",  IPAddress.Parse("10.3.21") },//Jorobas
-                { "070",  IPAddress.Parse("10.3.22") },//Polotitlan
-                { "127",  IPAddress.Parse("10.3.24") },//Chichimequillas
-                { "183",  IPAddress.Parse("10.3.28") },//Villagran
-                { "186",  IPAddress.Parse("10.3.29") },//Cerro Gordo
+                { "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
+                { "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
+                { "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
+                { "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
+                { "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
+                { "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
+                { "070",  IPAddress.Parse("10.3.22.0") },//Polotitlan
+                { "127",  IPAddress.Parse("10.3.24.0") },//Chichimequillas
+                { "183",  IPAddress.Parse("10.3.28.0") },//Villagran
+                { "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
                 //Tramo Acapulco pendiente de buscar ip
-                { "008",  IPAddress.Parse("10.4.168")},//Tlalpan
-                { "001",  IPAddress.Parse("10.4.169")},//TresMarias
-                { "101",  IPAddress.Parse("10.4.161")},//Alpuyeca
-                { "102",  IPAddress.Parse("10.4.162")},//PasoMorelos
-                { "103",  IPAddress.Parse("10.4.163")},//PaloBlanco
-                { "104",  IPAddress.Parse("10.4.164")},//LaVenta
-                { "105",  IPAddress.Parse("10.4.165")},//Xochitepec
-                { "106",  IPAddress.Parse("10.4.166")},//Aeropuerto
-                { "107",  IPAddress.Parse("10.4.167")},//EmilianoZapata
-                { "184",  IPAddress.Parse("10.4.184")}//FranciscoVelasco
+                { "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan
+                { "001",  IPAddress.Parse("10.4.169.0")},//TresMarias
+                { "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
+                { "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
+                { "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco
+                { "104",  IPAddress.Parse("10.4.164.0")},//LaVenta
+                { "105",  IPAddress.Parse("10.4.165.0")},//Xochitepec
+                { "106",  IPAddress.Parse("10.4.166.0")},//Aeropuerto
+                { "107",  IPAddress.Parse("10.4.167.0")},//EmilianoZapata
+                { "184",  IPAddress.Parse("10.4.184.0")}//FranciscoVelasco
             };
 
             IPHostEntry host;            
@@ -640,7 +640,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     if (ip.AddressFamily.ToString() == "InterNetwork")
                     {
                         var ipSplite = ip.ToString().Split('.');
-                        string ipCut = ipSplite[0] + "." + ipSplite[1] + "." + ipSplite[2];
+                        string ipCut = ipSplite[0] + "." + ipSplite[1] + "." + ipSplite[2] + '.' + '0';
                         if(kvp.Value.ToString() == ipCut && kvp.Key.ToString().Substring(1,2) == numPlaza)
                         {
                             return true;
