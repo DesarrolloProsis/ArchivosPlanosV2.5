@@ -48,7 +48,14 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             string turno = "";
             DateTime time = DateTime.Now;
-            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno1;
+            if (time.Day == 1)            
+                if(time.Month == 1)
+                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);            
+            else
+                turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
 
@@ -111,7 +118,17 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 string turnovalid = "";
                 DateTime time_ = DateTime.Now;
-                DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                //DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                //DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
+                //DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
+                DateTime turno1_;
+                if (time_.Day == 1)
+                    if (time_.Month == 1)
+                        turno1_ = new DateTime(time_.Year, 12, time_.Day).AddMonths(1).AddDays(-1);
+                    else
+                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
                 DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
 
@@ -349,7 +366,14 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             string turno = "";
             DateTime time = DateTime.Now;
-            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno1;
+            if (time.Day == 1)
+                if (time.Month == 1)
+                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+            else
+                turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
 
@@ -405,10 +429,17 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 string turnovalid = "";
                 Delegacion = model.ListDelegaciones.Find(x => x.Value == model.ListDelegaciones[0].Value);
                 DateTime time_ = DateTime.Now;
-                DateTime turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
+                DateTime turno1_;
+                if (time_.Day == 1)
+                    if (time_.Month == 1)
+                        turno1_ = new DateTime(time_.Year, 12, time_.Day).AddMonths(1).AddDays(-1);
+                    else
+                        turno1_ = new DateTime(time_.Year, time_.Month - 1, time_.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1_ = new DateTime(time_.Year, time_.Month, time_.Day - 1, 22, 0, 0);
                 DateTime turno2_ = new DateTime(time_.Year, time_.Month, time_.Day, 6, 0, 0);
                 DateTime turno3_ = new DateTime(time_.Year, time_.Month, time_.Day, 14, 0, 0);
-                
+
                 if (time_ >= turno1_ && time_ < turno3_)
                     turnovalid = "1";
                 else if (time_ >= turno2_ && time_ < turno1_.AddDays(1))
@@ -485,7 +516,14 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             string turno = "";
             DateTime time = DateTime.Now;
-            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            DateTime turno1;
+            if (time.Day == 1)
+                if (time.Month == 1)
+                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+            else
+                turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
             if (time >= turno2)
@@ -643,11 +681,18 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 time = DateTime.Now;
             }
-                            
-            DateTime turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+
+            DateTime turno1;
+            if (time.Day == 1)
+                if (time.Month == 1)
+                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+                else
+                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+            else
+                turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
             DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
             DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
-                                                                                
+
             if (time >= turno1 && time < turno3)
             {
                 Items.Add(new SelectListItem
