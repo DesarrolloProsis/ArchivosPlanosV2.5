@@ -462,12 +462,15 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             if (Plaza.Value.Length == 2)
             {
-                Plaza.Value = "0" + Plaza.Value;
                 if (Delegacion.Value == "06")
                 {
                     Plaza.Value = "1" + Plaza.Value;
                     if (Plaza.Value == "108") //Tlalpan
                         Plaza.Value = "008";
+                }
+                else
+                {
+                    Plaza.Value = "0" + Plaza.Value;
                 }
             }
             try
