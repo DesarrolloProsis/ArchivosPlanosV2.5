@@ -31,9 +31,11 @@
                 var json = {
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
-                    TurnoId: turno,
+                    TurnoId: @Model.TurnoId,
                     FechaInicio: fecha
                 }
+                console.log(json)
+                console.log(@Model.TurnoId)
                   $.ajax({
                       url: '@Url.Action("Comprimir", "Exportar")',
                       type: "POST",
@@ -76,7 +78,7 @@
                 var json = {
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
-                    TurnoId: turno,
+                    TurnoId: @Model.TurnoId,
                     FechaInicio: fecha
                 }
                   $.ajax({

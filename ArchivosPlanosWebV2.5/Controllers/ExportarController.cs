@@ -161,82 +161,85 @@ namespace ArchivosPlanosWebV2._5.Controllers
             else if (Plaza.Value.Length == 2)
             {
                 //Validacion Plaza Mexico-Acapulco
-                if (Delegacion.Value == "06")
-                {
-                    Plaza.Value = "1" + Plaza.Value;
-                    if (Plaza.Value == "108") //Tlalpan
-                    {
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.168.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
-                        Plaza.Value = "008";
-                    }
+                var connectionPlaza = validaciones.GetStringConnection(Delegacion.Value, Plaza.Value);
+                Plaza.Value = connectionPlaza.plaza;
+                ConexionDB = connectionPlaza.connection;
+                //if (Delegacion.Value == "06")
+                //{
+                //    Plaza.Value = "1" + Plaza.Value;
+                //    if (Plaza.Value == "108") //Tlalpan
+                //    {
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.168.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //        Plaza.Value = "008";
+                //    }
 
-                    else if (Plaza.Value == "107") //Emiliano Zapata
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.167.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "107") //Emiliano Zapata
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.167.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "104") //La Venta
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.164.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "104") //La Venta
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.164.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "109") //Tres Marías
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.169.227)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "109") //Tres Marías
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.169.227)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "106") //Aeropuerto
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.166.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "106") //Aeropuerto
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.166.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "105") //Xochitepec
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.165.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "105") //Xochitepec
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.165.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "101") //Alpuyeca
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.161.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "101") //Alpuyeca
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.161.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "184") //Francisco Velasco
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.184.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "184") //Francisco Velasco
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.184.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "102") //Paso Morelos
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.162.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "102") //Paso Morelos
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.162.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "103") //Palo Blanco
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.163.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
-                    else
-                        Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
-                }
-                else
-                {
-                    Plaza.Value = "0" + Plaza.Value;
-                    if (Plaza.Value == "004") //Tepotzotlan
-                        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else if (Plaza.Value == "103") //Palo Blanco
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.163.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                //    else
+                //        Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
+                //}
+                //else
+                //{
+                //    Plaza.Value = "0" + Plaza.Value;
+                //    if (Plaza.Value == "004") //Tepotzotlan
+                //        ConexionDB = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
-                    else if (Plaza.Value == "070") //Polotitlan
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "070") //Polotitlan
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "005") //Palmillas
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "005") //Palmillas
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "027") //Chichimequillas
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "027") //Chichimequillas
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "006") //Querétaro
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "006") //Querétaro
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "061") //Libramiento
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "061") //Libramiento
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "083") //Villagrán
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "083") //Villagrán
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "086") //Cerro Gordo
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "086") //Cerro Gordo
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "041") //Salamanca
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "041") //Salamanca
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "069") //Jorobas
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else if (Plaza.Value == "069") //Jorobas
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
 
-                    else if (Plaza.Value == "041") //Salamanca
-                        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
-                    else
-                        Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
-                }
+                //    else if (Plaza.Value == "041") //Salamanca
+                //        ConexionDB = "User Id = GEADBA; Password = fgeuorjvne; Data Source = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.1.1.148)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = GEAPROD)))";
+                //    else
+                //        Response.Write("<script>alert('" + "Plaza en progreso" + "');</script>");
+                //}
             }
 
             try
