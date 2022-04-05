@@ -1795,11 +1795,12 @@ namespace ArchivosPlanosWebV2._5.Services
                     foreach (DataRow item4 in MtGlb.Ds4.Tables["SEQ_VOIE_TOD"].Rows)
                     {
                         //CODIGO ENCONTRADO EN LA RAMAM MEXICO ACAPULCO POR VERIFICAR SI FUNCIONA PARA ALGO
-                        // if(Convert.ToString(item4["VOIE"]).Trim().Length < 3 && Tramo == "01"){
-                        //     Dbl_registros--;
-                        //     RewriteHeader = true;
-                        //     continue;
-                        // }
+                         if (Convert.ToString(item4["VOIE"]).Trim().Length < 3 && Tramo == "01")
+                        {
+                            Dbl_registros--;
+                            RewriteHeader = true;
+                            continue;
+                        }
                         StrQuerys = "SELECT	* FROM 	FIN_POSTE " +
                                     "WHERE VOIE = '" + item4["VOIE"] + "' " +
                                     "AND ((DATE_DEBUT_POSTE >= TO_DATE('" + _H_inicio_turno.ToString("yyyyMMddHHmmss") + "','YYYYMMDDHH24MISS')) " +
@@ -1922,57 +1923,57 @@ namespace ArchivosPlanosWebV2._5.Services
                 Osw2.Close();
 
                 //VALIDACION ENCONTRADA EN LA RAMA DE MEXICO ACAPULCO VERIFICAR SI SIRVE PARA ALGO
-                // if (RewriteHeader == true && Tramo == "01")
-                // {
-                //     string[] lines = File.ReadAllLines(Carpeta + Nombre_archivo);
-                //     File.WriteAllText(Carpeta + Nombre_archivo, String.Empty);
-                //     StreamWriter Nsw = new StreamWriter(Carpeta + Nombre_archivo);
+                if (RewriteHeader == true && Tramo == "01")
+                {
+                    string[] lines = File.ReadAllLines(Carpeta + Nombre_archivo);
+                    File.WriteAllText(Carpeta + Nombre_archivo, String.Empty);
+                    StreamWriter Nsw = new StreamWriter(Carpeta + Nombre_archivo);
 
-                //     for (int i = 1; i <= lines.Length; i++)
-                //     {
-                //         if (i == 1)
-                //         {
-                //             String NewCabecera = CabeceraTag;
-                //             if (IdPlazaCobro.Length == 3)
-                //             {
-                //                 if (IdPlazaCobro == "008")
-                //                     NewCabecera = NewCabecera + "0001";
-                //                 else if (IdPlazaCobro == "109")
-                //                     NewCabecera = NewCabecera + "001B";
-                //                 else if (IdPlazaCobro == "107")
-                //                     NewCabecera = NewCabecera + "0107";
-                //                 else if (IdPlazaCobro == "061")
-                //                     NewCabecera = NewCabecera + "061B";
-                //                 else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
-                //                     NewCabecera = NewCabecera + "01" + IdPlazaCobro.Substring(1, 2);
+                    for (int i = 1; i <= lines.Length; i++)
+                    {
+                        if (i == 1)
+                        {
+                            String NewCabecera = CabeceraTag;
+                            if (IdPlazaCobro.Length == 3)
+                            {
+                                if (IdPlazaCobro == "008")
+                                    NewCabecera = NewCabecera + "0001";
+                                else if (IdPlazaCobro == "109")
+                                    NewCabecera = NewCabecera + "001B";
+                                else if (IdPlazaCobro == "107")
+                                    NewCabecera = NewCabecera + "0107";
+                                else if (IdPlazaCobro == "061")
+                                    NewCabecera = NewCabecera + "061B";
+                                else if (IdPlazaCobro == "086" || IdPlazaCobro == "083" || IdPlazaCobro == "027")
+                                    NewCabecera = NewCabecera + "01" + IdPlazaCobro.Substring(1, 2);
 
-                //                 else NewCabecera = NewCabecera + "0" + IdPlazaCobro;
-                //             }
+                                else NewCabecera = NewCabecera + "0" + IdPlazaCobro;
+                            }
 
-                //             NewCabecera = NewCabecera + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + "." + Int_turno + "2" + StrIdentificador + FechaInicio.ToString("dd/MM/yyyy") + Int_turno;
+                            NewCabecera = NewCabecera + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + "." + Int_turno + "2" + StrIdentificador + FechaInicio.ToString("dd/MM/yyyy") + Int_turno;
 
-                //             if (Convert.ToString(Dbl_registros).Length == 1)
-                //                 No_registros = "0000" + Dbl_registros;
-                //             else if (Convert.ToString(Dbl_registros).Length == 2)
-                //                 No_registros = "000" + Dbl_registros;
-                //             else if (Convert.ToString(Dbl_registros).Length == 3)
-                //                 No_registros = "00" + Dbl_registros;
-                //             else if (Convert.ToString(Dbl_registros).Length == 4)
-                //                 No_registros = "0" + Dbl_registros;
-                //             else if (Convert.ToString(Dbl_registros).Length == 5)
-                //                 No_registros = Dbl_registros.ToString();
+                            if (Convert.ToString(Dbl_registros).Length == 1)
+                                No_registros = "0000" + Dbl_registros;
+                            else if (Convert.ToString(Dbl_registros).Length == 2)
+                                No_registros = "000" + Dbl_registros;
+                            else if (Convert.ToString(Dbl_registros).Length == 3)
+                                No_registros = "00" + Dbl_registros;
+                            else if (Convert.ToString(Dbl_registros).Length == 4)
+                                No_registros = "0" + Dbl_registros;
+                            else if (Convert.ToString(Dbl_registros).Length == 5)
+                                No_registros = Dbl_registros.ToString();
 
-                //             NewCabecera += No_registros;
-                //             Nsw.WriteLine(NewCabecera);
-                //         }
-                //         else
-                //         {
-                //             Nsw.WriteLine(lines[i - 1]);
-                //         }
-                //     }
-                //     Nsw.Flush();
-                //     Nsw.Close();
-                // }
+                            NewCabecera += No_registros;
+                            Nsw.WriteLine(NewCabecera);
+                        }
+                        else
+                        {
+                            Nsw.WriteLine(lines[i - 1]);
+                        }
+                    }
+                    Nsw.Flush();
+                    Nsw.Close();
+                }
 
                 Message = "Todo bien";
             }

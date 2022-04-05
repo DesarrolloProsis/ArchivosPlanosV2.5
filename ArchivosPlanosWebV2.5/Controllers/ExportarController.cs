@@ -325,7 +325,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     compara.Borrar(II);
 
                     //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN
-                    string tramoNew = Delegacion.Value == "06" ? "01" : "03";//06 Acapulco se transforma a 01
+                    string tramoNew = Delegacion.Value == "67" ? "01" : "03";//67 Acapulco se transforma a 01
                     archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
                     archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
                     archivo9A.eventos_detectados_y_marcados_en_el_ECT(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
