@@ -320,7 +320,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         }
 
         [HttpPost]
-        public ActionResult Comprimir(ControlesExportar model)
+        public ActionResult Comprimir(ControlesExportar model, bool Validar)
         {            
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
@@ -399,22 +399,26 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             try
             {
-                bool Errores = compara.Executer();                
-                if (Errores)
+                if (Validar)
                 {
-                    ViewBag.Titulo = "Errores en los archivos planos";
-                    ViewBag.Mensaje = "Errores: " + compara.Message;
-                    var mdlpy = new ControlesExportar
-                    {
-                        DelegacionesId = model.DelegacionesId,
-                        PlazaCobroId = model.PlazaCobroId,
-                        TurnoId = Turno.Value,
-                        FechaInicio = FechaInicio
-                        
-                    };
-                    return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = true }, JsonRequestBehavior.AllowGet);
-                }
 
+                    bool Errores = compara.Executer();                
+                    if (Errores)
+                    {
+                        ViewBag.Titulo = "Errores en los archivos planos";
+                        ViewBag.Mensaje = "Errores: " + compara.Message;
+                        var mdlpy = new ControlesExportar
+                        {
+                            DelegacionesId = model.DelegacionesId,
+                            PlazaCobroId = model.PlazaCobroId,
+                            TurnoId = Turno.Value,
+                            FechaInicio = FechaInicio
+                            
+                        };
+                        return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = true }, JsonRequestBehavior.AllowGet);
+                    }
+
+                }
                 string Carpeta = @"C:\ArchivosPlanosWeb\";
                 var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
                 string[] nueveA = NueveA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);

@@ -15,7 +15,7 @@
 
     <script>
         $("#mensaje2").hide();
-        $(document).ready(function () {                        
+        $(document).ready(function () {
             $(".loading-screen").hide();
 
             $("#botonPython").click(function () {
@@ -87,12 +87,12 @@
                       contentType: "application/json",
                       data: JSON.stringify(json),
                       cache: false,
-                      success: function (data) {                                                    
+                      success: function (data) {
                           if (data.errores) {
                               $("#mensajeModal").append(data.mensaje)
                               $("#tituloModal").append(data.titulo)
                               $("#reValidar").show()
-                              $('#mensaje2').show()                              
+                              $('#mensaje2').show()
                           }
                           else {
                               $('#mensaje2').show()
@@ -174,7 +174,7 @@
             LoadDelegaciones();
             LoadPlazas();
             LoadTurnos();
-            Show();                        
+            Show();
         });
 
 
@@ -221,7 +221,7 @@
         }
 
 
-    function LoadTurnos() {
+        function LoadTurnos() {
         $.ajax({
             url: '@Url.Action("GetTurnos", "Exportar",new { fecha = "null" })',
             type: "GET",
@@ -285,8 +285,6 @@
 
                         @Html.Label("Fecha de inicio", htmlAttributes: new { @class = "titulos" })
                         @Html.EditorFor(x => x.FechaInicio)
-                        @*@Html.EditorFor(x => x.FechaInicio)*@
-                        @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "datepicker", @Value = Model.FechaInicio.ToString("yyyy/MM/dd") } })*@
                     </div>
                 </div>
             </div>
@@ -351,13 +349,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>                        
+                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    @*CASO EN EL QUE YA VALIDO TODO EL PYTHON*@
     @if (ViewBag.Mensaje != null && ViewBag.Python != true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
@@ -380,6 +379,7 @@
         </div>
     }
 
+    @*CASO EN EL QUE TODABIA HAY QUE VALIDOR CON EL PYTHON*@
     @if (ViewBag.Mensaje != null && ViewBag.Python == true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
@@ -395,6 +395,7 @@
                         <p>@Html.Raw(ViewBag.Mensaje)</p>
                     </div>
                     <div class="modal-footer">
+                        <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
                         <button id="botonPython" type="button" class="btn btn-secondary" data-dismiss="modal">ReValidar</button>
                     </div>
                 </div>
@@ -409,7 +410,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 id="tituloModal" class="modal-title"></h5>                                
+                <h5 id="tituloModal" class="modal-title"></h5>
             </div>
             <div class="modal-body">
                 <p id="mensajeModal"></p>
