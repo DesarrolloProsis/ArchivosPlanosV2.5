@@ -320,7 +320,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         }
 
         [HttpPost]
-        public ActionResult Comprimir(ControlesExportar model, bool Validar)
+        public ActionResult Comprimir(ControlesExportar model)
         {            
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
@@ -399,7 +399,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             try
             {
-                if (Validar)
+                if (model.ValidarEncriptar)
                 {
 
                     bool Errores = compara.Executer();                
@@ -435,8 +435,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                 comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                 comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
-                ViewBag.Titulo = "Errores en los archivos planos";
-                ViewBag.Mensaje = "Errores: " + compara.Message;
+               
+
+                ViewBag.Titulo = model.ValidarEncriptar ? "Errores en los archivos planos" : "Encriptar y Comprimir";
+                ViewBag.Python = false;
+                ViewBag.Mensaje = model.ValidarEncriptar ? "Errores: " + compara.Message : "SE encriptaron losa rchivos con exito";
             }
             catch (Exception ex)
             {

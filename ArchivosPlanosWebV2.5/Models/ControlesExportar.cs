@@ -34,6 +34,8 @@ namespace ArchivosPlanosWebV2._5.Models
 
         public bool Valida_Pop { get; set; }
 
+        public bool ValidarEncriptar { get; set; }
+
         public List<filas> Listacomentarios { get; set; }
 
     }
