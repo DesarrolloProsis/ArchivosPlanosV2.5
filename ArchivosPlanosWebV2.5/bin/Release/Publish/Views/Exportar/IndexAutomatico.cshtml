@@ -25,19 +25,20 @@
                 url: '@Url.Action("Index", "Exportar")',
                 type: "POST",
                 cache: false,
-                success: function (data) {                                                           
+                success: function (data) {                       
                     $("#mensaje").show()
                     if (data.errores) {
                         $("#mensajeModal").append(data.mensaje)
                         $("#tituloModal").append(data.titulo)
                         $("#reValidar").show()
-                        $("#OkValidar").hide()
+                        $("#OkValidar").hide()                        
                     }
                     else {                        
                         $("#mensajeModal").append(data.mensaje)
                         $("#tituloModal").append(data.titulo)
                         $("#reValidar").hide()
-                        $("#OkValidar").show()
+                        $("#OkValidar").show()  
+                        $("#botonPythonComprimir").hide()
                     }
                 },
                 error: function (ex) {
@@ -52,7 +53,8 @@
                     DelegacionesId: null,
                     PlazaCobroId: null,
                     TurnoId: null,
-                    FechaInicio: null
+                    FechaInicio: null,
+                    ValidarEncriptar: true
 
                 }
                 $.ajax({
@@ -65,6 +67,7 @@
                         console.log(data)
                         $("#mensaje").show()
                         if (data.errores) {
+                            $("#botonPythonComprimir").hide()
                             $("#mensajeModal").append(data.mensaje)
                             $("#tituloModal").append(data.titulo)
                             $("#reValidar").show()
@@ -75,6 +78,48 @@
                             $("#tituloModal").append(data.titulo)
                             $("#reValidar").hide()
                             $("#OkValidar").show()
+                            $("#botonPythonComprimir").hide()
+                        }
+                    },
+                    error: function (ex) {
+                        alert("Error!!!" + ex)
+                    },
+                });
+            })
+            $("#botonPythonComprimir").click(function () {
+                $("#mensaje").hide()
+                $("#tituloModal").empty()
+                $("#mensajeModal").empty()
+                var json = {
+                    DelegacionesId: null,
+                    PlazaCobroId: null,
+                    TurnoId: null,
+                    FechaInicio: null,
+                    ValidarEncriptar: false
+
+                }
+                $.ajax({
+                    url: '@Url.Action("Comprimir", "Exportar")',
+                    type: "POST",
+                    cache: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        console.log(data)
+                        $("#botonPythonComprimir").hide()
+                        $("#mensaje").show()
+                        if (data.errores) {
+                            $("#mensajeModal").append(data.mensaje)
+                            $("#tituloModal").append(data.titulo)
+                            $("#reValidar").show()
+                            $("#OkValidar").hide()
+                        }
+                        else {
+                            $("#mensajeModal").append(data.mensaje)
+                            $("#tituloModal").append(data.titulo)
+                            $("#reValidar").hide()
+                            $("#OkValidar").show()
+                            $("#botonPythonComprimir").hide()
                         }
                     },
                     error: function (ex) {
@@ -100,6 +145,7 @@
                     <p id="mensajeModal"></p>
                 </div>
                 <div class="modal-footer">
+                    <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
                     <button id="OkValidar" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
                     <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
                 </div>

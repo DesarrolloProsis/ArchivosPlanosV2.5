@@ -439,7 +439,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
                 ViewBag.Titulo = model.ValidarEncriptar ? "Errores en los archivos planos" : "Encriptar y Comprimir";
                 ViewBag.Python = false;
-                ViewBag.Mensaje = model.ValidarEncriptar ? "Errores: " + compara.Message : "SE encriptaron losa rchivos con exito";
+                ViewBag.Mensaje = model.ValidarEncriptar ? "Errores: " + compara.Message : "Se encriptaron los archivos con exito";
             }
             catch (Exception ex)
             {
@@ -553,7 +553,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 { "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
                 //Tramo Acapulco pendiente de buscar ip
                 { "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan
-                { "001",  IPAddress.Parse("10.4.169.0")},//TresMarias
+                { "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
                 { "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
                 { "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
                 { "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco

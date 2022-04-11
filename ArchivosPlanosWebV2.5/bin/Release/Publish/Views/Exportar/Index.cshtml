@@ -15,10 +15,110 @@
 
     <script>
         $("#mensaje2").hide();
-        $(document).ready(function () {                        
+        $(document).ready(function () {
             $(".loading-screen").hide();
 
-            $("#botonPython").click(function () {
+            $("#botonPythonComprimir").click(function () {//no valida el script de python
+                var delegacion = $("#DelegacionesId").val()
+                var plaza= $("#PlazaCobroId").val()
+                var turno = $("#TurnoId").val()
+                var fecha = $("#FechaInicio").val()
+                $('#mensaje2').hide()
+                $("#OkValidar").hide()
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
+                alert()
+                var json = {
+                    DelegacionesId: delegacion,
+                    PlazaCobroId: plaza,
+                    TurnoId: @Model.TurnoId,
+                    FechaInicio: fecha,
+                    ValidarEncriptar: false
+                }
+                console.log(json)
+                console.log(@Model.TurnoId)
+                  $.ajax({
+                      url: '@Url.Action("Comprimir", "Exportar")',
+                      type: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(json),
+                      cache: false,
+                      success: function (data) {
+                          console.log(data)
+                          console.log(data.errores)
+                          $("#botonPythonComprimir").hide()
+                          $("#botonPythonComprimir2").hide()
+                          if (data.errores) {
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").show()
+                              $('#mensaje2').show()
+                          }
+                          else {
+                              $('#mensaje2').show()
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").hide()
+                              $("#OkValidar").show()
+                          }
+                       },
+                      error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+            })
+
+             $("#botonPythonComprimir2").click(function () {//no valida el script de python
+                var delegacion = $("#DelegacionesId").val()
+                var plaza= $("#PlazaCobroId").val()
+                var turno = $("#TurnoId").val()
+                var fecha = $("#FechaInicio").val()
+                $('#mensaje2').hide()
+                $("#OkValidar").hide()
+                $("#mensajeModal").empty()
+                $("#tituloModal").empty()
+                alert()
+                var json = {
+                    DelegacionesId: delegacion,
+                    PlazaCobroId: plaza,
+                    TurnoId: @Model.TurnoId,
+                    FechaInicio: fecha,
+                    ValidarEncriptar: false
+                }
+                console.log(json)
+                console.log(@Model.TurnoId)
+                  $.ajax({
+                      url: '@Url.Action("Comprimir", "Exportar")',
+                      type: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(json),
+                      cache: false,
+                      success: function (data) {
+                          console.log(data)
+                          console.log(data.errores)
+                          $("#botonPythonComprimir").hide()
+                          $("#botonPythonComprimir2").hide()
+                          if (data.errores) {
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").show()
+                              $('#mensaje2').show()
+                          }
+                          else {
+                              $('#mensaje2').show()
+                              $("#mensajeModal").append(data.mensaje)
+                              $("#tituloModal").append(data.titulo)
+                              $("#reValidar").hide()
+                              $("#OkValidar").show()
+                          }
+                       },
+                      error: function (ex) {
+                            alert("Error!!!" + ex)
+                        },
+                    });
+            })
+
+            $("#botonPython").click(function () {///Si valida con script python
                 var delegacion = $("#DelegacionesId").val()
                 var plaza= $("#PlazaCobroId").val()
                 var turno = $("#TurnoId").val()
@@ -32,7 +132,8 @@
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
                     TurnoId: @Model.TurnoId,
-                    FechaInicio: fecha
+                    FechaInicio: fecha,
+                    ValidarEncriptar: true
                 }
                 console.log(json)
                 console.log(@Model.TurnoId)
@@ -87,12 +188,12 @@
                       contentType: "application/json",
                       data: JSON.stringify(json),
                       cache: false,
-                      success: function (data) {                                                    
+                      success: function (data) {
                           if (data.errores) {
                               $("#mensajeModal").append(data.mensaje)
                               $("#tituloModal").append(data.titulo)
                               $("#reValidar").show()
-                              $('#mensaje2').show()                              
+                              $('#mensaje2').show()
                           }
                           else {
                               $('#mensaje2').show()
@@ -174,7 +275,7 @@
             LoadDelegaciones();
             LoadPlazas();
             LoadTurnos();
-            Show();                        
+            Show();
         });
 
 
@@ -221,7 +322,7 @@
         }
 
 
-    function LoadTurnos() {
+        function LoadTurnos() {
         $.ajax({
             url: '@Url.Action("GetTurnos", "Exportar",new { fecha = "null" })',
             type: "GET",
@@ -251,10 +352,6 @@
                     <div class="form-group">
                         @Html.Label("Delegaciones", htmlAttributes: new { @class = "titulos", id = "top" })
                         @Html.DropDownListFor(x => x.DelegacionesId, new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
-
-                        @*@Html.DropDownList("DelegacionId", new List<SelectListItem> { }, "Delegación III Queretaro", htmlAttributes: new { @class = "form-control" })*@
-                        @*@Html.DropDownListFor(x => x.DelegacionesId ,new List<SelectListItem> { new SelectListItem { Value = "03", Text = "Delegación III Queretaro" } }, htmlAttributes: new  {@class = "form-control" })*@
-
                     </div>
                 </div>
             </div>
@@ -285,8 +382,6 @@
 
                         @Html.Label("Fecha de inicio", htmlAttributes: new { @class = "titulos" })
                         @Html.EditorFor(x => x.FechaInicio)
-                        @*@Html.EditorFor(x => x.FechaInicio)*@
-                        @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "datepicker", @Value = Model.FechaInicio.ToString("yyyy/MM/dd") } })*@
                     </div>
                 </div>
             </div>
@@ -351,13 +446,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>                        
+                        <button type="submit" class="btn btn-default" data-dismiss="modal" id="Subir">Mandar Comentario</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    @*CASO EN EL QUE YA VALIDO TODO EL PYTHON*@
     @if (ViewBag.Mensaje != null && ViewBag.Python != true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
@@ -380,6 +476,7 @@
         </div>
     }
 
+    @*CASO EN EL QUE TODABIA HAY QUE VALIDOR CON EL PYTHON*@
     @if (ViewBag.Mensaje != null && ViewBag.Python == true)
     {
         <div class="modal" tabindex="-1" role="dialog" id="mensaje">
@@ -395,6 +492,7 @@
                         <p>@Html.Raw(ViewBag.Mensaje)</p>
                     </div>
                     <div class="modal-footer">
+                        <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
                         <button id="botonPython" type="button" class="btn btn-secondary" data-dismiss="modal">ReValidar</button>
                     </div>
                 </div>
@@ -409,12 +507,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 id="tituloModal" class="modal-title"></h5>                                
+                <h5 id="tituloModal" class="modal-title"></h5>
             </div>
             <div class="modal-body">
                 <p id="mensajeModal"></p>
             </div>
             <div class="modal-footer">
+                <button id="botonPythonComprimir2" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
                 <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
                 <button id="OkValidar" type="button" class="btn btn-secondary">Ok</button>
             </div>
