@@ -168,12 +168,8 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     var props = typeof(Type_Carril).GetProperties();
                     DataTable dt = new DataTable("Tacla_Carriles");
-                    dt.Columns.AddRange(
-                            props.Select(x => new DataColumn(x.Name, x.PropertyType)).ToArray()
-                        );
-                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                            i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                        );
+                    dt.Columns.AddRange(props.Select(x => new DataColumn(x.Name, x.PropertyType)).ToArray());
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
 
                     string eventoDuplicado = string.Empty;
                     string carrilEventoDuplicado = string.Empty;
@@ -1057,7 +1053,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
                         }
 
-
                         cont++;
                         //24/09/2018,4,033442,364,2681,B,87690,86913,T01L02,67,-51,T01L02,A,NOR,67,-51,,,,,
                         //24/09/2018,4,033442,364,2681,B,87690,86913,T01L02,8,8,T01L02,A,NOR,8,8,,,,,
@@ -1077,9 +1072,6 @@ namespace ArchivosPlanosWebV2._5.Services
                         {
                             string J = string.Empty;
                         }
-
-
-
                     }
 
                     /************************************************************************/

@@ -16,8 +16,7 @@ namespace ArchivosPlanosWebV2._5.Services
         static string ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
         static SqlConnection Connection = new SqlConnection(ConnectString);
         public string Archivo_5;
-        string Carpeta = @" C:\ArchivosPlanosWeb\";
-        //string Carpeta2 = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWeb\ArchivosPlanosWeb\Descargas\";
+        string Carpeta = @" C:\ArchivosPlanosWeb\";        
         string Carpeta2 = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         public string Message = string.Empty;
 
@@ -154,54 +153,12 @@ namespace ArchivosPlanosWebV2._5.Services
                     Dbl_registros = 0;
 
                     /***********************************************************************/
-                    //Connection.Open();
-
-                    //string Query = @"SELECT t.idTramo, t.nomTramo, p.idPlaza, p.nomPlaza, c.idCarril, c.numCarril, c.numTramo 
-                    //                  FROM TYPE_PLAZA p 
-                    //                  INNER JOIN TYPE_TRAMO t ON t.idenTramo = p.idTramo
-                    //                  INNER JOIN TYPE_CARRIL c ON c.idPlaza = p.idenPlaza
-                    //                  WHERE t.idTramo = @tramo and p.idPlaza = @plaza";
-
-
-                    //string Query = @"SELECT d.ID_Delegacion, d.Nom_Delegacion, p.ID_Plaza, p.Nom_Plaza, c.Num_Gea, c.num_Capufe, c.Num_Tramo " +
-                    //              "FROM TYPE_PLAZA p " +
-                    //              "INNER JOIN TYPE_TRAMO d on d.ID_Delegacion = d.ID_Delegacion " +
-                    //              "INNER JOIN TYPE_CARRIL c on c.ID_Plaza = p.ID_Plaza " +
-                    //              "WHERE d.ID_Delegacion = @tramo and p.ID_Plaza = @plaza";
-
-
-                    //using (SqlCommand Cmd = new SqlCommand(Query, Connection))
-                    //{
-                    //    Cmd.Parameters.Add(new SqlParameter("tramo", Tramo));
-                    //    Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro));
-                    //    //Cmd.Parameters.Add(new SqlParameter("plaza", IdPlazaCobro.Substring(1, 2)));
-                    //    //Cmd.Parameters.Add(new SqlParameter("carril", MtGlb.oDataRow["Voie"].ToString().Substring(1, 2)));
-                    //    try
-                    //    {
-                    //        SqlDataAdapter Da = new SqlDataAdapter(Cmd);
-                    //        Da.Fill(dataTableCa);
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Message = ex.Message + " " + ex.StackTrace;
-                    //    }
-                    //    finally
-                    //    {
-                    //        Cmd.Dispose();
-                    //        Connection.Close();
-                    //    }
-                    //}
-
                     var props = typeof(Type_Carril).GetProperties();
                     DataTable dt = new DataTable("Type_Carril");
                     var idpla = IdPlazaCobro.Substring(1, 2);
                     var Carriles_Tramos = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == idpla).ToList();
-                    dt.Columns.AddRange(
-                            props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                        );
-                    Carriles_Tramos.FirstOrDefault().car.ToList().ForEach(
-                            i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                        );
+                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    Carriles_Tramos.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
 
 
                     ///***********************************************************************/
@@ -215,16 +172,12 @@ namespace ArchivosPlanosWebV2._5.Services
                             Str_detalle = Convert.ToDateTime(item["DATE_TRANSACTION"]).ToString("dd/MM/yyyy") + ",";
 
                             /****************/
-                            dataRows = from MyRow in dt.AsEnumerable()
-                                           // where MyRow.Field<string>("idCarril") == item["Voie"].ToString().Substring(1, 2)
+                            dataRows = from MyRow in dt.AsEnumerable()                                           
                                        where MyRow.Field<string>("Num_Gea") == item["Voie"].ToString().Substring(1, 2)
                                        select MyRow;
 
                             foreach (DataRow value in dataRows)
-                            {
-                                //NumCarril = value["numCarril"].ToString();
-                                //NumTramo = value["numTramo"].ToString();
-                                //NumPlaza = value["idPlaza"].ToString();
+                            {          
                                 NumCarril = value["Num_Capufe"].ToString();
                                 NumTramo = value["Num_Tramo"].ToString();
                                 NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -442,16 +395,12 @@ namespace ArchivosPlanosWebV2._5.Services
                                 Str_detalle = Convert.ToDateTime(MtGlb.oDataRow3["DATE_TRANSACTION"]).ToString("dd/MM/yyyy") + ",";
 
                                 /****************/
-                                dataRows = from MyRow in dt.AsEnumerable()
-                                               //where MyRow.Field<string>("idCarril") == MtGlb.oDataRow3["Voie"].ToString().Substring(1, 2)
+                                dataRows = from MyRow in dt.AsEnumerable()                                               
                                            where MyRow.Field<string>("Num_Carril") == MtGlb.oDataRow3["Voie"].ToString().Substring(1, 2)
                                            select MyRow;
 
                                 foreach (DataRow value in dataRows)
-                                {
-                                    //NumCarril = value["numCarril"].ToString();
-                                    //NumTramo = value["numTramo"].ToString();
-                                    //NumPlaza = value["idPlaza"].ToString();
+                                {   
                                     NumCarril = value["Num_Capufe"].ToString();
                                     NumTramo = value["Num_Tramo"].ToString();
                                     NumPlaza = value.Field<Type_Plaza>("Type_Plaza").Num_Plaza.ToString();
@@ -647,9 +596,6 @@ namespace ArchivosPlanosWebV2._5.Services
                         {
                             Dbl_registros = Dbl_registros + 1;
                             Val.Add(Str_detalle);
-
-                            //oSW.WriteLine(str_detalle)
-                            //----------------------
                         }
                     }
 

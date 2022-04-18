@@ -559,15 +559,10 @@ namespace ArchivosPlanosWebV2._5.Services
                 {
                     var id_pla = IdPlazaCobro.Substring(1, 2);
                     var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
-
                     var props = typeof(Type_Carril).GetProperties();
+                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
 
-                    dt.Columns.AddRange(
-                            props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray()
-                        );
-                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(
-                            i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray())
-                        );
                     foreach (DataRow item3 in MtGlb.Ds3.Tables["TYPE_VOIE"].Rows)
                     {
                         Hr_fecha_ini_varios_turnos = Convert.ToDateTime(MtGlb.Fecha(item3["Expr5"].ToString()));
@@ -1859,7 +1854,6 @@ namespace ArchivosPlanosWebV2._5.Services
                                 {
                                     Str_detalle = Str_detalle + NumTramo + ",";
                                     Str_detalle = Str_detalle + NumCarril + ",";
-
                                 }
                                 else
                                 {

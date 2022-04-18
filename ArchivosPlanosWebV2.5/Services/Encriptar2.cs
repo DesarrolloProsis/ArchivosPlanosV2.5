@@ -8,17 +8,11 @@ using System.Web;
 namespace ArchivosPlanosWebV2._5.Services
 {
     public class Encriptar2
-
     {
-
-        //string Ruta = @" C:\ArchivosPlanosWeb\";
-        //string Ruta = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWebModel\ArchivosPlanosWeb\Descargas\";
         string Ruta = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         string StrIdentificador = "A";
         public string ArchivoZip;
         public string Message;
-
-
         /// <summary>
         /// Encripta los archivos planos.
         /// </summary>
@@ -30,8 +24,6 @@ namespace ArchivosPlanosWebV2._5.Services
         /// <param name="Arch3"></param>
         /// <param name="Arch4"></param>
         /// <param name="Arch5"></param>
-
-
         public void EncriptarArchivos(DateTime FechaInicio, string Str_Turno_block, string IdPlazaCobro, string Arch1, string Arch2, string Arch3, string Arch4, string Arch5, string Plaza)
         {
             try
@@ -80,12 +72,8 @@ namespace ArchivosPlanosWebV2._5.Services
                 }
 
                 //Cambio para Mostrar la carpeta de la plaza correspondiente 
-                //string Dir_archivo_sinEncriptar2 = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
-                //string Dir_archivo_sinEncriptar = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
                 string Dir_archivo_sinEncriptar2 = Ruta + "\\" + "SinEncriptar\\";
-                string Dir_archivo_sinEncriptar = Ruta + "\\" + "SinEncriptar\\";
-
-                //string Nombre_archivo_de_errores = Format(dt_Fecha_Inicio, "dd") & "_errores.txt"
+                string Dir_archivo_sinEncriptar = Ruta + "\\" + "SinEncriptar\\";                
 
                 string Nombre_archivo = string.Empty;
 
@@ -97,8 +85,6 @@ namespace ArchivosPlanosWebV2._5.Services
                     Int_turno = 6;
                 else if (Str_Turno_block.Substring(0, 2) == "22")
                     Int_turno = 4;
-
-
 
 
                 using (ZipFile zipOriginales = new ZipFile())
@@ -134,24 +120,14 @@ namespace ArchivosPlanosWebV2._5.Services
                     {
                         Directory.CreateDirectory(Dir_archivo_sinEncriptar);
                     }
-
-
-                    zipOriginales.Save(Dir_archivo_sinEncriptar + Nombre_archivo);
-                    //ArchivoZip = Dir_archivo_sinEncriptar + Nombre_archivo;
-
+                    zipOriginales.Save(Dir_archivo_sinEncriptar + Nombre_archivo);                    
                 }
-
-
                 EncriptCapufe.EncriptCapufe encripta = new EncriptCapufe.EncriptCapufe();
                 encripta.EncriptarFile(Ruta + Arch1);
                 encripta.EncriptarFile(Ruta + Arch2);
                 encripta.EncriptarFile(Ruta + Arch3);
                 encripta.EncriptarFile(Ruta + Arch4);
-                encripta.EncriptarFile(Ruta + Arch5);
-                //Message = "TODO BIEN";
-
-
-
+                encripta.EncriptarFile(Ruta + Arch5);                
             }
             catch (Exception ex)
             {

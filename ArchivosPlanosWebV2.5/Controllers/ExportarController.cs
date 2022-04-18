@@ -578,8 +578,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                         if(kvp.Value.ToString() == ipCut && kvp.Key.ToString().Substring(1,2) == numPlaza)
                         {
                             return true;
-                        }
-                        
+                        }                        
                     }
                 }
             }

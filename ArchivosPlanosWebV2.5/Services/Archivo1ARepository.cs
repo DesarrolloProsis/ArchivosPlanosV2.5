@@ -1155,7 +1155,6 @@ namespace ArchivosPlanosWebV2._5.Services
                 {
                     Message = "Todo bien";
                 }
-
             }
             catch (Exception ex)
             {
@@ -1299,7 +1298,6 @@ namespace ArchivosPlanosWebV2._5.Services
                     }
                     Error = item;
                 }
-
             }
             return Error;
         }
