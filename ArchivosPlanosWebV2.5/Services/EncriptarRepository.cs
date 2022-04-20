@@ -144,57 +144,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 encripta.EncriptarFile(Ruta + Arch4);
                 encripta.EncriptarFile(Ruta + Arch5);
                 Message = "Todo bien";
-
-                /////////////////////////////////////////////////////////////////////////////////////////////
-                //using (ZipFile zipOriginales2 = new ZipFile())
-                //{
-
-
-                //    zipOriginales2.Password = "ald3s4";
-                //    zipOriginales2.Encryption = EncryptionAlgorithm.WinZipAes256;
-
-                //    zipOriginales2.AddFile(Ruta2 + Arch1, "");
-                //    zipOriginales2.AddFile(Ruta2 + Arch2, "");
-                //    zipOriginales2.AddFile(Ruta2 + Arch3, "");
-                //    zipOriginales2.AddFile(Ruta2 + Arch4, "");
-                //    zipOriginales2.AddFile(Ruta2 + Arch5, "");
-
-
-
-                //    if (IdPlazaCobro.Length == 3)
-                //    {
-                //        if (IdPlazaCobro == "108")
-                //            Nombre_archivo = "0001";
-                //        else if (IdPlazaCobro == "109")
-                //            Nombre_archivo = "001B";
-                //        else if (IdPlazaCobro == "107")
-                //            Nombre_archivo = "0107";
-                //        else Nombre_archivo = "0" + IdPlazaCobro;
-                //    }
-
-                //    Nombre_archivo = Nombre_archivo + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + ".Z" + Int_turno + StrIdentificador;
-
-                //    if (!Directory.Exists(Dir_archivo_sinEncriptar2))
-                //    {
-                //        Directory.CreateDirectory(Dir_archivo_sinEncriptar2);
-                //    }
-
-
-                //    zipOriginales2.Save(Dir_archivo_sinEncriptar2 + Nombre_archivo);
-                //    ArchivoZip = Dir_archivo_sinEncriptar2 + Nombre_archivo;
-
-                //}
-
-                //EncriptCapufe.EncriptCapufe encripta2 = new EncriptCapufe.EncriptCapufe();
-                //encripta2.EncriptarFile(Ruta2 + Arch1);
-                //encripta2.EncriptarFile(Ruta2 + Arch2);
-                //encripta2.EncriptarFile(Ruta2 + Arch3);
-                //encripta2.EncriptarFile(Ruta2 + Arch4);
-                //encripta2.EncriptarFile(Ruta2 + Arch5);
-
-
-
-
+                
             }
             catch (Exception ex)
             {

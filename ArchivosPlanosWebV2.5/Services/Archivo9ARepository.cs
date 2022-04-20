@@ -16,7 +16,8 @@ namespace ArchivosPlanosWebV2._5.Services
         private AppDbContextSQL db = new AppDbContextSQL();
         public string Archivo_3;
         string Carpeta = @" C:\ArchivosPlanosWeb\";
-        //string Carpeta2 = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWeb\ArchivosPlanosWeb\Descargas\";
+        //string
+        //= @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWeb\ArchivosPlanosWeb\Descargas\";
         string Carpeta2 = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         string StrIdentificador = "A";
         static string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;

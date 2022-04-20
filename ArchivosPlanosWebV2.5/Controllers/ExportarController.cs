@@ -271,10 +271,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                             return View(mdlpy);
                     }
 
-                    encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
+                    //encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
-                    comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
+                    //comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
                     ViewBag.Titulo = "Resumen de creación de archivos";
@@ -386,7 +386,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
             if (Plaza.Value.Length == 2)
             {
-                if (Delegacion.Value == "06")
+                if (Delegacion.Value == "67")
                 {
                     Plaza.Value = "1" + Plaza.Value;
                     if (Plaza.Value == "108") //Tlalpan
@@ -401,7 +401,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             {
                 if (model.ValidarEncriptar)
                 {
-
                     bool Errores = compara.Executer();                
                     if (Errores)
                     {
@@ -417,7 +416,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
                         };
                         return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, model = mdlpy, errores = true }, JsonRequestBehavior.AllowGet);
                     }
-
                 }
                 string Carpeta = @"C:\ArchivosPlanosWeb\";
                 var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();
@@ -431,10 +429,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 var II = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("II")).ToList();
                 string[] ii = II[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
 
-                encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                //encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                 encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                 comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
-                comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                //comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
                
 
                 ViewBag.Titulo = model.ValidarEncriptar ? "Errores en los archivos planos" : "Encriptar y Comprimir";

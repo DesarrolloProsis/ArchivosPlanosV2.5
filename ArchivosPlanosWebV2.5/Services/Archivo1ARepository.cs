@@ -22,8 +22,7 @@ namespace ArchivosPlanosWebV2._5.Services
         static SqlConnection Connection = new SqlConnection(ConnectionString);
         public string Archivo_1;
         string Str_detalle;
-        string Carpeta = @" C:\ArchivosPlanosWeb\";
-        //string Carpeta2 = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWeb\ArchivosPlanosWeb\Descargas\";
+        string Carpeta = @" C:\ArchivosPlanosWeb\";        
         string Carpeta2 = @"C:\inetpub\wwwroot\ArchivosPlanos\Descargas\";
         string StrIdentificador = "A";
         public string Message = string.Empty;
@@ -43,7 +42,6 @@ namespace ArchivosPlanosWebV2._5.Services
         /// <param name="Tramo"></param>
         /// <returns></returns>
         /// 
-
         public void Generar_Bitacora_Operacion(string Str_Turno_block, DateTime FechaInicio, string IdPlazaCobro, string CabeceraTag, string Tramo, string Conexion)
         {
             string StrQuerys = string.Empty;
