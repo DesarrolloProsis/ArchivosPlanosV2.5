@@ -270,3 +270,5 @@ C:\Users\admin\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanos
 C:\Users\admin\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.csproj.CopyComplete
 C:\Users\admin\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.dll
 C:\Users\admin\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.pdb
+C:\Users\Rodrigo\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\System.ValueTuple.dll
+C:\Users\Rodrigo\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\System.ValueTuple.xml
