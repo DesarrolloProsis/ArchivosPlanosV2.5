@@ -550,7 +550,6 @@ namespace ArchivosPlanosWebV2._5.Services
                                     dataSet.Clear();
                                     Cmd.Dispose();
                                 }
-
                             }
 
                             //VERFICAR EL ENCARGADO DE TURNO

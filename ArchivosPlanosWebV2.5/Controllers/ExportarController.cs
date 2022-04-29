@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 
 namespace ArchivosPlanosWebV2._5.Controllers
 {
+    [Authorize]
     public class ExportarController : Controller
     {
         private AppDbContextSQL db2 = new AppDbContextSQL();
@@ -537,7 +538,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         private bool ValidarPlazaLocal(string numPlaza)
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
-            {                
+            {  
                 //Tramo Irapuato
                 { "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
                 { "005",  IPAddress.Parse("10.3.23.0") },//Palmillas

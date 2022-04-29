@@ -373,8 +373,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
-        //
+        
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]

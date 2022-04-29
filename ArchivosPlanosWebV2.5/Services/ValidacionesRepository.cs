@@ -896,7 +896,7 @@ namespace ArchivosPlanosWebV2._5.Services
         }
 
 
-        //public string Insertar_Comentarios(DateTime FechaInicioD, DateTime FechaSelect, string TempTurno, string Comentario)
+        
         public string Isertar_Comentarios(List<filas> listass, List<string> comentario, string Conexion)
         {
 
