@@ -10,8 +10,7 @@ namespace ArchivosPlanosWebV2._5.Services
     public class EncriptarRepository
 
     {
-        string Ruta = @" C:\ArchivosPlanosWeb\";
-        //string Ruta2 = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWebModel\ArchivosPlanosWeb\Descargas\";
+        string Ruta = @" C:\ArchivosPlanosWeb\";        
         string StrIdentificador = "A";
         public string ArchivoZip;
         public string Message;
@@ -78,9 +77,9 @@ namespace ArchivosPlanosWebV2._5.Services
                 }
 
                 //Cambio para Mostrar la carpeta de la plaza correspondiente 
-                string Dir_archivo_sinEncriptar2 = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
+                //string Dir_archivo_sinEncriptar2 = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
                 string Dir_archivo_sinEncriptar = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
-                //string Nombre_archivo_de_errores = Format(dt_Fecha_Inicio, "dd") & "_errores.txt"
+                string Dir_archivo_sinEncriptar_download = Ruta + "Download" + "\\" + "SinEncriptar" + "\\";
 
                 string Nombre_archivo = string.Empty;
 
@@ -130,10 +129,15 @@ namespace ArchivosPlanosWebV2._5.Services
                         Directory.CreateDirectory(Dir_archivo_sinEncriptar);
                     }
 
+                    if (!Directory.Exists(Dir_archivo_sinEncriptar_download))
+                    {
+                        Directory.CreateDirectory(Dir_archivo_sinEncriptar_download);
+                    }
+
 
                     zipOriginales.Save(Dir_archivo_sinEncriptar + Nombre_archivo);
-                    ArchivoZip = Dir_archivo_sinEncriptar + Nombre_archivo;
-
+                    zipOriginales.Save(Dir_archivo_sinEncriptar_download + Nombre_archivo);
+                    //ArchivoZip = Dir_archivo_sinEncriptar + Nombre_archivo;
                 }
 
 
@@ -143,8 +147,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 encripta.EncriptarFile(Ruta + Arch3);
                 encripta.EncriptarFile(Ruta + Arch4);
                 encripta.EncriptarFile(Ruta + Arch5);
-                Message = "Todo bien";
-                
+                Message = "Todo bien";                
             }
             catch (Exception ex)
             {

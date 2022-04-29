@@ -1,13 +1,13 @@
 ﻿using Ionic.Zip;
 using System;
+using System.IO;
 
 namespace ArchivosPlanosWebV2._5.Services
 {
     public class ComprimirRepository
 
     {
-        string Ruta = @" C:\ArchivosPlanosWeb\";
-        //string Ruta2 = @"C:\Users\Desarrollo3\Desktop\ArchivosPlanosWebModel\ArchivosPlanosWeb\Descargas\";
+        string Ruta = @"C:\ArchivosPlanosWeb\";        
         string StrIdentificador = "A";
         public string ArchivoZip;
         public string Message;
@@ -28,9 +28,30 @@ namespace ArchivosPlanosWebV2._5.Services
         {
             try
             {
+                //PRIMERO BORRAMOS LOS ARCHIOS ZIP QUE SE TENGAN ANTERIORES
+                string RutaEncriptado = Ruta + "Download" + "\\" + "Encriptado" + "\\";
+                string RutaSinEncriptar = Ruta + "Download" + "\\" + "SinEncriptar" + "\\";
+
+                DirectoryInfo directoryInfoEncriptado = new DirectoryInfo(RutaEncriptado);
+                DirectoryInfo directoryInfoSinEncriptado = new DirectoryInfo(RutaSinEncriptar);
+
+                FileInfo[] filesEncriptado = directoryInfoEncriptado.GetFiles();
+                FileInfo[] filesSinEncriptar = directoryInfoSinEncriptado.GetFiles();
+
+                foreach (var fileEncriptado in filesEncriptado)
+                {
+                    System.IO.File.Delete(RutaEncriptado + fileEncriptado.Name);
+                }
+
+                foreach (var fileSinEncriptado in filesSinEncriptar)
+                {
+                    System.IO.File.Delete(RutaEncriptado + fileSinEncriptado.Name);
+                }
+                System.IO.File.Delete(Ruta + "Download" + "\\" + "test.zip");
+
+
+
                 string PathF;
-
-
                 var Mes = FechaInicio.ToString("MM");
                 var Año = FechaInicio.ToString("yyyy");
 
@@ -78,6 +99,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 //Cambio para Mostrar la carpeta de la plaza correspondiente 
 
                 var ArchivoRuta = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\";
+                var ArchivoRutaDownload = Ruta + "Download" + "\\" + "Encriptado" + "\\";
                 /////////////////////////////////////
                 //var ArchivoRuta2 = Ruta2 + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\";
 
@@ -118,11 +140,14 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     Nombre_archivo = Nombre_archivo + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + ".Z" + Int_turno + StrIdentificador;
 
-                    //MODIFICACION SIN ARCHIVOS DE ERRORRES: EMILIANO
-                    // if(ArchivoRuta != "" && Nombre_archivo != "")
-                    //{
-                    zip.Save(ArchivoRuta + Nombre_archivo);                    //}
 
+                    if (!Directory.Exists(ArchivoRutaDownload))
+                    {
+                        Directory.CreateDirectory(ArchivoRutaDownload);
+                    }
+
+
+                    zip.Save(ArchivoRuta + Nombre_archivo);                    
                 }
 
                 //encriptacion
@@ -165,6 +190,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
                     var Archivo2 = NoPlaza + FechaInicio.ToString("MM") + FechaInicio.ToString("dd") + FechaInicio.ToString("yyyy") + ".Z" + Int_turno + StrIdentificador;
                     Zip2.Save(ArchivoRuta + Archivo2);
+                    Zip2.Save(ArchivoRutaDownload + Archivo2);
 
                 }
                 System.IO.File.Delete(PathF);
@@ -199,7 +225,7 @@ namespace ArchivosPlanosWebV2._5.Services
             System.IO.File.Delete(Ruta + Arch2);
             System.IO.File.Delete(Ruta + Arch3);
             System.IO.File.Delete(Ruta + Arch4);
-            System.IO.File.Delete(Ruta + Arch5);
+            System.IO.File.Delete(Ruta + Arch5);                                         
         }
     }
 }

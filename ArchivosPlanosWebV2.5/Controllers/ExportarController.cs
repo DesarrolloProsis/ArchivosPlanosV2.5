@@ -96,8 +96,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
             Comparar compara = new Comparar();
-            Encriptar2 encriptar2 = new Encriptar2();
-            Comprimir2 comprimir2 = new Comprimir2();
+            //Encriptar2 encriptar2 = new Encriptar2();
+            //Comprimir2 comprimir2 = new Comprimir2();
             DateTime fecha_Actual = DateTime.Today;
             DateTime Hora_Actual = DateTime.Now;
             DateTime Hora_ = DateTime.Now;
@@ -282,8 +282,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     
-                    Nom1 = comprimir2.Nombre1;
-                    Nom2 = comprimir2.Nombre2;
+                    //Nom1 = comprimir2.Nombre1;
+                    //Nom2 = comprimir2.Nombre2;
                     ViewBag.Titulo = "Resumen de creación de archivos";
                     ViewBag.Mensaje = "Archivo 1A: " + archivo1A.Message + "<br />Archivo 2A: " + archivo2A.Message + "<br />Archivo 9A: " + archivo9A.Message + "<br />Archivo LL: " + archivoII.Message + "<br />Archivo PA: " + archivoPA.Message + "<br />Encriptación: " + encriptar.Message + "<br />Compresión: " + comprimir.Message + "<br />Errores: " + compara.Message + "\n" + archivo1A.validacionesNuevas + "\n" + archivo2A.validacionesNuevas + "\n" + archivo9A.validacionesNuevas + "\n" + archivo2A.validacionNuevaEmpalmeHorario;                              
                 }
@@ -332,8 +332,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
             EncriptarRepository encriptar = new EncriptarRepository();
             ComprimirRepository comprimir = new ComprimirRepository();
             Comparar compara = new Comparar();
-            Encriptar2 encriptar2 = new Encriptar2();
-            Comprimir2 comprimir2 = new Comprimir2();
+            //Encriptar2 encriptar2 = new Encriptar2();
+            //Comprimir2 comprimir2 = new Comprimir2();
             SelectListItem Plaza;
             SelectListItem Turno;
             SelectListItem Delegacion;
@@ -435,11 +435,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 string[] pA = PA[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
                 var II = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("II")).ToList();
                 string[] ii = II[0].ToString().Split(new[] { "\\" }, StringSplitOptions.None);
-
-                //encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                
                 encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
-                comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
-                //comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);
+                comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);                
                
 
                 ViewBag.Titulo = model.ValidarEncriptar ? "Errores en los archivos planos" : "Encriptar y Comprimir";
@@ -708,39 +706,41 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public ActionResult Descargar()
         {
+            try
+            {
+                const string Ruta = @"C:\ArchivosPlanosWeb\";
+                const string RutaEncriptado = Ruta + "Download" + "\\" + "Encriptado" + "\\";
+                const string RutaSinEncriptar = Ruta + "Download" + "\\" + "SinEncriptar" + "\\";
 
-            return Json("hello word", JsonRequestBehavior.AllowGet);
-            //Comprimir2 comprimir = new Comprimir2();
-            //if (Nom1 == null && Nom2 == null)
-            //{
-            //    Response.Write("<script>alert('" + "Tienes que generar los archivos primero" + "');</script>");
-            //    return View("Index");
-            //}
-            //using (ZipFile zip = new ZipFile())
-            //{
-            //    var archivo1 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + "SinEncriptar\\" + Nom1;
-            //    var archivo2 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + Nom2;
+                DirectoryInfo directoryInfoEncriptado = new DirectoryInfo(RutaEncriptado);
+                DirectoryInfo directoryInfoSinEncriptado = new DirectoryInfo(RutaSinEncriptar);
 
-            //    var archivo1_nombre = Path.GetFileName(archivo1);
-            //    var archivo1_arreglo = System.IO.File.ReadAllBytes(archivo1);
+                FileInfo[] filesEncriptado = directoryInfoEncriptado.GetFiles();
+                FileInfo[] filesSinEncriptar = directoryInfoSinEncriptado.GetFiles();
 
-            //    var archivo2_nombre = Path.GetFileName(archivo2);
-            //    var archivo2_arreglo = System.IO.File.ReadAllBytes(archivo2);
+                using (ZipFile zip = new ZipFile())
+                {
+                    if (User.IsInRole("SuperAdmin"))
+                    {
+                        zip.AddFile(RutaEncriptado + filesEncriptado[0].Name, "");
+                        zip.AddFile(RutaSinEncriptar + filesSinEncriptar[0].Name, "");
+                    }
+                    if (User.IsInRole("Capufe"))
+                    {
+                        zip.AddFile(RutaEncriptado + filesEncriptado[0].Name, "");                        
+                    }              
 
-            //    zip.AddEntry(archivo1_nombre, archivo1_arreglo);
-            //    zip.AddEntry(archivo2_nombre, archivo2_arreglo);
+                    zip.Save(Ruta  + "Download" + "\\" + "test.zip");
+                }                       
 
-            //    var nombredelZIp = "MIZIP.zip";
-
-            //    using (MemoryStream output = new MemoryStream())
-            //    {
-            //        zip.Save(output);
-            //        comprimir.EliminarZip(Nom1, Nom2);
-            //        Nom1 = null;
-            //        Nom2 = null;
-            //        return File(output.ToArray(), "application/ZIP", nombredelZIp);
-            //    }
-            //}
+                return File(Ruta + "Download" + "\\" + "test.zip", "application/Zip", filesEncriptado[0].Name);
+                
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }            
+  
         }
     }
 }
