@@ -24,20 +24,32 @@
                 <ul class="navbar-nav ml-auto">
 
                     @if (Request.IsAuthenticated)
-                    {
+                    {                        
                         <li class="nav-item ">
                             @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                         </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "CRUD" ? "active" : "")">
-                            @Html.ActionLink("CRUD", "Index", "CRUD", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item ">
-                            @Html.ActionLink("Exportar", "Index", "Exportar", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item ">
-                            @Html.ActionLink("Exportar Automatico", "IndexAutomatico", "Exportar", new AjaxOptions { HttpMethod = "POST" }, htmlAttributes: new { @class = "nav-link" })
-                        </li>
-                     }
+                        if (User.IsInRole("SuperAdmin"))
+                        { 
+                            <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "CRUD" ? "active" : "")">
+                                @Html.ActionLink("CRUD", "Index", "CRUD", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                        if (User.IsInRole("SuperAdmin") || User.IsInRole("Capufe"))
+                        {
+                            <li class="nav-item ">
+                                @Html.ActionLink("Exportar", "Index", "Exportar", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item ">
+                                @Html.ActionLink("Exportar Automatico", "IndexAutomatico", "Exportar", new AjaxOptions { HttpMethod = "POST" }, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                        if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item ">
+                                @Html.ActionLink("Nuevo Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                    }
 
                     @Html.Partial("_LoginPartial")
                 </ul>

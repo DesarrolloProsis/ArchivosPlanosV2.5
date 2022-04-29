@@ -79,8 +79,16 @@ namespace ArchivosPlanosWebV2._5.Models
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        public string Rol { get; set; }     
     }
 
+    public enum TypeRole
+    {
+        SuperAdmin,
+        Capufe
+        
+    }
     public class ResetPasswordViewModel
     {
         [Required]

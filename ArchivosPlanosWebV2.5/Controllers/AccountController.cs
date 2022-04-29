@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ArchivosPlanosWebV2._5.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ArchivosPlanosWebV2._5.Controllers
 {
@@ -140,28 +141,28 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             if (ModelState.IsValid)
             {
+                var rolManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+                if(!rolManager.RoleExists(model.Rol))
+                {
+                    rolManager.Create(new IdentityRole(model.Rol));
+                }
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // Para obtener más información sobre cómo habilitar la confirmación de cuentas y el restablecimiento de contraseña, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Enviar correo electrónico con este vínculo
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
 
+                    var userTmp = UserManager.FindByEmail(model.Email);
+                    UserManager.AddToRole(userTmp.Id, model.Rol);
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);           
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
-            }
-
-            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+            }            
             return View(model);
         }
-
-        //
+       
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
@@ -173,8 +174,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
-
-        //
+        
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
