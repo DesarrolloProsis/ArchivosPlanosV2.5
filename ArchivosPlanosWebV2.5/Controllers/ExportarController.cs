@@ -733,7 +733,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     zip.Save(Ruta  + "Download" + "\\" + "test.zip");
                 }                       
 
-                return File(Ruta + "Download" + "\\" + "test.zip", "application/Zip", filesEncriptado[0].Name);
+                return File(Ruta + "Download" + "\\" + "test.zip", "application/Zip", filesEncriptado[0].Name);                
                 
             }
             catch (Exception ex)

@@ -47,6 +47,11 @@
                 },
             });
 
+            $("#OkValidar").click(function () {
+                window.location.href = '/Home/Index/';
+                $('#mensaje').hide();                
+            })
+
             $("#reValidar").click(function () {
                 $("#mensaje").hide()
                 $("#tituloModal").empty()
@@ -147,7 +152,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
-                    <button id="OkValidar" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Descargar", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
+                    <button id="OkValidar" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
                     <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
                 </div>
             </div>
