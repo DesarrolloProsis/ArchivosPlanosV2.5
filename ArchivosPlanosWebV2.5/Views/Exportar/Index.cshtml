@@ -208,6 +208,7 @@
                         },
                     });
             })
+
             $("#OkValidar").click(function () {
                 $("#OkValidar").show()
                 $("#reValidar").show()
@@ -278,8 +279,6 @@
             Show();
         });
 
-
-
         function LoadDelegaciones() {
             $.ajax({
                 url: '@Url.Action("GetDelegaciones", "Exportar")',
@@ -300,8 +299,6 @@
             });
         }
 
-
-
         function LoadPlazas() {
             $.ajax({
                 url: '@Url.Action("GetPlazaCobro", "Exportar")',
@@ -320,7 +317,6 @@
                 },
             });
         }
-
 
         function LoadTurnos() {
         $.ajax({

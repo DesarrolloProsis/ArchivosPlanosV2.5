@@ -394,7 +394,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 string Dt_fin_poste = string.Empty;
                 string Str_MATRICULE = string.Empty;
 
-                string Str_cajero = Str_Cajero_Receptor;
+                string Str_cajero = string.Empty;//Str_Cajero_Receptor;
                 string Id_plaza_cobro_local = IdPlazaCobro;
 
                 //VARIABLES DE CAMPO

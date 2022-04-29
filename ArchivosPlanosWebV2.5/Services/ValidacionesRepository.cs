@@ -606,7 +606,6 @@ namespace ArchivosPlanosWebV2._5.Services
                             errorFormat = errorFormat + carril + " ";
                         }
                         errorFormatCajeroEncargadoAbiertos = errorFormat;
-
                     }
                     if (erresIdentOperacionAbierto.Count > 0)
                     {
@@ -618,8 +617,7 @@ namespace ArchivosPlanosWebV2._5.Services
                         errorFormatIdentOperacionAbierto = errorFormat2;
                     }
                     return "STOP";
-                }
-                    
+                }                    
             }
             return "OK";
         }

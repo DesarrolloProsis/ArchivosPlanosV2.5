@@ -17,6 +17,7 @@
             $("#close").click(function () {                
                 $("#mensaje").hide()
             })
+
             $("#close2").click(function () {                
                 $("#mensaje").hide()
             })
@@ -45,6 +46,7 @@
                     alert("Error!!!" + ex)
                 },
             });
+
             $("#reValidar").click(function () {
                 $("#mensaje").hide()
                 $("#tituloModal").empty()
@@ -86,6 +88,7 @@
                     },
                 });
             })
+
             $("#botonPythonComprimir").click(function () {
                 $("#mensaje").hide()
                 $("#tituloModal").empty()
@@ -131,15 +134,13 @@
     </script>
 }
 
-<h2>IndexAutomatico</h2>
+    <h2>IndexAutomatico</h2>
+
     <div tabindex="-1" role="dialog" id="mensaje">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="tituloModal" class="modal-title"></h5>
-                    @*<button id="close" type="button">
-                        @Html.ActionLink("X", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })
-                    </button>*@
+                    <h5 id="tituloModal" class="modal-title"></h5>      
                 </div>
                 <div class="modal-body">
                     <p id="mensajeModal"></p>
