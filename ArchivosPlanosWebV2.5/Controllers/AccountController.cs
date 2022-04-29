@@ -154,8 +154,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 {
 
                     var userTmp = UserManager.FindByEmail(model.Email);
-                    UserManager.AddToRole(userTmp.Id, model.Rol);
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);           
+                    UserManager.AddToRole(userTmp.Id, model.Rol);                                        
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

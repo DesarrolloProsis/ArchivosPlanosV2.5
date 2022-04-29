@@ -1065,6 +1065,8 @@ namespace ArchivosPlanosWebV2._5.Services
             //Validacion Plaza Mexico-Acapulco
             string plaza = string.Empty;
             string connection = string.Empty;
+
+
             if (delegacion == "67")
             {
                 plaza = "1" + numPlaza;
@@ -1108,7 +1110,7 @@ namespace ArchivosPlanosWebV2._5.Services
             {
                 plaza = "0" + numPlaza;
                 if (plaza == "004") //Tepotzotlan
-                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";                                 
+                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
                 else if (plaza == "070") //Polotitlan
                     connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.22.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
@@ -1136,6 +1138,9 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 else if (plaza == "069") //Jorobas
                     connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.21.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+
+                else if (plaza == "008") //PRUEBAS
+                    connection = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST= 10.1.1.148)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)));User Id=GEADBA;Password=fgeuorjvne;";
 
                 else
                 {

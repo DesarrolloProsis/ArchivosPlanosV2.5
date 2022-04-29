@@ -1,6 +1,7 @@
 ﻿using ArchivosPlanosWebV2._5.Models;
 using ArchivosPlanosWebV2._5.Services;
 using Ionic.Zip;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
     public class ExportarController : Controller
     {
         private AppDbContextSQL db2 = new AppDbContextSQL();
-
+        private ApplicationUserManager _userManager;
         private object SubirArchivo;
         public object Paht { get; private set; }        
         public object MapPath { get; private set; }
@@ -36,6 +37,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public string ConexionDB = string.Empty;
 
+
+
         //GET: EXPORTAR AUTOMATICO
         [HttpGet]
         public ActionResult IndexAutomatico()
@@ -46,7 +49,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         // GET: Exportar
         [HttpGet]
         public ActionResult Index()
-        {
+        {                                 
             string turno = "";
             DateTime time = DateTime.Now;
             DateTime turno1;
@@ -245,8 +248,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     compara.Borrar(UnoA);
                     compara.Borrar(PA);
                     compara.Borrar(II);
-
-                    //"01" SE DEBE ALMACENAR DE ACUERDO AL INICION DE SESIÓN
+                    
                     string tramoNew = Delegacion.Value == "67" ? "01" : "03";//67 Acapulco se transforma a 01
                     archivo1A.Generar_Bitacora_Operacion(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
                     archivo2A.Preliquidaciones_de_cajero_receptor_para_transito_vehicular(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
@@ -254,28 +256,32 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     archivoII.Registro_usuarios_telepeaje(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
                     archivoPA.eventos_detectados_y_marcados_en_el_ECT_EAP(Turno.Text, FechaInicio, Convert.ToString(Plaza.Value), Convert.ToString(Delegacion.Value), tramoNew, ConexionDB);
 
-                    bool Errores = compara.Executer();
-                    if (Errores)
+                    if (User.IsInRole("SuperAdmin"))
                     {
-                        ViewBag.Titulo = "Errores en los archivos planos python";
-                        ViewBag.Python = true;
-                        ViewBag.Mensaje = "Errores: " + compara.Message;                   
-                        var mdlpy = new ControlesExportar
+
+                        bool Errores = compara.Executer();
+                        if (Errores)
                         {
-                            TurnoId = Turno.Value,
-                            FechaInicio = FechaInicio,
-                            DelegacionesId = Delegacion.Value
-                        };
-                        if (CreacionAutomatica)
-                            return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, errores = ViewBag.Python }, JsonRequestBehavior.AllowGet);
-                        else
-                            return View(mdlpy);
+                            ViewBag.Titulo = "Errores en los archivos planos python";
+                            ViewBag.Python = true;
+                            ViewBag.Mensaje = "Errores: " + compara.Message;
+                            var mdlpy = new ControlesExportar
+                            {
+                                TurnoId = Turno.Value,
+                                FechaInicio = FechaInicio,
+                                DelegacionesId = Delegacion.Value
+                            };
+                            if (CreacionAutomatica)
+                                return Json(new { mensaje = ViewBag.Mensaje, titulo = ViewBag.Titulo, errores = ViewBag.Python }, JsonRequestBehavior.AllowGet);
+                            else
+                                return View(mdlpy);
+                        }
                     }
 
-                    //encriptar2.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
+                    
                     encriptar.EncriptarArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
                     comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
-                    //comprimir2.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), archivo1A.Archivo_1, archivo2A.Archivo_2, archivo9A.Archivo_3, archivoPA.Archivo_4, archivoII.Archivo_5, Plaza.Text);
+                    
                     Nom1 = comprimir2.Nombre1;
                     Nom2 = comprimir2.Nombre2;
                     ViewBag.Titulo = "Resumen de creación de archivos";
@@ -538,29 +544,31 @@ namespace ArchivosPlanosWebV2._5.Controllers
         private bool ValidarPlazaLocal(string numPlaza)
         {
             var listaPlazaIp = new Dictionary<string, IPAddress>()
-            {  
+            {
+                //LOCAL
+                { "008",  IPAddress.Parse("10.1.1.0") },
                 //Tramo Irapuato
-                { "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
-                { "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
-                { "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
-                { "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
-                { "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
-                { "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
-                { "070",  IPAddress.Parse("10.3.22.0") },//Polotitlan
-                { "127",  IPAddress.Parse("10.3.24.0") },//Chichimequillas
-                { "183",  IPAddress.Parse("10.3.28.0") },//Villagran
-                { "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
+                //{ "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
+                //{ "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
+                //{ "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
+                //{ "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
+                //{ "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
+                //{ "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
+                //{ "070",  IPAddress.Parse("10.3.22.0") },//Polotitlan
+                //{ "127",  IPAddress.Parse("10.3.24.0") },//Chichimequillas
+                //{ "183",  IPAddress.Parse("10.3.28.0") },//Villagran
+                //{ "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
                 //Tramo Acapulco pendiente de buscar ip
-                { "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan
-                { "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
-                { "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
-                { "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
-                { "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco
-                { "104",  IPAddress.Parse("10.4.164.0")},//LaVenta
-                { "105",  IPAddress.Parse("10.4.165.0")},//Xochitepec
-                { "106",  IPAddress.Parse("10.4.166.0")},//Aeropuerto
-                { "107",  IPAddress.Parse("10.4.167.0")},//EmilianoZapata
-                { "184",  IPAddress.Parse("10.4.184.0")}//FranciscoVelasco
+                //{ "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan
+                //{ "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
+                //{ "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
+                //{ "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
+                //{ "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco
+                //{ "104",  IPAddress.Parse("10.4.164.0")},//LaVenta
+                //{ "105",  IPAddress.Parse("10.4.165.0")},//Xochitepec
+                //{ "106",  IPAddress.Parse("10.4.166.0")},//Aeropuerto
+                //{ "107",  IPAddress.Parse("10.4.167.0")},//EmilianoZapata
+                //{ "184",  IPAddress.Parse("10.4.184.0")}//FranciscoVelasco
             };
 
             IPHostEntry host;            
@@ -700,37 +708,39 @@ namespace ArchivosPlanosWebV2._5.Controllers
 
         public ActionResult Descargar()
         {
-            Comprimir2 comprimir = new Comprimir2();
-            if (Nom1 == null && Nom2 == null)
-            {
-                Response.Write("<script>alert('" + "Tienes que generar los archivos primero" + "');</script>");
-                return View("Index");
-            }
-            using (ZipFile zip = new ZipFile())
-            {
-                var archivo1 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + "SinEncriptar\\" + Nom1;
-                var archivo2 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + Nom2;
 
-                var archivo1_nombre = Path.GetFileName(archivo1);
-                var archivo1_arreglo = System.IO.File.ReadAllBytes(archivo1);
+            return Json("hello word", JsonRequestBehavior.AllowGet);
+            //Comprimir2 comprimir = new Comprimir2();
+            //if (Nom1 == null && Nom2 == null)
+            //{
+            //    Response.Write("<script>alert('" + "Tienes que generar los archivos primero" + "');</script>");
+            //    return View("Index");
+            //}
+            //using (ZipFile zip = new ZipFile())
+            //{
+            //    var archivo1 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + "SinEncriptar\\" + Nom1;
+            //    var archivo2 = "C:\\inetpub\\wwwroot\\ArchivosPlanos\\Descargas" + "\\" + Nom2;
 
-                var archivo2_nombre = Path.GetFileName(archivo2);
-                var archivo2_arreglo = System.IO.File.ReadAllBytes(archivo2);
+            //    var archivo1_nombre = Path.GetFileName(archivo1);
+            //    var archivo1_arreglo = System.IO.File.ReadAllBytes(archivo1);
 
-                zip.AddEntry(archivo1_nombre, archivo1_arreglo);
-                zip.AddEntry(archivo2_nombre, archivo2_arreglo);
+            //    var archivo2_nombre = Path.GetFileName(archivo2);
+            //    var archivo2_arreglo = System.IO.File.ReadAllBytes(archivo2);
 
-                var nombredelZIp = "MIZIP.zip";
+            //    zip.AddEntry(archivo1_nombre, archivo1_arreglo);
+            //    zip.AddEntry(archivo2_nombre, archivo2_arreglo);
 
-                using (MemoryStream output = new MemoryStream())
-                {
-                    zip.Save(output);
-                    comprimir.EliminarZip(Nom1, Nom2);
-                    Nom1 = null;
-                    Nom2 = null;
-                    return File(output.ToArray(), "application/ZIP", nombredelZIp);
-                }
-            }
+            //    var nombredelZIp = "MIZIP.zip";
+
+            //    using (MemoryStream output = new MemoryStream())
+            //    {
+            //        zip.Save(output);
+            //        comprimir.EliminarZip(Nom1, Nom2);
+            //        Nom1 = null;
+            //        Nom2 = null;
+            //        return File(output.ToArray(), "application/ZIP", nombredelZIp);
+            //    }
+            //}
         }
     }
 }
