@@ -406,5 +406,6 @@ C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\M
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\es\Microsoft.AspNet.Identity.EntityFramework.resources.dll
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.csproj.AssemblyReference.cache
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.csproj.CoreCompileInputs.cache
+C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.csproj.CopyComplete
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.dll
 C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Debug\ArchivosPlanosWebV2.5.pdb
