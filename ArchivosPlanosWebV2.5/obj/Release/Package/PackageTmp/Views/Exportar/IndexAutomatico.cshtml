@@ -13,31 +13,33 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
         $("#mensaje").hide()
+        $("#home").hide()
         $(document).ready(function () {
-            $("#close").click(function () {                
+            $("#close").click(function () {
                 $("#mensaje").hide()
             })
-            $("#close2").click(function () {                
-                $("#mensaje").hide()
-            })
+
+            //$("#close2").click(function () {
+            //    $("#mensaje").hide()
+            //})
 
             $.ajax({
                 url: '@Url.Action("Index", "Exportar")',
                 type: "POST",
                 cache: false,
-                success: function (data) {                       
+                success: function (data) {
                     $("#mensaje").show()
                     if (data.errores) {
                         $("#mensajeModal").append(data.mensaje)
                         $("#tituloModal").append(data.titulo)
                         $("#reValidar").show()
-                        $("#OkValidar").hide()                        
+                        $("#OkValidar").hide()
                     }
-                    else {                        
+                    else {
                         $("#mensajeModal").append(data.mensaje)
                         $("#tituloModal").append(data.titulo)
                         $("#reValidar").hide()
-                        $("#OkValidar").show()  
+                        $("#OkValidar").show()
                         $("#botonPythonComprimir").hide()
                     }
                 },
@@ -45,6 +47,13 @@
                     alert("Error!!!" + ex)
                 },
             });
+
+            $("#OkValidar").click(function () {
+                $('OkValidar').hide()
+           /*     $("#home").show()*/
+                $('#mensaje').hide();
+            })
+
             $("#reValidar").click(function () {
                 $("#mensaje").hide()
                 $("#tituloModal").empty()
@@ -86,6 +95,7 @@
                     },
                 });
             })
+
             $("#botonPythonComprimir").click(function () {
                 $("#mensaje").hide()
                 $("#tituloModal").empty()
@@ -132,26 +142,42 @@
 }
 
 <h2>IndexAutomatico</h2>
-    <div tabindex="-1" role="dialog" id="mensaje">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="tituloModal" class="modal-title"></h5>
-                    @*<button id="close" type="button">
-                        @Html.ActionLink("X", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })
-                    </button>*@
-                </div>
-                <div class="modal-body">
-                    <p id="mensajeModal"></p>
-                </div>
-                <div class="modal-footer">
-                    <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
-                    <button id="OkValidar" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
-                    <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
-                </div>
+
+@*<div tabindex="-1" role="dialog" id="home">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Archivos Descargado</h5>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <a href="/Home/Index">Regresar</a>
             </div>
         </div>
     </div>
+</div>*@
+
+<div tabindex="-1" role="dialog" id="mensaje">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="tituloModal" class="modal-title"></h5>
+            </div>
+            <div class="modal-body">
+                <p id="mensajeModal"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="botonPythonComprimir" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
+                <button id="OkValidar" type="button" class="btn btn-secondary">
+                    @Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })
+                </button>
+                <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
