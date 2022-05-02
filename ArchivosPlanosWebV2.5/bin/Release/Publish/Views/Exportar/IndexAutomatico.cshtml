@@ -12,16 +12,11 @@
     <script src="assets/scripts.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
-        $("#mensaje").hide()
-        $("#home").hide()
+        $("#mensaje").hide()        
         $(document).ready(function () {
             $("#close").click(function () {
                 $("#mensaje").hide()
             })
-
-            //$("#close2").click(function () {
-            //    $("#mensaje").hide()
-            //})
 
             $.ajax({
                 url: '@Url.Action("Index", "Exportar")',
@@ -49,8 +44,7 @@
             });
 
             $("#OkValidar").click(function () {
-                $('OkValidar').hide()
-           /*     $("#home").show()*/
+                $('OkValidar').hide()           
                 $('#mensaje').hide();
             })
 
@@ -142,22 +136,6 @@
 }
 
 <h2>IndexAutomatico</h2>
-
-@*<div tabindex="-1" role="dialog" id="home">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Archivos Descargado</h5>
-            </div>
-            <div class="modal-body">
-                <p></p>
-            </div>
-            <div class="modal-footer">
-                <a href="/Home/Index">Regresar</a>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 <div tabindex="-1" role="dialog" id="mensaje">
     <div class="modal-dialog" role="document">
