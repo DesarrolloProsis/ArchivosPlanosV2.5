@@ -32,6 +32,18 @@ namespace ArchivosPlanosWebV2._5.Services
                 string RutaEncriptado = Ruta + "Download" + "\\" + "Encriptado" + "\\";
                 string RutaSinEncriptar = Ruta + "Download" + "\\" + "SinEncriptar" + "\\";
 
+
+                //if (!Directory.Exists(RutaEncriptado))
+                //{
+                //    Directory.CreateDirectory(RutaEncriptado);
+                //}
+
+
+                //if (!Directory.Exists(RutaSinEncriptar))
+                //{
+                //    Directory.CreateDirectory(RutaSinEncriptar);
+                //}
+
                 DirectoryInfo directoryInfoEncriptado = new DirectoryInfo(RutaEncriptado);
                 DirectoryInfo directoryInfoSinEncriptado = new DirectoryInfo(RutaSinEncriptar);
 

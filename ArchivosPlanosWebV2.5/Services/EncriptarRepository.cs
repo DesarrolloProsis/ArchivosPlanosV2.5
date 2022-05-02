@@ -80,6 +80,7 @@ namespace ArchivosPlanosWebV2._5.Services
                 //string Dir_archivo_sinEncriptar2 = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
                 string Dir_archivo_sinEncriptar = Ruta + Plaza.Substring(3) + "\\" + Año + "\\" + Mes + "\\" + FechaInicio.ToString("dd") + "\\" + "SinEncriptar\\";
                 string Dir_archivo_sinEncriptar_download = Ruta + "Download" + "\\" + "SinEncriptar" + "\\";
+                string Dir_archivo_Encriptado_download = Ruta + "Download" + "\\" + "Encriptado" + "\\";
 
                 string Nombre_archivo = string.Empty;
 
@@ -134,10 +135,16 @@ namespace ArchivosPlanosWebV2._5.Services
                         Directory.CreateDirectory(Dir_archivo_sinEncriptar_download);
                     }
 
+                    if (!Directory.Exists(Dir_archivo_Encriptado_download))
+                    {
+                        Directory.CreateDirectory(Dir_archivo_Encriptado_download);
+                    }
+
+
 
                     zipOriginales.Save(Dir_archivo_sinEncriptar + Nombre_archivo);
                     zipOriginales.Save(Dir_archivo_sinEncriptar_download + Nombre_archivo);
-                    //ArchivoZip = Dir_archivo_sinEncriptar + Nombre_archivo;
+             
                 }
 
 
