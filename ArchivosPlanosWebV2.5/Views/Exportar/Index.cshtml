@@ -14,7 +14,8 @@
 
 
     <script>
-        $("#mensaje2").hide();        
+        $("#mensaje2").hide();
+        $("#home").hide()
         $(document).ready(function () {
             $(".loading-screen").hide();
 
@@ -209,15 +210,20 @@
                     });
             })
 
-            $("#OkValidar").click(function () {        
+            $("#OkValidar").click(function () {                
                 $("#OkValidar").show()
                 $("#reValidar").show()
-                $('#mensaje2').hide();                
+                $("#mensaje").hide()         
+                $(".loading-screen").hide();
+                $(".modal-backdrop").hide();
             })
 
             $("#OkValidar2").click(function () {                
                 $("#mensaje").hide()
-                $("#OkValidar2").hide()                
+                $("#OkValidar2").hide()            
+                $(".loading-screen").hide();
+                $(".modal-backdrop").hide();
+                
             })
 
             $("#FechaInicio").change(function () {
@@ -273,7 +279,7 @@
 
             $("#top2").click(function () {
                 $(".loading-screen").show();
-                $("#top3").css("visibility", "visible");
+              /*  $("#top3").css("visibility", "visible");*/
             });
 
 
@@ -470,7 +476,7 @@
                         <p>@Html.Raw(ViewBag.Mensaje)</p>
                     </div>
                     <div class="modal-footer">
-                        <button id="OkValidar2" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
+                        <button id="OkValidar2" type="button" class="btn btn-secondary">@Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>                    
                     </div>
                 </div>
             </div>
@@ -516,8 +522,7 @@
             <div class="modal-footer">
                 <button id="botonPythonComprimir2" type="button" class="btn btn-danger" data-dismiss="modal">No Validar Solo Comprimir</button>
                 <button id="reValidar" type="button" class="btn btn-secondary">ReValidar</button>
-                <button id="OkValidar" type="button" class="btn btn-secondary"  data-dismiss="modal">@Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>
-                @*<button id="OkValidar" type="button" class="btn btn-secondary">Ok</button>*@
+                <button id="OkValidar" type="button" class="btn btn-secondary"  data-dismiss="modal">@Html.ActionLink("Ok", "Descargar", "Exportar", routeValues: null, htmlAttributes: new { @class = "btn btn-secondary" })</button>                
             </div>
         </div>
     </div>
