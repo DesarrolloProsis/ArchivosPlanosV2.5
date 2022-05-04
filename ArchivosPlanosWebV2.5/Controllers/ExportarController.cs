@@ -413,6 +413,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     {
                         ViewBag.Titulo = "Errores en los archivos planos";
                         ViewBag.Mensaje = "Errores: " + compara.Message;
+                        ViewBag.Python = true;
                         var mdlpy = new ControlesExportar
                         {
                             DelegacionesId = model.DelegacionesId,
@@ -440,9 +441,9 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 comprimir.ComprimirArchivos(FechaInicio, Turno.Text, Convert.ToString(Plaza.Value), unoA[2], dosA[2], nueveA[2], pA[2], ii[2], Plaza.Text);                
                
 
-                ViewBag.Titulo = model.ValidarEncriptar ? "Errores en los archivos planos" : "Encriptar y Comprimir";
+                ViewBag.Titulo = "Encriptar y Comprimir";
                 ViewBag.Python = false;
-                ViewBag.Mensaje = model.ValidarEncriptar ? "Errores: " + compara.Message : "Se encriptaron los archivos con exito";
+                ViewBag.Mensaje = "Se encriptaron los archivos con exito";
             }
             catch (Exception ex)
             {
