@@ -637,12 +637,14 @@ namespace ArchivosPlanosWebV2._5.Services
                                 if (EncargadoTurno != string.Empty)
                                 {
                                     Str_detalle = Str_detalle + EncargadoTurno + ",";
+                                    //Str_detalle_tc = Str_detalle_tc + EncargadoTurno + ",";
                                     Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoPlaza + ",";
                                 }
                                 else
                                 {
-                                    Str_detalle = Str_detalle + ",";
-                                    Str_detalle_tc = Str_detalle_tc + ",";
+                                    Str_detalle = Str_detalle + Matricula +",";
+                                    Str_detalle_tc = Str_detalle_tc + Matricula + ",";
+                                    //Str_detalle_tc = Str_detalle_tc + ",";
                                     Message = Str_detalle + "falta encargado de turno ";
                                     validacionesNuevas = "FALTA EL ENCARGADO DE TURNO";
                                 }
@@ -652,7 +654,8 @@ namespace ArchivosPlanosWebV2._5.Services
                                 if (EncargadoTurno != string.Empty)
                                 {
                                     Str_detalle = Str_detalle + EncargadoTurno + "," + EncargadoTurno + ",";
-                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoPlaza + ",";
+                                    Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoTurno + ",";
+                                    //Str_detalle_tc = Str_detalle_tc + EncargadoTurno + "," + EncargadoPlaza + ",";
                                 }
                                 else
                                 {
@@ -665,8 +668,18 @@ namespace ArchivosPlanosWebV2._5.Services
                         }
                         else
                         {
-                            Str_detalle = Str_detalle + Encargado + "," + EncargadoTurno + ",";
-                            Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoPlaza + ",";
+                            if (EncargadoTurno != string.Empty)
+                            {
+                                Str_detalle = Str_detalle + Encargado + "," + EncargadoTurno + ",";
+                                //Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoTurno + ",";
+                            }
+                            else
+                            {
+                                Str_detalle = Str_detalle + Encargado + "," + Encargado + ",";
+                                //Str_detalle_tc = Str_detalle_tc + Encargado + "," + EncargadoTurno + ",";
+                            }
+
+                            Str_detalle_tc = Str_detalle_tc + Encargado + "," + Encargado + ",";
                         }
 
                         Query = "Select MAT_ADMIN From PTM_LASS ";
