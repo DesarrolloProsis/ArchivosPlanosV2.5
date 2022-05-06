@@ -12,7 +12,7 @@
     <script src="assets/scripts.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
-        $("#mensaje").hide()        
+        $("#mensaje").hide()
         $(document).ready(function () {
             $("#close").click(function () {
                 $("#mensaje").hide()
@@ -23,6 +23,7 @@
                 type: "POST",
                 cache: false,
                 success: function (data) {
+                    $(".loading-screen").hide();
                     $("#mensaje").show()
                     if (data.errores) {
                         $("#mensajeModal").append(data.mensaje)
@@ -44,7 +45,7 @@
             });
 
             $("#OkValidar").click(function () {
-                $('OkValidar').hide()           
+                $('OkValidar').hide()
                 $('#mensaje').hide();
             })
 
@@ -136,6 +137,16 @@
 }
 
 <h2>IndexAutomatico</h2>
+
+
+<div class="loading-screen">
+    <div class="cargar">
+        <span class="loader"></span>
+        <span class="loader"></span>
+        <span class="loader"></span>
+        <span class="loader"></span>
+    </div>
+</div>
 
 <div tabindex="-1" role="dialog" id="mensaje">
     <div class="modal-dialog" role="document">
