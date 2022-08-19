@@ -237,6 +237,10 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 else
                 {
                     string Carpeta = @"C:\ArchivosPlanosWeb\";
+                    if (!Directory.Exists(Carpeta))
+                    {
+                        Directory.CreateDirectory(Carpeta);
+                    }
                     var NueveA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("9A")).ToList();      
                     var DosA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("2A")).ToList();  
                     var UnoA = Directory.EnumerateFiles(Carpeta, "*", System.IO.SearchOption.TopDirectoryOnly).Where(s => s.EndsWith("1A")).ToList(); 
@@ -481,7 +485,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         [HttpGet]
         public JsonResult GetDelegaciones()
         {
-            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();                                    
             List<SelectListItem> Items = new List<SelectListItem>();     
@@ -506,7 +510,7 @@ namespace ArchivosPlanosWebV2._5.Controllers
         [HttpGet]
         public JsonResult GetPlazaCobro()
         {
-            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
             List<SelectListItem> Items = new List<SelectListItem>();
@@ -549,7 +553,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //Tramo Irapuato
                 { "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
                 { "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
-                { "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
+                //{ "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
+                { "006",  IPAddress.Parse("10.1.1.0") },//Queretaro
                 { "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
                 { "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
                 { "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
@@ -558,7 +563,8 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 { "183",  IPAddress.Parse("10.3.28.0") },//Villagran
                 { "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
                 //Tramo Acapulco pendiente de buscar ip
-                { "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan
+                //{ "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan                
+                { "008",  IPAddress.Parse("10.1.1.0")},//Tlalpan                
                 { "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
                 { "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
                 { "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
@@ -590,7 +596,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             return false;
         }
-
         //JSON RESULT PARA LLENAR CON AJAX LOS TURNO
         [HttpGet]
         public JsonResult GetTurnos(string fecha)
@@ -679,7 +684,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public ActionResult Encriptar(List<HttpPostedFileBase> file)
         {
@@ -704,7 +708,6 @@ namespace ArchivosPlanosWebV2._5.Controllers
             }
             return View();
         }
-
         public ActionResult Descargar()
         {
             try

@@ -200,7 +200,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
             OracleConnection ConexionDim = new OracleConnection(Conexion);
             MetodosGlbRepository MtGlb = new MetodosGlbRepository();
-            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             AppDbContextSQL db = new AppDbContextSQL();
             DataSet dataSet = new DataSet();
@@ -234,7 +234,9 @@ namespace ArchivosPlanosWebV2._5.Services
                         StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
                         //VERIFICAR SI EL ENCARGADO TURNO EXISTEN
                         //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                         {
@@ -309,11 +311,14 @@ namespace ArchivosPlanosWebV2._5.Services
                                 StrEncargadoTurno = "encargado_plaza";
 
                             //VERIFICAR EL ENCARGADO EL TURNO; SI NO ESTA, SERÁ EL ENCARGADO DE PLAZA                             
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
                                 Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                                Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                                 try
                                 {
                                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -441,7 +446,7 @@ namespace ArchivosPlanosWebV2._5.Services
 
             OracleConnection ConexionDim = new OracleConnection(Conexion);
             MetodosGlbRepository MtGlb = new MetodosGlbRepository();
-            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+            string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
             SqlConnection Connection = new SqlConnection(ConnectionString);
             AppDbContextSQL db = new AppDbContextSQL();
             DataSet dataSet = new DataSet();
@@ -477,12 +482,15 @@ namespace ArchivosPlanosWebV2._5.Services
                         
                         IdentOperacion = MtGlb.oDataRow2["OPERATION_ID"].ToString();
                         Str_encargado = MtGlb.oDataRow2["STAFF_NUMBER"].ToString();
-                        StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();                       
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
+                        //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                         {
                             Cmd.Parameters.Add(new SqlParameter("numGea", Str_encargado));
+                            Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                             try
                             {
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -511,11 +519,14 @@ namespace ArchivosPlanosWebV2._5.Services
                             }               
                         }
                         //VERFICAR EL ENCARGADO DE TURNO                            
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        //int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                         {
                             Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                            Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                             try
                             {
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -529,7 +540,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 }
                                 else
                                 {
-                                    Cajero = string.Empty;
+                                    EncargadoTurno = string.Empty;
                                 }
                             }
                             catch (Exception ex)
@@ -546,11 +557,14 @@ namespace ArchivosPlanosWebV2._5.Services
                     }
                     if(Cajero == string.Empty)
                     {
-                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                        int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                        Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
                         StrEncargadoTurno = item["Matricule"].ToString();
                         using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                         {
                             Cmd.Parameters.Add(new SqlParameter("numGea", item["Matricule"].ToString()));
+                            Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                             try
                             {                                
                                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -892,9 +906,6 @@ namespace ArchivosPlanosWebV2._5.Services
 
             //return listass;
         }
-
-
-        
         public string Isertar_Comentarios(List<filas> listass, List<string> comentario, string Conexion)
         {
 
@@ -1072,7 +1083,8 @@ namespace ArchivosPlanosWebV2._5.Services
                 plaza = "1" + numPlaza;
                 if (plaza == "108") //Tlalpan
                 {
-                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.168.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                    //connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.4.168.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.1.1.223)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
                     plaza = "008";
                 }
                 else if (plaza == "107") //Emiliano Zapata
@@ -1109,9 +1121,8 @@ namespace ArchivosPlanosWebV2._5.Services
             else
             {
                 plaza = "0" + numPlaza;
-                if (plaza == "004") //Tepotzotlan
-                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
-
+                if (plaza == "004") //Tepotzotlan               
+                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.20.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";                                    
                 else if (plaza == "070") //Polotitlan
                     connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.22.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
@@ -1122,8 +1133,10 @@ namespace ArchivosPlanosWebV2._5.Services
                     connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.24.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 
                 else if (plaza == "006") //Querétaro
-                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.25.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
-
+                {
+                    //connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.25.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                    connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.1.1.148)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
+                }                    
                 else if (plaza == "061") //Libramiento
                     connection = "User Id=GEADBA;Password=fgeuorjvne;  Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.3.27.221)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=GEAPROD)))";
 

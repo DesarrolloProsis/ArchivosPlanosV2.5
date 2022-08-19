@@ -21,7 +21,7 @@ namespace ArchivosPlanosWebV2._5.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("SqlServerConnection", throwIfV1Schema: false)
+            : base("AppDbContextSQL", throwIfV1Schema: false)
         {
         }
 

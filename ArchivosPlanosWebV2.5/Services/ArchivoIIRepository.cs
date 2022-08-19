@@ -13,7 +13,7 @@ namespace ArchivosPlanosWebV2._5.Services
     {
         private MetodosGlbRepository MtGlb = new MetodosGlbRepository();
         private AppDbContextSQL db = new AppDbContextSQL();
-        static string ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+        static string ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
         static SqlConnection Connection = new SqlConnection(ConnectString);
         public string Archivo_5;
         string Carpeta = @" C:\ArchivosPlanosWeb\";        
@@ -148,17 +148,24 @@ namespace ArchivosPlanosWebV2._5.Services
                             "OR TRANSACTION.Id_Voie = 'X')  AND (MODE_REGLEMENT = 'IAV ')  " +
                             "ORDER BY DATE_TRANSACTION";
 
+                var idpla = IdPlazaCobro.Substring(1, 2);
+                var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == idpla);
+                var props = typeof(Type_Carril).GetProperties();
+                DataTable dt = new DataTable("Tacla_Carriles");
+                dt.Columns.AddRange(props.Select(x => new DataColumn(x.Name, x.PropertyType)).ToArray());
+                Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+
                 if (MtGlb.QueryDataSet(StrQuerys, "TRANSACTION", ConexionDim))
                 {
                     Dbl_registros = 0;
 
                     /***********************************************************************/
-                    var props = typeof(Type_Carril).GetProperties();
-                    DataTable dt = new DataTable("Type_Carril");
-                    var idpla = IdPlazaCobro.Substring(1, 2);
-                    var Carriles_Tramos = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == idpla).ToList();
-                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
-                    Carriles_Tramos.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+                    //var props = typeof(Type_Carril).GetProperties();
+                    //DataTable dt = new DataTable("Type_Carril");
+                    //var idpla = IdPlazaCobro.Substring(1, 2);
+                    //var Carriles_Tramos = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == idpla).ToList();
+                    //dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    //Carriles_Tramos.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
 
 
                     ///***********************************************************************/

@@ -18,7 +18,7 @@ namespace ArchivosPlanosWebV2._5.Services
     {
         private MetodosGlbRepository MtGlb = new MetodosGlbRepository();
         string Errores = string.Empty;
-        static string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+        static string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
         static SqlConnection Connection = new SqlConnection(ConnectionString);
         public string Archivo_1;
         string Str_detalle;
@@ -520,11 +520,14 @@ namespace ArchivosPlanosWebV2._5.Services
                             Str_encargado = MtGlb.oDataRow2["STAFF_NUMBER"].ToString();
                             StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
                             //VERIFICAR SI EL CAJERO Y EL CAJERO TURNO EXISTEN                            
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
                                 Cmd.Parameters.Add(new SqlParameter("numGea", Str_encargado));
+                                Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                                 try
                                 {
                                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -554,11 +557,15 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             //VERFICAR EL ENCARGADO DE TURNO
                             //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            //int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
+
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
                                 Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                                Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                                 try
                                 {
                                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -597,11 +604,14 @@ namespace ArchivosPlanosWebV2._5.Services
                         {
                             //QUERY PARA EXTRAER LA MATRICULA DEL CAJERO
                             //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
+                            //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
-                                Cmd.Parameters.Add(new SqlParameter("numGEa", item["Matricule"].ToString()));
+                                Cmd.Parameters.Add(new SqlParameter("numGea", item["Matricule"].ToString()));
+                                Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                                 try
                                 {
                                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -774,6 +784,14 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 if (MtGlb.QueryDataSet(StrQuerys, "CLOSED_LANE_REPORT", ConexionDim))
                 {
+
+                    var id_pla = IdPlazaCobro.Substring(1, 2);
+                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                    var props = typeof(Type_Carril).GetProperties();
+                    dt = new DataTable("Tabla_Carriles");
+                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+
                     foreach (DataRow item in MtGlb.Ds.Tables["CLOSED_LANE_REPORT"].Rows)
                     {
                         if (ErroresHorario.Count != 0)
@@ -861,13 +879,14 @@ namespace ArchivosPlanosWebV2._5.Services
 
                             StrEncargadoTurno = MtGlb.oDataRow2["IN_CHARGE_SHIFT_NUMBER"].ToString();
 
-                            //VERIFICAR SI EL ENCARGADO TURNO EXISTEN
-                            //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
-                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
+                            //VERIFICAR SI EL ENCARGADO TURNO EXISTEN SE NECESITA PARA QUE EL OPERADOR SI SEA EL DE LA PLAZA Y NO CUAlquier coincidente
+                            int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;                            
+                            Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
 
                             using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                             {
                                 Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                                Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));                                
                                 try
                                 {
                                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -951,6 +970,16 @@ namespace ArchivosPlanosWebV2._5.Services
 
                 if (MtGlb.QueryDataSet1(StrQuerys, "SEQ_VOIE_TOD", ConexionDim))
                 {
+
+                    var id_pla = IdPlazaCobro.Substring(1, 2);
+                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+
+                    var props = typeof(Type_Carril).GetProperties();
+                    dt = new DataTable("Tabla_Carriles");
+                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+
+
                     foreach (DataRow item1 in MtGlb.Ds1.Tables["SEQ_VOIE_TOD"].Rows)
                     {
                         //CODIGO ENCONTRADO EN VERSION MEXICO ACAPULCO POR VERIFICAR SI FUNCIONA PARA ALGO
@@ -1028,11 +1057,14 @@ namespace ArchivosPlanosWebV2._5.Services
 
                                 //VERIFICAR EL ENCARGADO EL TURNO; SI NO ESTA, SERÁ EL ENCARGADO DE PLAZA 
                                 //Query = @"SELECT numCapufe FROM TYPE_OPERADORES WHERE numGea = @numGea";
-                                Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGEa";
+                                int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                                Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea AND Plaza_Id = @idPlaza";
+                                //Query = @"SELECT Num_Capufe FROM TYPE_OPERADORES WHERE Num_Gea = @numGea";
 
                                 using (SqlCommand Cmd = new SqlCommand(Query, Connection))
                                 {
                                     Cmd.Parameters.Add(new SqlParameter("numGea", StrEncargadoTurno));
+                                    Cmd.Parameters.Add(new SqlParameter("idPlaza", Id_PlazaSQL));
                                     try
                                     {
                                         SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(Cmd);
@@ -1067,7 +1099,7 @@ namespace ArchivosPlanosWebV2._5.Services
                                 MtGlb.QueryDataSet2(Query, "PRUEBA", ConexionDim);
                                 foreach (DataRow indi in MtGlb.Ds2.Tables["PRUEBA"].Rows)
                                 {
-                                    int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
+                                    //int Id_PlazaSQL = db.Type_Plaza.Where(x => x.Num_Plaza == IdPlazaCobro.Substring(1, 2)).FirstOrDefault().Id_Plaza;
                                     var EncargadosPlazaSQL = db.Type_Operadores.Where(x => x.Num_Gea.StartsWith("1") && x.Plaza_Id == Id_PlazaSQL).ToList();
                                     foreach (var SQLEncargado in EncargadosPlazaSQL)
                                     {

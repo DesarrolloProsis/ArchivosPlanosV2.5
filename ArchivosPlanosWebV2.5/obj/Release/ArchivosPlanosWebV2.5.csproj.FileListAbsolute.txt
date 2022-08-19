@@ -406,3 +406,4 @@ C:\Users\Administrador\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj
 C:\Users\Administrador\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Release\ArchivosPlanosWebV2.5.csproj.CopyComplete
 C:\Users\Administrador\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Release\ArchivosPlanosWebV2.5.dll
 C:\Users\Administrador\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Release\ArchivosPlanosWebV2.5.pdb
+C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\obj\Release\ArchivosPlanosWebV2.5.csproj.CopyComplete

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link href="~/Scripts/estilos/estilos.css" rel="stylesheet" />
+    <link href="~/Scripts/estilos/importar.css" rel="stylesheet" />
+    <link href="~/Scripts/estilos/main.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-xl navbar-dark" aria-label="Toggle navigation">
+        <div class="container">
+            <a class="navbar-brand" href="/Home/Index"><img src="@Url.Content("~/Scripts/img/logos.png")"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>                
+            </button>
+
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav ml-auto">
+
+                    @if (Request.IsAuthenticated)
+                    {                        
+                        <li class="nav-item ">
+                            @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                        </li>
+                        if (User.IsInRole("SuperAdmin"))
+                        { 
+                            <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "CRUD" ? "active" : "")">
+                                @Html.ActionLink("CRUD", "Index", "CRUD", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                        if (User.IsInRole("SuperAdmin") || User.IsInRole("Capufe"))
+                        {
+                            <li class="nav-item ">
+                                @Html.ActionLink("Exportar", "Index", "Exportar", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item ">
+                                @Html.ActionLink("Exportar Automatico", "IndexAutomatico", "Exportar", new AjaxOptions { HttpMethod = "POST" }, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                        if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item ">
+                                @Html.ActionLink("Nuevo Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                            </li>
+                        }
+                    }
+
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="allbody">
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="aviso">
+            &copy; @DateTime.Now.Year Proyectos y Sistemas Informáticos S.A. de C.V. Todos los Derechos Reservados.   Version 2.13
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    @Scripts.Render("~/bundles/ajax")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

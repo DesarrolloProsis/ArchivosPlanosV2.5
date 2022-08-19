@@ -17,7 +17,7 @@ namespace ArchivosPlanosWebV2._5.Services
     {
         private MetodosGlbRepository MtGlb = new MetodosGlbRepository();
         private AppDbContextSQL db = new AppDbContextSQL();
-        static string ConnectString = ConfigurationManager.ConnectionStrings["SqlServerConnection"].ConnectionString;
+        static string ConnectString = ConfigurationManager.ConnectionStrings["AppDbContextSQL"].ConnectionString;
         static SqlConnection Connection = new SqlConnection(ConnectString);
 
         public string Archivo_2;
@@ -555,13 +555,19 @@ namespace ArchivosPlanosWebV2._5.Services
                                         "ORDER BY GEADBA.FIN_POSTE.ID_GARE, GEADBA.TYPE_VOIE.ID_VOIE, GEADBA.FIN_POSTE.VOIE, GEADBA.FIN_POSTE.DATE_FIN_POSTE, " +
                                         "GEADBA.FIN_POSTE.NUMERO_POSTE, GEADBA.FIN_POSTE.MATRICULE, Expr4";
 
+                var id_pla = IdPlazaCobro.Substring(1, 2);
+                var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                var props = typeof(Type_Carril).GetProperties();
+                dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+
                 if (MtGlb.QueryDataSet3(StrQuerys, "TYPE_VOIE", ConexionDim))
                 {
-                    var id_pla = IdPlazaCobro.Substring(1, 2);
-                    var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
-                    var props = typeof(Type_Carril).GetProperties();
-                    dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
-                    Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
+                    //var id_pla = IdPlazaCobro.Substring(1, 2);
+                    //var Carriles_Plazas = db.Type_Plaza.GroupJoin(db.Type_Carril, pla => pla.Id_Plaza, car => car.Plaza_Id, (pla, car) => new { pla, car }).Where(x => x.pla.Num_Plaza == id_pla).ToList();
+                    //var props = typeof(Type_Carril).GetProperties();
+                    //dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+                    //Carriles_Plazas.FirstOrDefault().car.ToList().ForEach(i => dt.Rows.Add(props.Select(p => p.GetValue(i, null)).ToArray()));
 
                     foreach (DataRow item3 in MtGlb.Ds3.Tables["TYPE_VOIE"].Rows)
                     {

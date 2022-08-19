@@ -7,7 +7,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>C:\Users\Emiliano\source\repos\ArchivosPlanosV2.5\ArchivosPlanosWebV2.5\bin\Release\Publish</_PublishTargetUrl>
-    <History>True|2022-05-05T16:51:45.1022179Z;True|2022-05-05T10:32:10.6754475-05:00;True|2022-05-02T13:12:25.0211431-05:00;True|2022-05-02T13:05:09.5518864-05:00;True|2022-05-02T13:02:26.5425902-05:00;True|2022-05-02T12:52:08.2157362-05:00;True|2022-05-02T12:21:10.5737280-05:00;True|2022-04-20T10:42:59.9289053-05:00;True|2022-04-20T10:41:22.8644514-05:00;True|2022-04-11T12:07:32.1001775-05:00;True|2022-04-11T11:27:24.5294174-05:00;True|2022-04-11T11:16:41.4156327-05:00;True|2022-04-05T12:32:25.5632674-05:00;True|2022-04-05T12:32:07.8376595-05:00;True|2022-04-05T12:19:52.4202969-05:00;False|2022-04-05T12:19:10.3034564-05:00;True|2022-04-05T11:22:39.2222542-05:00;True|2022-04-05T11:12:03.1871028-05:00;True|2022-04-05T11:11:28.2639805-05:00;True|2022-04-05T10:46:34.9841509-05:00;True|2022-02-23T13:40:19.4372009-06:00;True|2022-02-23T13:39:59.8095722-06:00;True|2022-02-23T13:27:30.1687452-06:00;True|2022-02-23T13:27:15.9518490-06:00;True|2022-02-23T13:25:03.4632648-06:00;True|2022-02-23T13:05:10.5375098-06:00;True|2022-02-23T12:36:53.6853458-06:00;</History>
+    <History>True|2022-08-19T17:52:08.4971845Z;True|2022-08-19T12:46:06.7511237-05:00;True|2022-08-16T12:51:19.9286611-05:00;True|2022-08-16T12:05:36.4430566-05:00;True|2022-05-05T11:51:45.1022179-05:00;True|2022-05-05T10:32:10.6754475-05:00;True|2022-05-02T13:12:25.0211431-05:00;True|2022-05-02T13:05:09.5518864-05:00;True|2022-05-02T13:02:26.5425902-05:00;True|2022-05-02T12:52:08.2157362-05:00;True|2022-05-02T12:21:10.5737280-05:00;True|2022-04-20T10:42:59.9289053-05:00;True|2022-04-20T10:41:22.8644514-05:00;True|2022-04-11T12:07:32.1001775-05:00;True|2022-04-11T11:27:24.5294174-05:00;True|2022-04-11T11:16:41.4156327-05:00;True|2022-04-05T12:32:25.5632674-05:00;True|2022-04-05T12:32:07.8376595-05:00;True|2022-04-05T12:19:52.4202969-05:00;False|2022-04-05T12:19:10.3034564-05:00;True|2022-04-05T11:22:39.2222542-05:00;True|2022-04-05T11:12:03.1871028-05:00;True|2022-04-05T11:11:28.2639805-05:00;True|2022-04-05T10:46:34.9841509-05:00;True|2022-02-23T13:40:19.4372009-06:00;True|2022-02-23T13:39:59.8095722-06:00;True|2022-02-23T13:27:30.1687452-06:00;True|2022-02-23T13:27:15.9518490-06:00;True|2022-02-23T13:25:03.4632648-06:00;True|2022-02-23T13:05:10.5375098-06:00;True|2022-02-23T12:36:53.6853458-06:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -23,10 +23,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>12/20/2021 10:24:46</publishTime>
     </File>
     <File Include="bin/ArchivosPlanosWebV2.5.dll">
-      <publishTime>05/05/2022 11:51:43</publishTime>
+      <publishTime>08/19/2022 12:52:07</publishTime>
     </File>
     <File Include="bin/ArchivosPlanosWebV2.5.pdb">
-      <publishTime>05/05/2022 11:51:43</publishTime>
+      <publishTime>08/19/2022 12:52:07</publishTime>
     </File>
     <File Include="bin/EncriptCapufe.dll">
       <publishTime>12/20/2021 10:26:04</publishTime>
@@ -626,10 +626,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>12/20/2021 10:24:47</publishTime>
     </File>
     <File Include="Views/Exportar/Index.cshtml">
-      <publishTime>05/02/2022 13:12:12</publishTime>
+      <publishTime>05/05/2022 12:56:57</publishTime>
     </File>
     <File Include="Views/Exportar/IndexAutomatico.cshtml">
-      <publishTime>05/02/2022 13:12:09</publishTime>
+      <publishTime>08/16/2022 11:17:45</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>12/20/2021 10:24:47</publishTime>
@@ -668,7 +668,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>12/20/2021 10:24:47</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/02/2022 12:05:07</publishTime>
+      <publishTime>08/16/2022 11:17:16</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>04/29/2022 11:48:47</publishTime>
@@ -680,7 +680,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>12/20/2021 10:24:47</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/02/2022 12:52:06</publishTime>
+      <publishTime>08/16/2022 12:05:30</publishTime>
     </File>
   </ItemGroup>
 </Project>

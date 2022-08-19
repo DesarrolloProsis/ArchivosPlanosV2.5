@@ -179,7 +179,8 @@
                     DelegacionesId: delegacion,
                     PlazaCobroId: plaza,
                     TurnoId: @Model.TurnoId,
-                    FechaInicio: fecha
+                    FechaInicio: fecha,
+                    ValidarEncriptar: true
                 }
                   $.ajax({
                       url: '@Url.Action("Comprimir", "Exportar")',
