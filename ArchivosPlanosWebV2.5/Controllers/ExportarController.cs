@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -551,29 +552,47 @@ namespace ArchivosPlanosWebV2._5.Controllers
                 //LOCAL
                 //{ "008",  IPAddress.Parse("10.1.1.0") },
                 //Tramo Irapuato
-                { "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
-                { "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
+                //{ "004",  IPAddress.Parse("10.3.20.0") },//Tepozotlan
+                { "004",  IPAddress.Parse(ConfigurationManager.AppSettings["Tepotzotlan"].ToString()) },
+                //{ "005",  IPAddress.Parse("10.3.23.0") },//Palmillas
+                { "005",  IPAddress.Parse(ConfigurationManager.AppSettings["Palmillas"].ToString()) },
                 //{ "006",  IPAddress.Parse("10.3.25.0") },//Queretaro
-                { "006",  IPAddress.Parse("10.1.1.0") },//Queretaro
-                { "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
-                { "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
-                { "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
-                { "070",  IPAddress.Parse("10.3.22.0") },//Polotitlan
-                { "127",  IPAddress.Parse("10.3.24.0") },//Chichimequillas
-                { "183",  IPAddress.Parse("10.3.28.0") },//Villagran
-                { "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
-                //Tramo Acapulco pendiente de buscar ip
-                //{ "008",  IPAddress.Parse("10.4.168.0")},//Tlalpan                
-                { "008",  IPAddress.Parse("10.1.1.0")},//Tlalpan                
-                { "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
-                { "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
-                { "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
-                { "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco
-                { "104",  IPAddress.Parse("10.4.164.0")},//LaVenta
-                { "105",  IPAddress.Parse("10.4.165.0")},//Xochitepec
-                { "106",  IPAddress.Parse("10.4.166.0")},//Aeropuerto
-                { "107",  IPAddress.Parse("10.4.167.0")},//EmilianoZapata
-                { "184",  IPAddress.Parse("10.4.184.0")}//FranciscoVelasco
+                { "006",  IPAddress.Parse(ConfigurationManager.AppSettings["Queretaro"].ToString()) },
+                //{ "041",  IPAddress.Parse("10.3.30.0") },//Salamanca
+                { "041",  IPAddress.Parse(ConfigurationManager.AppSettings["Salamanca"].ToString()) },
+                //{ "061",  IPAddress.Parse("10.3.27.0") },//Libramiento
+                { "061",  IPAddress.Parse(ConfigurationManager.AppSettings["Libramiento"].ToString()) },
+                //{ "069",  IPAddress.Parse("10.3.21.0") },//Jorobas
+                { "069",  IPAddress.Parse(ConfigurationManager.AppSettings["Jorobas"].ToString()) },
+                //{ "070",  IPAddress.Parse("10.3.22.0") },//Polotitlan
+                { "070",  IPAddress.Parse(ConfigurationManager.AppSettings["Polotitlan"].ToString()) },
+                //{ "127",  IPAddress.Parse("10.3.24.0") },//Chichimequillas
+                { "127",  IPAddress.Parse(ConfigurationManager.AppSettings["Chichimequillas"].ToString()) },
+                //{ "183",  IPAddress.Parse("10.3.28.0") },//Villagran
+                { "183",  IPAddress.Parse(ConfigurationManager.AppSettings["Villagran"].ToString()) },
+                //{ "186",  IPAddress.Parse("10.3.29.0") },//Cerro Gordo
+                { "186",  IPAddress.Parse(ConfigurationManager.AppSettings["CerroGordo"].ToString()) },
+                //Tramo Acapulco pendiente de buscar ip                
+                //{ "008",  IPAddress.Parse("10.1.1.0")},//Tlalpan                
+                { "008",  IPAddress.Parse(ConfigurationManager.AppSettings["Tlalpan"].ToString()) },
+                //{ "009",  IPAddress.Parse("10.4.169.0")},//TresMarias
+                { "009",  IPAddress.Parse(ConfigurationManager.AppSettings["TresMarias"].ToString()) },
+                //{ "101",  IPAddress.Parse("10.4.161.0")},//Alpuyeca
+                { "101",  IPAddress.Parse(ConfigurationManager.AppSettings["Alpuyeca"].ToString()) },
+                //{ "102",  IPAddress.Parse("10.4.162.0")},//PasoMorelos
+                { "102",  IPAddress.Parse(ConfigurationManager.AppSettings["PasoMorelos"].ToString()) },
+                //{ "103",  IPAddress.Parse("10.4.163.0")},//PaloBlanco
+                { "103",  IPAddress.Parse(ConfigurationManager.AppSettings["PaloBlanco"].ToString()) },
+                //{ "104",  IPAddress.Parse("10.4.164.0")},//LaVenta
+                { "104",  IPAddress.Parse(ConfigurationManager.AppSettings["LaVenta"].ToString()) },
+                //{ "105",  IPAddress.Parse("10.4.165.0")},//Xochitepec
+                { "105",  IPAddress.Parse(ConfigurationManager.AppSettings["Xochitepec"].ToString()) },
+                //{ "106",  IPAddress.Parse("10.4.166.0")},//Aeropuerto
+                { "106",  IPAddress.Parse(ConfigurationManager.AppSettings["Aeropuerto"].ToString()) },
+                //{ "107",  IPAddress.Parse("10.4.167.0")},//EmilianoZapata
+                { "107",  IPAddress.Parse(ConfigurationManager.AppSettings["EmilianoZapata"].ToString()) },
+                //{ "184",  IPAddress.Parse("10.4.184.0")}//FranciscoVelasco
+                { "184",  IPAddress.Parse(ConfigurationManager.AppSettings["FranciscoVelazco"].ToString()) },
             };
 
             IPHostEntry host;            
