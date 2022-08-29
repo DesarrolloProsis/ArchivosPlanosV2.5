@@ -192,27 +192,27 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     ViewBag.Titulo = "Formulario incompleto";
                     ViewBag.Mensaje = "Falta Fecha<br />";
                 }
-                else if (FechaInicio > fecha_Actual)
-                {
-                    ViewBag.Titulo = "Formulario llenado incorrectamente";
-                    ViewBag.Mensaje = "La fecha debe ser menor a la actual<br />";
-                }
-                else if (validaciones.Valida_Turno(Convert.ToInt32(Turno.Value), FechaInicio) == "STOP")
+                //else if (FechaInicio > fecha_Actual)
+                //{
+                //    ViewBag.Titulo = "Formulario llenado incorrectamente";
+                //    ViewBag.Mensaje = "La fecha debe ser menor a la actual<br />";
+                //}
+                //else if (validaciones.Valida_Turno(Convert.ToInt32(Turno.Value), FechaInicio) == "STOP")
 
-                {
-                    ViewBag.Titulo = "Formulario llenado incorrectamente";
-                    ViewBag.Mensaje = "Aún no puedes generar este archivo<br />";
-                }
-                else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                {
-                    ViewBag.Titulo = "Existen carriles sin cerrar:";
-                    ViewBag.Mensaje = validaciones.Message;
-                }
-                else if (validaciones.ValidarBolsas(FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                {
-                    ViewBag.Titulo = "Existen bolsas sin declarar:";
-                    ViewBag.Mensaje = validaciones.Message;
-                }
+                //{
+                //    ViewBag.Titulo = "Formulario llenado incorrectamente";
+                //    ViewBag.Mensaje = "Aún no puedes generar este archivo<br />";
+                //}
+                //else if (validaciones.ValidarCarrilesCerrados(FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                //{
+                //    ViewBag.Titulo = "Existen carriles sin cerrar:";
+                //    ViewBag.Mensaje = validaciones.Message;
+                //}
+                //else if (validaciones.ValidarBolsas(FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                //{
+                //    ViewBag.Titulo = "Existen bolsas sin declarar:";
+                //    ViewBag.Mensaje = validaciones.Message;
+                //}
                 else if (validaciones.ValidarClaseVehiculo(FechaInicio, Turno.Text, ConexionDB) == "STOP")
                 {
                     ViewBag.Titulo = "Faltam Clases Detectadas:";
@@ -221,11 +221,11 @@ namespace ArchivosPlanosWebV2._5.Controllers
                     errorFormat = errorFormat + validaciones.errorFormatClaseMarcada + "<br/>";
                     ViewBag.Mensaje = errorFormat;
                 }
-                else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
-                {
-                    ViewBag.Titulo = "Falta ingresar comentarios:";
-                    ViewBag.Mensaje = validaciones.Message;
-                }
+                //else if (validaciones.ValidarComentarios(FechaInicio, Turno.Text, ConexionDB) == "STOP")
+                //{
+                //    ViewBag.Titulo = "Falta ingresar comentarios:";
+                //    ViewBag.Mensaje = validaciones.Message;
+                //}
                 else if (validacionCajeroAbierto == true || validacionCajeroCerrado == true)
                 {
                     ViewBag.Titulo = "Faltan Cajeros / Encargados de Turno";
@@ -620,83 +620,83 @@ namespace ArchivosPlanosWebV2._5.Controllers
         public JsonResult GetTurnos(string fecha)
         {
             List<SelectListItem> Items = new List<SelectListItem>();
-            DateTime time = new DateTime();                                    
-            if (fecha != "null")
-            {
+            //DateTime time = new DateTime();                                    
+            //if (fecha != "null")
+            //{
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "22:00 - 06:00",
+            //        Value = "1"
+            //    });
+
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "06:00 - 14:00",
+            //        Value = "2"
+            //    });
+
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "14:00 - 22:00",
+            //        Value = "3",
+            //    });
+            //    return Json(Items, JsonRequestBehavior.AllowGet);
+            //}
+            //else if (fecha == "null")
+            //{
+            //    time = DateTime.Now;
+            //}
+
+            //DateTime turno1;
+            //if (time.Day == 1)
+            //    if (time.Month == 1)
+            //        turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
+            //    else
+            //        turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
+            //else
+            //    turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
+            //DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
+            //DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
+
+            //if (time >= turno1 && time < turno3)
+            //{
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "22:00 - 06:00",
+            //        Value = "1"
+            //    });
+            //}
+            //else if (time >= turno2 && time < turno1.AddDays(1))
+            //{
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "22:00 - 06:00",
+            //        Value = "1"
+            //    });
+            //    Items.Add(new SelectListItem
+            //    {
+            //        Text = "06:00 - 14:00",
+            //        Value = "2"
+            //    });
+            //}
+            //else
+           // {
                 Items.Add(new SelectListItem
                 {
                     Text = "22:00 - 06:00",
                     Value = "1"
                 });
-
                 Items.Add(new SelectListItem
                 {
                     Text = "06:00 - 14:00",
                     Value = "2"
                 });
-
                 Items.Add(new SelectListItem
                 {
                     Text = "14:00 - 22:00",
                     Value = "3",
                 });
-                return Json(Items, JsonRequestBehavior.AllowGet);
-            }
-            else if (fecha == "null")
-            {
-                time = DateTime.Now;
-            }
-
-            DateTime turno1;
-            if (time.Day == 1)
-                if (time.Month == 1)
-                    turno1 = new DateTime(time.Year, 12, time.Day).AddMonths(1).AddDays(-1);
-                else
-                    turno1 = new DateTime(time.Year, time.Month - 1, time.Day).AddMonths(1).AddDays(-1);
-            else
-                turno1 = new DateTime(time.Year, time.Month, time.Day - 1, 22, 0, 0);
-            DateTime turno2 = new DateTime(time.Year, time.Month, time.Day, 6, 0, 0);
-            DateTime turno3 = new DateTime(time.Year, time.Month, time.Day, 14, 0, 0);
-
-            if (time >= turno1 && time < turno3)
-            {
-                Items.Add(new SelectListItem
-                {
-                    Text = "22:00 - 06:00",
-                    Value = "1"
-                });
-            }
-            else if (time >= turno2 && time < turno1.AddDays(1))
-            {
-                Items.Add(new SelectListItem
-                {
-                    Text = "22:00 - 06:00",
-                    Value = "1"
-                });
-                Items.Add(new SelectListItem
-                {
-                    Text = "06:00 - 14:00",
-                    Value = "2"
-                });
-            }
-            else
-            {
-                Items.Add(new SelectListItem
-                {
-                    Text = "22:00 - 06:00",
-                    Value = "1"
-                });
-                Items.Add(new SelectListItem
-                {
-                    Text = "06:00 - 14:00",
-                    Value = "2"
-                });
-                Items.Add(new SelectListItem
-                {
-                    Text = "14:00 - 22:00",
-                    Value = "3",
-                });
-            }
+            //}
             return Json(Items, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Encriptar()
